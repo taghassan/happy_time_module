@@ -319,7 +319,7 @@ class BigCardList extends GetView<HappyTimeHomeLogic> {
                       : const Icon(Icons.error);
                 }).size(
               height: Get.height * 0.36,
-              width: Get.width * 0.4,
+              
             ),
             // Text("${scrollController.position.maxScrollExtent??''}")
           ],
