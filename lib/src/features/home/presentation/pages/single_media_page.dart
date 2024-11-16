@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:happy_time_module/src/features/home/presentation/controllers/home_logic.dart';
 
-class SingleMediaPage extends GetView<HomeLogic> {
+class SingleMediaPage extends GetView<HappyTimeHomeLogic> {
   const SingleMediaPage({super.key});
 
   @override

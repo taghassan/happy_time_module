@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:happy_time_module/src/shared/datasources/remote_datasource/movies_remote_data_source.dart';
-import 'package:happy_time_module/src/shared/models/responses/HomeContentResponseModel.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:toastification/toastification.dart';
 import 'package:happy_time_module/src/core/Translation/translations.dart';
@@ -38,28 +37,8 @@ void main() {
 startHappyTimeApp() async {
   runZonedGuarded(
     () async {
-      HttpOverrides.global = MyHttpOverrides();
 
-      WidgetsFlutterBinding.ensureInitialized();
-
-      try {
-        await initializeDateFormatting("ar_AE", null);
-        intl.Intl.defaultLocale = "ar_AE";
-      } catch (_) {}
-
-      // injectableModuleMicroConfigure(AppEnvironment.defaultEnv);
-      configureDependencies(AppEnvironment.defaultEnv);
-
-      try {
-        // will use get storage to store object or key/pair data locally
-        await GetStorage.init();
-        await UserSessionStorage.initStorage();
-      } catch (_) {}
-
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-      ]);
-
+await initHappyTimeApp();
       runApp(const MyApp());
     },
     (exception, stackTrace) async {
@@ -68,7 +47,29 @@ startHappyTimeApp() async {
     },
   );
 }
+initHappyTimeApp()async{
+  HttpOverrides.global = MyHttpOverrides();
 
+  WidgetsFlutterBinding.ensureInitialized();
+
+  try {
+    await initializeDateFormatting("ar_AE", null);
+    intl.Intl.defaultLocale = "ar_AE";
+  } catch (_) {}
+
+  // injectableModuleMicroConfigure(AppEnvironment.defaultEnv);
+  configureDependencies(AppEnvironment.defaultEnv);
+
+  try {
+    // will use get storage to store object or key/pair data locally
+    await GetStorage.init();
+    await UserSessionStorage.initStorage();
+  } catch (_) {}
+
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
+}
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -92,11 +93,11 @@ class MyApp extends StatelessWidget {
           defaultTransition: Transition.fade,
           locale: Locale(UserSessionStorage.language),
           fallbackLocale: Locale(UserSessionStorage.language),
-          getPages: AppRouts.appRoutes(),
+          getPages: HappyTimeRouts.happyTimesRoutes(),
           debugShowCheckedModeBanner: false,
           initialRoute: UserSessionStorage.checkIsFirstOpen
-              ? Routs.onboardingRoute
-              : Routs.splashRoute,
+              ? Routs.happyTimeOnboardingRoute
+              : Routs.happyTimeSplashRoute,
           // home: const ApiFetchDemoPage(),
           logWriterCallback: AppLogger.write,
         ),

@@ -13,8 +13,8 @@ import 'package:happy_time_module/src/features/home/presentation/widgets/categor
 
 import '../controllers/home_logic.dart';
 
-class HomePage extends GetView<HomeLogic> {
-  const HomePage({super.key});
+class HappyTimeHomePage extends GetView<HappyTimeHomeLogic> {
+  const HappyTimeHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -185,7 +185,7 @@ class HomePage extends GetView<HomeLogic> {
   }
 }
 
-class BigCardList extends GetView<HomeLogic> {
+class BigCardList extends GetView<HappyTimeHomeLogic> {
   final HomeSectionEnum homeSectionEnum;
   final ScrollController scrollController;
 

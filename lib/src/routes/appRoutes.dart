@@ -7,29 +7,29 @@ import 'package:happy_time_module/src/features/splash/presentation/pages/splash_
 import 'package:happy_time_module/src/routes/routes.dart';
 
 
-class AppRouts {
+class HappyTimeRouts {
   static Transition transition = Transition.fadeIn;
   static Duration transitionDuration = const Duration(milliseconds: 300);
 
-  static appRoutes() => <GetPage<dynamic>>[
+  static happyTimesRoutes() => <GetPage<dynamic>>[
         GetPage(
-          name: Routs.onboardingRoute,
+          name: Routs.happyTimeOnboardingRoute,
           page: () => const Onboarding(),
           binding: SplashBinding(),
           transition: transition,
           transitionDuration: transitionDuration,
         ),
         GetPage(
-          name: Routs.splashRoute,
+          name: Routs.happyTimeSplashRoute,
           page: () => const SplashPage(),
           binding: SplashBinding(),
           transition: transition,
           transitionDuration: transitionDuration,
         ),
     GetPage(
-      name: Routs.homeRoute,
-      page: () => const HomePage(),
-      binding: HomeBinding(),
+      name: Routs.happyTimeHomeRoute,
+      page: () => const HappyTimeHomePage(),
+      binding: HappyTimeHomeBinding(),
       transition: transition,
       transitionDuration: transitionDuration,
     ),

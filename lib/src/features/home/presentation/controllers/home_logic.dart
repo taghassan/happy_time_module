@@ -32,7 +32,7 @@ enum HomeSectionEnum {
   livetv,
 }
 
-class HomeLogic extends BaseController
+class HappyTimeHomeLogic extends BaseController
     with StateMixin<HomeState>, LoaderOverlayMixin {
   List<ScrollController> scrollController = [];
   int tempItemCount = 10;

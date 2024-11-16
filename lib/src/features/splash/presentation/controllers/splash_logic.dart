@@ -22,9 +22,9 @@ class SplashLogic extends GetxController with StateMixin<SplashState> {
       imagePadding: EdgeInsets.zero,
     );
 
-    if(Get.currentRoute==Routs.splashRoute){
+    if(Get.currentRoute==Routs.happyTimeSplashRoute){
       Future.delayed(const Duration(seconds: 3),() {
-        Get.offAllNamed(Routs.homeRoute);
+        Get.offAllNamed(Routs.happyTimeHomeRoute);
       },);
     }
 
@@ -34,11 +34,11 @@ class SplashLogic extends GetxController with StateMixin<SplashState> {
 
   void handleOnboardingDone(){
     UserSessionStorage.saveFirstOpen(false);
-    Get.offAllNamed(Routs.homeRoute);
+    Get.offAllNamed(Routs.happyTimeHomeRoute);
   }
 
   void handleOnboardingSkip() {
     UserSessionStorage.saveFirstOpen(false);
-    Get.offAllNamed(Routs.homeRoute);
+    Get.offAllNamed(Routs.happyTimeHomeRoute);
   }
 }

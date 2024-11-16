@@ -166,7 +166,7 @@ class UserSessionStorage {
           userSessionBox.remove(UserSessionKeys.inspectorCode);
           userSessionBox.remove(UserSessionKeys.inspectorUsername);
 
-          Get.offAllNamed(Routs.loginRoute);
+          Get.offAllNamed(Routs.happyTimeLoginRoute);
         },
         onCancel: () => Get.back());
   }

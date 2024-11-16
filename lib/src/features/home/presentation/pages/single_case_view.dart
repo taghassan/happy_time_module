@@ -17,7 +17,7 @@ class _PieData {
   String? text;
 }
 
-class SingleCaseView extends GetView<HomeLogic> {
+class SingleCaseView extends GetView<HappyTimeHomeLogic> {
   const SingleCaseView({super.key});
 
   @override

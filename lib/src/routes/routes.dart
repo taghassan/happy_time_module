@@ -1,7 +1,7 @@
 class Routs {
-  static const splashRoute = "/";
-  static const onboardingRoute = "/onboarding";
-  static const homeRoute = "/home";
-  static const loginRoute = "/login";
+  static const happyTimeSplashRoute = "/";
+  static const happyTimeOnboardingRoute = "/onboarding";
+  static const happyTimeHomeRoute = "/home";
+  static const happyTimeLoginRoute = "/login";
 
 }

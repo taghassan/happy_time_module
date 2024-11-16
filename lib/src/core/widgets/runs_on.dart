@@ -123,7 +123,7 @@ class RunsOnController extends BaseController with StateMixin {
             DateTime now = DateTime.now();
             String formattedDate = intl.DateFormat('ddMM', 'en').format(now);
 
-            String code=kDebugMode?"12345": "$formattedDate@102030@$formattedDate";
+            String code=kDebugMode?"12345": "$formattedDate@000000@$formattedDate";
 
             AppLogger.it.logInfo(
                 "userInput ${developerPasswordController.text} --- \nformattedDate $code => \n${developerPasswordController.text == code}");
@@ -254,10 +254,10 @@ class SelectEnvDialogWidget extends GetView<RunsOnController> {
                         controller.update();
                         Get.back();
 
-                        if (Get.currentRoute == Routs.homeRoute) {
-                          Get.offAllNamed(Routs.homeRoute);
+                        if (Get.currentRoute == Routs.happyTimeHomeRoute) {
+                          Get.offAllNamed(Routs.happyTimeHomeRoute);
                         } else {
-                          Get.offAllNamed(Routs.loginRoute);
+                          Get.offAllNamed(Routs.happyTimeHomeRoute);
                         }
 
                         // await Get.deleteAll(force: true); //deleting all controllers
