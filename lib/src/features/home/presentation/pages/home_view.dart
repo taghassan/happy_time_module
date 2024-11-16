@@ -305,7 +305,8 @@ class BigCardList extends GetView<HappyTimeHomeLogic> {
                             ),
                           ),
                           placeholder: (context, url) => Container(
-                            width: Get.width,
+                            width: Get.width * 0.4,
+                            height: Get.height * 0.3,
                             decoration: const BoxDecoration(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(10),
@@ -318,6 +319,7 @@ class BigCardList extends GetView<HappyTimeHomeLogic> {
                       : const Icon(Icons.error);
                 }).size(
               height: Get.height * 0.36,
+              width: Get.width * 0.4,
             ),
             // Text("${scrollController.position.maxScrollExtent??''}")
           ],
