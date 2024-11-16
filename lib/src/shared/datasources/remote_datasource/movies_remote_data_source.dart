@@ -1,6 +1,7 @@
 import 'package:happy_time_module/src/core/commundomain/entitties/based_api_result/api_result_model.dart';
 import 'package:happy_time_module/src/shared/models/requests/PaginationRequestModel.dart';
 import 'package:happy_time_module/src/shared/models/responses/AnimeApiResponseModel.dart';
+import 'package:happy_time_module/src/shared/models/responses/AnimeShowApiResponseModel.dart';
 import 'package:happy_time_module/src/shared/models/responses/AnimesRecentsApiResponseModel.dart';
 import 'package:happy_time_module/src/shared/models/responses/AnimesSeasonsApiResponseModel.dart';
 import 'package:happy_time_module/src/shared/models/responses/ChosenForYouApiResponseMode.dart';
@@ -66,6 +67,10 @@ abstract class MoviesRemoteDataSource {
     required String seriesId
   });
 
+  //series/show
+  Future<ApiResultModel<AnimeShowApiResponseModel>> fetchAnimeShow({
+    required String animeId
+  });
   //series/show
   Future<ApiResultModel<SeriesShowApiResponseModel>> fetchSeriesShow({
     required String seriesId

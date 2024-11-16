@@ -87,17 +87,17 @@ class MyApp extends StatelessWidget {
           title: '249',
           theme: AppThemes.lightTheme(context),
           darkTheme: AppThemes.darkTheme(context),
-
+          themeMode: ThemeMode.light,
           translations: Translation(),
           defaultTransition: Transition.fade,
           locale: Locale(UserSessionStorage.language),
           fallbackLocale: Locale(UserSessionStorage.language),
           getPages: AppRouts.appRoutes(),
           debugShowCheckedModeBanner: false,
-          // initialRoute: UserSessionStorage.checkIsFirstOpen
-          //     ? Routs.onboardingRoute
-          //     : Routs.splashRoute,
-          home: const ApiFetchDemoPage(),
+          initialRoute: UserSessionStorage.checkIsFirstOpen
+              ? Routs.onboardingRoute
+              : Routs.splashRoute,
+          // home: const ApiFetchDemoPage(),
           logWriterCallback: AppLogger.write,
         ),
       ),

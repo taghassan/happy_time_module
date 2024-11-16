@@ -6,6 +6,7 @@ import 'package:happy_time_module/src/core/injectable/injection.dart';
 import 'package:happy_time_module/src/shared/datasources/remote_datasource/movies_remote_data_source.dart';
 import 'package:happy_time_module/src/shared/models/requests/PaginationRequestModel.dart';
 import 'package:happy_time_module/src/shared/models/responses/AnimeApiResponseModel.dart';
+import 'package:happy_time_module/src/shared/models/responses/AnimeShowApiResponseModel.dart';
 import 'package:happy_time_module/src/shared/models/responses/AnimesRecentsApiResponseModel.dart';
 import 'package:happy_time_module/src/shared/models/responses/AnimesSeasonsApiResponseModel.dart';
 import 'package:happy_time_module/src/shared/models/responses/ChosenForYouApiResponseMode.dart';
@@ -265,7 +266,7 @@ class MoviesRemoteDataSourceIml implements MoviesRemoteDataSource {
   //
     try {
       var response =
-      await _client.get('animes/seasons/$animeId/${ApiConstants.code}',
+      await _client.get('/animes/seasons/$animeId/${ApiConstants.code}',
         queryParameters: {"page":pagination!=null? pagination.page.toString():1},
       );
 
@@ -287,6 +288,20 @@ class MoviesRemoteDataSourceIml implements MoviesRemoteDataSource {
           data: MediaDetailApiResponseModel.fromJson(response.data));
     } catch (e) {
       return handleCatch<MediaDetailApiResponseModel>(e);
+    }
+  }
+
+  @override
+  Future<ApiResultModel<AnimeShowApiResponseModel>> fetchAnimeShow({required String animeId}) async{
+    try {
+      var response =
+          await _client.get('${ApiConstants.animeDetailApi}/$animeId/${ApiConstants.code}',
+      );
+
+      return ApiResultModel.success(
+          data: AnimeShowApiResponseModel.fromJson(response.data));
+    } catch (e) {
+      return handleCatch<AnimeShowApiResponseModel>(e);
     }
   }
 }

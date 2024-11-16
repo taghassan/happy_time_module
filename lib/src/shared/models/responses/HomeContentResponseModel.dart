@@ -423,6 +423,7 @@ Anime copyWith({  num? id,
   num? get id => _id;
   String? get name => _name;
   String? get posterPath => _posterPath;
+  String? get type => 'anime';
   dynamic get voteAverage => _voteAverage;
   num? get isAnime => _isAnime;
   num? get newEpisodes => _newEpisodes;
@@ -596,6 +597,7 @@ Featured copyWith({  num? id,
   num? get id => _id;
   num? get featuredId => _featuredId;
   String? get title => _title;
+  String? get subtitle => '';
   String? get posterPath => _posterPath;
   dynamic get releaseDate => _releaseDate;
   num? get voteAverage => _voteAverage;
@@ -893,7 +895,7 @@ class Top10 {
   Top10({
       num? id, 
       String? name, 
-      String? posterPath, 
+      String? posterPath,
       num? voteAverage, 
       num? pinned, 
       String? type,}){
@@ -934,6 +936,7 @@ Top10 copyWith({  num? id,
 );
   num? get id => _id;
   String? get name => _name;
+  String? get subtitle => '';
   String? get posterPath => _posterPath;
   num? get voteAverage => _voteAverage;
   num? get pinned => _pinned;

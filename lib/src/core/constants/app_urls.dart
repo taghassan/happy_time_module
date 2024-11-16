@@ -19,6 +19,7 @@ class ApiConstants {
   static const String animeRecentContentApi="/animes/recents/$code";
   static const String seriesShowApi="/series/show";
   static const String mediaDetailApi="/media/detail";
+  static const String animeDetailApi="/animes/show";
   // Placeholder URL for version check API
   static const String versionCheckAPI = "";
 }
