@@ -203,44 +203,56 @@ class SingleMediaPage extends GetView<HappyTimeHomeLogic> {
                                 physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemCount: mediaDetailsEntity.seasons?.length,
-                                itemBuilder: (context, index) => Text(
-                                  "${mediaDetailsEntity.seasons?[index].name}",
-                                  style:
-                                      controller.getTextStyle(fontSize: 14.0),
-                                ),
+                                itemBuilder: (context, index) {
+                                  var season =
+                                      mediaDetailsEntity.seasons?[index];
+                                  return ExpansionTile(
+                                    title: Text(
+                                      "${season?.name}",
+                                      style: controller.getTextStyle(
+                                          fontSize: 14.0),
+                                    ),
+                                    children: [
+                                      ListView.builder(
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemCount: mediaDetailsEntity
+                                            .seasons?[index].episodes?.length,
+                                        itemBuilder: (context, index) {
+                                          var episode =
+                                              season?.episodes?[index];
+                                          return InkWell(
+                                            onTap: () => controller
+                                                .showVideosBottomSheet(
+                                                    videos:
+                                                        episode?.videos ?? []),
+                                            child: Text(
+                                              episode?.name ?? '',
+                                              style: controller.getTextStyle(
+                                                fontSize: 14.0,
+                                              ),
+                                            ).toCenter() .toCardContainer(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 15,
+                                                        vertical: 15),
+                                                height: Get.height*0.08,
+                                                color: Colors.black54),
+                                          );
+                                        },
+                                      )
+                                    ],
+                                  );
+                                },
                               ),
                             if (mediaDetailsEntity?.mediaTypeEnum ==
                                 MediaTypeEnum.movie) ...[
                               OutlinedButton(
-                                  onPressed: () {
-                                    Get.bottomSheet(Scaffold(
-                                      body: ListView.builder(
-                                        itemCount:
-                                            (mediaDetailsEntity?.videos ?? [])
-                                                .length,
-                                        itemBuilder: (context, index) {
-                                          var video =
-                                              (mediaDetailsEntity?.videos ??
-                                                  [])[index];
-                                          return InkWell(
-                                            onTap: () {
-
-                                              Get.to(()=>WebViewPage(
-                                                url: "${video.link}",
-                                                redirectPrevent: video.link.extractFirstWord(),
-                                              ));
-
-                                            },
-                                            child: Container(
-                                              width: Get.width,
-                                              padding: const EdgeInsets.all(10),
-                                              child: Text("${video.server}"),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ));
-                                  },
+                                  onPressed: () =>
+                                      controller.showVideosBottomSheet(
+                                          videos:
+                                              mediaDetailsEntity?.videos ?? []),
                                   child: const Text("Play"))
                             ]
                           ],

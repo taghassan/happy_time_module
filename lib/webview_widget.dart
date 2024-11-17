@@ -27,7 +27,9 @@ late  WebViewController controller;
         onPageStarted: (String url) {
 
         },
-        onPageFinished: (String url) {},
+        onPageFinished: (String url) {
+          // controller.setJavaScriptMode(JavaScriptMode.disabled);
+        },
         onHttpError: (HttpResponseError error) {},
         onWebResourceError: (WebResourceError error) {},
         onNavigationRequest: (NavigationRequest request) {
@@ -41,7 +43,9 @@ late  WebViewController controller;
         },
       ),
     )
-    ..loadRequest(Uri.parse(widget.url));
+    ..loadRequest(Uri.parse(widget.url),headers: {
+
+    });
 
   super.initState();
   }

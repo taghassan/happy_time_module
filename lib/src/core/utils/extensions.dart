@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'dart:math';
 import 'package:awesome_extensions/awesome_extensions.dart';
@@ -18,8 +17,6 @@ extension ContextExtension on BuildContext {
   double dynamicWidth(double value) => MediaQuery.of(this).size.width * value;
 
   ThemeData get theme => Theme.of(this);
-
-
 }
 
 extension SplitStringBy on String {
@@ -35,8 +32,8 @@ extension EmailValidator on String {
   }
 
   bool isValidPhoneNumber(String? value) =>
-      RegExp(r'(^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$)').hasMatch(value ?? '');
-
+      RegExp(r'(^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$)')
+          .hasMatch(value ?? '');
 }
 
 extension WillPopAction on Widget {
@@ -79,27 +76,26 @@ extension WillPopAction on Widget {
           bool animate = true,
           double? cancelBtnFontSize,
           double? confirmBtnFontSize,
-            bool?barrierDismissible
-          }) =>
+          bool? barrierDismissible}) =>
       Get.dialog(
           AlertDialog(
             actions: [
-              if(onConfirm!=null)
-              PrimaryButton(
-                text: confirmText ?? "confirm".tr,
-                onPressed: onConfirm,
-                backgroundColor: colors.colorGreen,
-                btnIcon: confirmBtnIcon,
-                fontSize: confirmBtnFontSize,
-              ).size(width: Get.width*0.3),
-              if(onCancel!=null)
-              PrimaryButton(
-                btnIcon: cancelBtnIcon,
-                text: cancelText ?? "cancel".tr,
-                onPressed: onCancel,
-                backgroundColor: cancelBtnColor ?? colors.redButton,
-                fontSize: cancelBtnFontSize,
-              ).size(width: Get.width*0.3),
+              if (onConfirm != null)
+                PrimaryButton(
+                  text: confirmText ?? "confirm".tr,
+                  onPressed: onConfirm,
+                  backgroundColor: colors.colorGreen,
+                  btnIcon: confirmBtnIcon,
+                  fontSize: confirmBtnFontSize,
+                ).size(width: Get.width * 0.3),
+              if (onCancel != null)
+                PrimaryButton(
+                  btnIcon: cancelBtnIcon,
+                  text: cancelText ?? "cancel".tr,
+                  onPressed: onCancel,
+                  backgroundColor: cancelBtnColor ?? colors.redButton,
+                  fontSize: cancelBtnFontSize,
+                ).size(width: Get.width * 0.3),
             ],
             actionsAlignment: MainAxisAlignment.center,
             content: this,
@@ -111,7 +107,7 @@ extension WillPopAction on Widget {
               // )
               .scaleXY(begin: 1, end: 1.1, duration: 150.ms)
               .scaleXY(delay: 150.ms, begin: 1.1, end: 1, duration: 150.ms),
-          barrierDismissible:barrierDismissible?? false);
+          barrierDismissible: barrierDismissible ?? false);
 
   onDialog(
           {Function()? onConfirm,
@@ -332,8 +328,6 @@ extension EmptyWidget on BuildContext {
   Widget get sizedBoxWidthFill => SizedBox(
         width: Get.width,
       );
-
-
 }
 
 extension ShowSnackBar on BuildContext {
@@ -353,7 +347,7 @@ extension ToErrorText on String {
             .textTheme
             .labelMedium
             ?.copyWith(color: colors.redButton),
-    textAlign: TextAlign.center,
+        textAlign: TextAlign.center,
       );
 }
 
@@ -367,7 +361,6 @@ extension DateOnlyCompare on DateTime {
     return year == other.year && month == other.month && day == other.day;
   }
 }
-
 
 String printDuration(Duration duration) {
   String negativeSign = duration.isNegative ? '-' : '';
@@ -530,24 +523,32 @@ extension ConvertDioException on DioException {
   }
 }
 
-extension MagicWidgets on Widget{
-  toCardContainer ({Color? color}){
+extension MagicWidgets on Widget {
+  toCardContainer({
+    Color? color,
+    EdgeInsets? padding,
+    EdgeInsets? margin,
+  double?width,
+  double?height,
+  }) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 6.0),
+      height: height,
+      width: width,
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6.0),
       margin: const EdgeInsets.all(5.0),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(10)),
-        color:color?? Colors.white,
-
+        color: color ?? Colors.white,
       ),
-      child: this,);
+      child: this,
+    );
   }
 }
 
-extension Words on String?{
+extension Words on String? {
   String extractFirstWord() {
     final regex = RegExp(r'https?:\/\/(?:www\.)?([^\/]+)');
-    final match = regex.firstMatch(this??'');
+    final match = regex.firstMatch(this ?? '');
     if (match != null) {
       String domain = match.group(1) ?? '';
       return domain.split('.').first; // Extract the first word of the domain.

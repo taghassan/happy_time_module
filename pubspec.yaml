@@ -55,6 +55,9 @@ dependencies:
   syncfusion_flutter_charts:
   webview_flutter:
   flutter_rating_bar:
+  html:
+  chewie:
+  video_player:
 
 dev_dependencies:
   flutter_test:

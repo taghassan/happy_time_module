@@ -1,18 +1,25 @@
+import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:happy_time_module/src/core/controller/base_controller.dart';
 import 'package:happy_time_module/src/core/injectable/injection.dart';
+import 'package:happy_time_module/src/core/utils/extensions.dart';
 import 'package:happy_time_module/src/core/utils/loading.dart';
 import 'package:happy_time_module/src/core/utils/logger_utils.dart';
 import 'package:happy_time_module/src/features/home/presentation/pages/single_media_page.dart';
 import 'package:happy_time_module/src/shared/datasources/remote_datasource/movies_remote_data_source.dart';
 import 'package:happy_time_module/src/shared/entities/MediaDetailsEntity.dart';
+import 'package:happy_time_module/src/shared/hosts/check.dart';
+import 'package:happy_time_module/src/shared/hosts/easy_plex_supported_Hosts_model.dart';
+import 'package:happy_time_module/src/shared/hosts/happy_time_video_player_view.dart';
 import 'package:happy_time_module/src/shared/models/requests/PaginationRequestModel.dart';
 import 'package:happy_time_module/src/shared/models/responses/AnimeShowApiResponseModel.dart';
 import 'package:happy_time_module/src/shared/models/responses/AnimesSeasonsApiResponseModel.dart';
 import 'package:happy_time_module/src/shared/models/responses/HomeContentResponseModel.dart';
 import 'package:happy_time_module/src/shared/models/responses/MediaDetailApiResponseModel.dart';
 import 'package:happy_time_module/src/shared/models/responses/SeriesShowApiResponseModel.dart';
+import 'package:happy_time_module/src/shared/models/responses/videos_list.dart';
+import 'package:happy_time_module/webview_widget.dart';
 
 import 'home_state.dart';
 
@@ -141,8 +148,9 @@ class HappyTimeHomeLogic extends BaseController
       response.when(
         success: (SeriesShowApiResponseModel seriesResponse) {
           selectedSeriesResponse = seriesResponse;
-          selectedMediaDetailsEntity=seriesResponse.mapToEntity();
-          selectedMediaDetailsEntity?.setSelectedMediaTypeEnum= MediaTypeEnum.series;
+          selectedMediaDetailsEntity = seriesResponse.mapToEntity();
+          selectedMediaDetailsEntity?.setSelectedMediaTypeEnum =
+              MediaTypeEnum.series;
           AppLogger.it
               .logDeveloper("seriesResponse ${seriesResponse.toJson()}");
           update();
@@ -164,8 +172,9 @@ class HappyTimeHomeLogic extends BaseController
       response.when(
         success: (AnimeShowApiResponseModel showResponse) {
           selectedAnimeShowResponse = showResponse;
-          selectedMediaDetailsEntity=showResponse.mapToEntity();
-          selectedMediaDetailsEntity?.setSelectedMediaTypeEnum= MediaTypeEnum.anime;
+          selectedMediaDetailsEntity = showResponse.mapToEntity();
+          selectedMediaDetailsEntity?.setSelectedMediaTypeEnum =
+              MediaTypeEnum.anime;
           AppLogger.it.logDeveloper("seriesResponse ${showResponse.toJson()}");
           update();
         },
@@ -215,8 +224,9 @@ class HappyTimeHomeLogic extends BaseController
         success: (MediaDetailApiResponseModel mediaDetailApiResponse) {
           selectedMediaDetail = mediaDetailApiResponse;
 
-          selectedMediaDetailsEntity=mediaDetailApiResponse.mapToEntity();
-          selectedMediaDetailsEntity?.setSelectedMediaTypeEnum= MediaTypeEnum.movie;
+          selectedMediaDetailsEntity = mediaDetailApiResponse.mapToEntity();
+          selectedMediaDetailsEntity?.setSelectedMediaTypeEnum =
+              MediaTypeEnum.movie;
 
           AppLogger.it.logDeveloper(
               "selectedMediaDetail ${mediaDetailApiResponse.toJson()}");
@@ -253,16 +263,89 @@ class HappyTimeHomeLogic extends BaseController
     Get.to(() => const SingleMediaPage());
   }
 
-  getTextStyle({required double fontSize}) => Theme.of(Get.context!).textTheme.headlineMedium?.copyWith(
-    color: Colors.white,
-    fontWeight: FontWeight.w600,
-    fontSize: fontSize,
-    shadows: <Shadow>[
-      const Shadow(
-        offset: Offset(1.0, 1.0),
-        blurRadius: 10.0,
-        color: Colors.black87,
+  getTextStyle({required double fontSize}) =>
+      Theme.of(Get.context!).textTheme.headlineMedium?.copyWith(
+        color: Colors.white,
+        fontWeight: FontWeight.w600,
+        fontSize: fontSize,
+        shadows: <Shadow>[
+          const Shadow(
+            offset: Offset(1.0, 1.0),
+            blurRadius: 10.0,
+            color: Colors.black87,
+          ),
+        ],
+      );
+
+  playVideo({required Videos video}) {
+   try{
+     AppLogger.it.logInfo("link ${video.link??''}");
+     AppLogger.it.logInfo("server ${video.server??''}");
+     AppLogger.it.logInfo("header ${video.header??''}");
+     AppLogger.it.logInfo("useragent ${video.useragent??''}");
+     UrlExtractor(
+       useRemote: false,
+       onComplete: (hosts) {
+         if (hosts is List<EasyPlexSupportedHostsModel>) {
+           var host = hosts.firstOrNull;
+           if (host != null) {
+             AppLogger.it.logInfo("message ${host.url}");
+             AppLogger.it.logInfo("message ${host.quality}");
+             AppLogger.it.logInfo("message ${host.cookie}");
+             AppLogger.it.logInfo("message ${host.httpHeaders}");
+             Get.to(() => HappyTimeVideoPlayerView(
+               videoPath: host.url,
+               httpHeaders: host.httpHeaders,
+             ));
+           }
+         } else {
+           Get.to(() => WebViewPage(
+             url: "${video.link}",
+             redirectPrevent: video.link.extractFirstWord(),
+           ));
+
+           AppLogger.it.logInfo(" Link  $hosts");
+         }
+       },
+
+     ).find(video.link??'');
+   }catch(e){
+     AppLogger.it.logError(e.toString());
+     Get.to(() => WebViewPage(
+       url: "${video.link}",
+       redirectPrevent: video.link.extractFirstWord(),
+     ));
+   }
+  }
+
+  void showVideosBottomSheet({required List<Videos> videos}) {
+    Get.bottomSheet(Scaffold(
+      body: ListView.builder(
+        itemCount: videos.length,
+        itemBuilder: (context, index) {
+          var video = videos[index];
+          return InkWell(
+            onTap: () => playVideo(video: video),
+            child: Container(
+              width: Get.width,
+              padding: const EdgeInsets.all(10),
+              child:
+              Text(
+                "${video.server}",
+                style: getTextStyle(
+                  fontSize: 14.0,
+                ),
+              ).toCenter() .toCardContainer(
+                  padding:
+                  const EdgeInsets.symmetric(
+                      horizontal: 15,
+                      vertical: 15),
+                  height: Get.height*0.08,
+                  color: Colors.white),
+            ),
+          );
+        },
       ),
-    ],
-  );
+    ));
+  }
 }
