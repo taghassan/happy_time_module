@@ -22,7 +22,7 @@ class HappyTimeHomePage extends GetView<HappyTimeHomeLogic> {
       body: controller.obx(
         (state) {
           if (controller.homeContentResponse == null) {
-            return Text("No Data");
+            return const Text("No Data");
           }
 
           return CustomScrollView(
@@ -136,6 +136,7 @@ class HappyTimeHomePage extends GetView<HappyTimeHomeLogic> {
                   scrollController: ScrollController(),
                   homeSectionEnum: HomeSectionEnum.latest,
                 ),
+                SmallCardList(scrollController: ScrollController()),
                 BigCardList(
                   scrollController: ScrollController(),
                   homeSectionEnum: HomeSectionEnum.choosed,
