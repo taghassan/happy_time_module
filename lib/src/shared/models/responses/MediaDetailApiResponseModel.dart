@@ -1,4 +1,11 @@
 import 'dart:convert';
+import 'package:happy_time_module/src/shared/entities/MediaDetailsEntity.dart';
+
+import 'GenresResponseModel.dart';
+
+import 'casters_list.dart';
+import 'networks_list.dart';
+import 'videos_list.dart';
 /// id : 2497
 /// tmdb_id : 502356
 /// title : "The Super Mario Bros 2023"
@@ -116,6 +123,8 @@ class MediaDetailApiResponseModel {
     _downloads = downloads;
     _substitles = substitles;
 }
+
+
 
   MediaDetailApiResponseModel.fromJson(dynamic json) {
     _id = json['id'];
@@ -336,6 +345,47 @@ MediaDetailApiResponseModel copyWith({  num? id,
   List<dynamic>? get downloads => _downloads;
   List<dynamic>? get substitles => _substitles;
 
+
+  MediaDetailsEntity mapToEntity() =>MediaDetailsEntity(  id: id ?? _id,
+      tmdbId: tmdbId ?? _tmdbId,
+      name: title ?? _title,
+      originalName: originalName ?? _originalName,
+      imdbExternalId: imdbExternalId ?? _imdbExternalId,
+      subtitle: subtitle ?? _subtitle,
+      overview: overview ?? _overview,
+      posterPath: posterPath ?? _posterPath,
+      backdropPath: backdropPath ?? _backdropPath,
+      trailerUrl: trailerUrl ?? _trailerUrl,
+      previewPath: previewPath ?? _previewPath,
+      views: views ?? _views,
+      voteAverage: voteAverage ?? _voteAverage,
+      voteCount: voteCount ?? _voteCount,
+      popularity: popularity ?? _popularity,
+      featured: featured ?? _featured,
+      pinned: pinned ?? _pinned,
+      newEpisodes: 0,
+      premuim: premuim ?? _premuim,
+      active: active ?? _active,
+      firstAirDate: '',
+      createdAt: createdAt ?? _createdAt,
+      updatedAt: updatedAt ?? _updatedAt,
+      backdropPathTv: backdropPathTv ?? _backdropPathTv,
+      indexCheck: indexCheck ?? _indexCheck,
+      genreslist: [],
+      casterslist: casterslist ?? _casterslist,
+      networkslist: networkslist ?? _networkslist,
+      genres: genres ?? _genres,
+      videos: videos??_videos,
+
+
+      enableAdsUnlock: enableAdsUnlock??_enableAdsUnlock,
+      enableMediaDownload: enableMediaDownload??_enableMediaDownload,
+      enableStream: enableStream??_enableStream,
+      releaseDate: releaseDate??_releaseDate,
+      skiprecapStartIn: skiprecapStartIn??_skiprecapStartIn,
+      substype: substype??_substype
+  );
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
@@ -387,402 +437,6 @@ MediaDetailApiResponseModel copyWith({  num? id,
     if (_substitles != null) {
       map['substitles'] = _substitles?.map((v) => v.toJson()).toList();
     }
-    return map;
-  }
-
-}
-
-/// id : 7691
-/// movie_id : 2497
-/// server : "240p"
-/// header : null
-/// useragent : null
-/// link : "https://bxxn.viidshar.com/embed-mrefmtbehgg5.html"
-/// lang : "Arabic"
-/// video_name : null
-/// hd : 1
-/// embed : 0
-/// youtubelink : 0
-/// hls : 0
-/// supported_hosts : 1
-/// downloadonly : 0
-/// drm : 0
-/// drmuuid : null
-/// drmlicenceuri : null
-/// status : 1
-/// created_at : "2022-07-22T13:38:24.000000Z"
-/// updated_at : "2022-07-22T13:38:24.000000Z"
-
-Videos videosFromJson(String str) => Videos.fromJson(json.decode(str));
-String videosToJson(Videos data) => json.encode(data.toJson());
-class Videos {
-  Videos({
-      num? id, 
-      num? movieId, 
-      String? server, 
-      dynamic header, 
-      dynamic useragent, 
-      String? link, 
-      String? lang, 
-      dynamic videoName, 
-      num? hd, 
-      num? embed, 
-      num? youtubelink, 
-      num? hls, 
-      num? supportedHosts, 
-      num? downloadonly, 
-      num? drm, 
-      dynamic drmuuid, 
-      dynamic drmlicenceuri, 
-      num? status, 
-      String? createdAt, 
-      String? updatedAt,}){
-    _id = id;
-    _movieId = movieId;
-    _server = server;
-    _header = header;
-    _useragent = useragent;
-    _link = link;
-    _lang = lang;
-    _videoName = videoName;
-    _hd = hd;
-    _embed = embed;
-    _youtubelink = youtubelink;
-    _hls = hls;
-    _supportedHosts = supportedHosts;
-    _downloadonly = downloadonly;
-    _drm = drm;
-    _drmuuid = drmuuid;
-    _drmlicenceuri = drmlicenceuri;
-    _status = status;
-    _createdAt = createdAt;
-    _updatedAt = updatedAt;
-}
-
-  Videos.fromJson(dynamic json) {
-    _id = json['id'];
-    _movieId = json['movie_id'];
-    _server = json['server'];
-    _header = json['header'];
-    _useragent = json['useragent'];
-    _link = json['link'];
-    _lang = json['lang'];
-    _videoName = json['video_name'];
-    _hd = json['hd'];
-    _embed = json['embed'];
-    _youtubelink = json['youtubelink'];
-    _hls = json['hls'];
-    _supportedHosts = json['supported_hosts'];
-    _downloadonly = json['downloadonly'];
-    _drm = json['drm'];
-    _drmuuid = json['drmuuid'];
-    _drmlicenceuri = json['drmlicenceuri'];
-    _status = json['status'];
-    _createdAt = json['created_at'];
-    _updatedAt = json['updated_at'];
-  }
-  num? _id;
-  num? _movieId;
-  String? _server;
-  dynamic _header;
-  dynamic _useragent;
-  String? _link;
-  String? _lang;
-  dynamic _videoName;
-  num? _hd;
-  num? _embed;
-  num? _youtubelink;
-  num? _hls;
-  num? _supportedHosts;
-  num? _downloadonly;
-  num? _drm;
-  dynamic _drmuuid;
-  dynamic _drmlicenceuri;
-  num? _status;
-  String? _createdAt;
-  String? _updatedAt;
-Videos copyWith({  num? id,
-  num? movieId,
-  String? server,
-  dynamic header,
-  dynamic useragent,
-  String? link,
-  String? lang,
-  dynamic videoName,
-  num? hd,
-  num? embed,
-  num? youtubelink,
-  num? hls,
-  num? supportedHosts,
-  num? downloadonly,
-  num? drm,
-  dynamic drmuuid,
-  dynamic drmlicenceuri,
-  num? status,
-  String? createdAt,
-  String? updatedAt,
-}) => Videos(  id: id ?? _id,
-  movieId: movieId ?? _movieId,
-  server: server ?? _server,
-  header: header ?? _header,
-  useragent: useragent ?? _useragent,
-  link: link ?? _link,
-  lang: lang ?? _lang,
-  videoName: videoName ?? _videoName,
-  hd: hd ?? _hd,
-  embed: embed ?? _embed,
-  youtubelink: youtubelink ?? _youtubelink,
-  hls: hls ?? _hls,
-  supportedHosts: supportedHosts ?? _supportedHosts,
-  downloadonly: downloadonly ?? _downloadonly,
-  drm: drm ?? _drm,
-  drmuuid: drmuuid ?? _drmuuid,
-  drmlicenceuri: drmlicenceuri ?? _drmlicenceuri,
-  status: status ?? _status,
-  createdAt: createdAt ?? _createdAt,
-  updatedAt: updatedAt ?? _updatedAt,
-);
-  num? get id => _id;
-  num? get movieId => _movieId;
-  String? get server => _server;
-  dynamic get header => _header;
-  dynamic get useragent => _useragent;
-  String? get link => _link;
-  String? get lang => _lang;
-  dynamic get videoName => _videoName;
-  num? get hd => _hd;
-  num? get embed => _embed;
-  num? get youtubelink => _youtubelink;
-  num? get hls => _hls;
-  num? get supportedHosts => _supportedHosts;
-  num? get downloadonly => _downloadonly;
-  num? get drm => _drm;
-  dynamic get drmuuid => _drmuuid;
-  dynamic get drmlicenceuri => _drmlicenceuri;
-  num? get status => _status;
-  String? get createdAt => _createdAt;
-  String? get updatedAt => _updatedAt;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['id'] = _id;
-    map['movie_id'] = _movieId;
-    map['server'] = _server;
-    map['header'] = _header;
-    map['useragent'] = _useragent;
-    map['link'] = _link;
-    map['lang'] = _lang;
-    map['video_name'] = _videoName;
-    map['hd'] = _hd;
-    map['embed'] = _embed;
-    map['youtubelink'] = _youtubelink;
-    map['hls'] = _hls;
-    map['supported_hosts'] = _supportedHosts;
-    map['downloadonly'] = _downloadonly;
-    map['drm'] = _drm;
-    map['drmuuid'] = _drmuuid;
-    map['drmlicenceuri'] = _drmlicenceuri;
-    map['status'] = _status;
-    map['created_at'] = _createdAt;
-    map['updated_at'] = _updatedAt;
-    return map;
-  }
-
-}
-
-/// id : 5688
-/// movie_id : 2497
-/// genre_id : 16
-/// created_at : "2023-04-15T09:34:12.000000Z"
-/// updated_at : "2023-04-15T09:34:12.000000Z"
-/// name : "رسوم متحركة"
-
-Genres genresFromJson(String str) => Genres.fromJson(json.decode(str));
-String genresToJson(Genres data) => json.encode(data.toJson());
-class Genres {
-  Genres({
-      num? id, 
-      num? movieId, 
-      num? genreId, 
-      String? createdAt, 
-      String? updatedAt, 
-      String? name,}){
-    _id = id;
-    _movieId = movieId;
-    _genreId = genreId;
-    _createdAt = createdAt;
-    _updatedAt = updatedAt;
-    _name = name;
-}
-
-  Genres.fromJson(dynamic json) {
-    _id = json['id'];
-    _movieId = json['movie_id'];
-    _genreId = json['genre_id'];
-    _createdAt = json['created_at'];
-    _updatedAt = json['updated_at'];
-    _name = json['name'];
-  }
-  num? _id;
-  num? _movieId;
-  num? _genreId;
-  String? _createdAt;
-  String? _updatedAt;
-  String? _name;
-Genres copyWith({  num? id,
-  num? movieId,
-  num? genreId,
-  String? createdAt,
-  String? updatedAt,
-  String? name,
-}) => Genres(  id: id ?? _id,
-  movieId: movieId ?? _movieId,
-  genreId: genreId ?? _genreId,
-  createdAt: createdAt ?? _createdAt,
-  updatedAt: updatedAt ?? _updatedAt,
-  name: name ?? _name,
-);
-  num? get id => _id;
-  num? get movieId => _movieId;
-  num? get genreId => _genreId;
-  String? get createdAt => _createdAt;
-  String? get updatedAt => _updatedAt;
-  String? get name => _name;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['id'] = _id;
-    map['movie_id'] = _movieId;
-    map['genre_id'] = _genreId;
-    map['created_at'] = _createdAt;
-    map['updated_at'] = _updatedAt;
-    map['name'] = _name;
-    return map;
-  }
-
-}
-
-/// id : 7094
-/// name : "افلام انمي"
-/// logo_path : null
-/// origin_country : null
-/// created_at : "2023-10-02T17:42:13.000000Z"
-/// updated_at : "2024-10-19T14:05:48.000000Z"
-
-Networkslist networkslistFromJson(String str) => Networkslist.fromJson(json.decode(str));
-String networkslistToJson(Networkslist data) => json.encode(data.toJson());
-class Networkslist {
-  Networkslist({
-      num? id, 
-      String? name, 
-      dynamic logoPath, 
-      dynamic originCountry, 
-      String? createdAt, 
-      String? updatedAt,}){
-    _id = id;
-    _name = name;
-    _logoPath = logoPath;
-    _originCountry = originCountry;
-    _createdAt = createdAt;
-    _updatedAt = updatedAt;
-}
-
-  Networkslist.fromJson(dynamic json) {
-    _id = json['id'];
-    _name = json['name'];
-    _logoPath = json['logo_path'];
-    _originCountry = json['origin_country'];
-    _createdAt = json['created_at'];
-    _updatedAt = json['updated_at'];
-  }
-  num? _id;
-  String? _name;
-  dynamic _logoPath;
-  dynamic _originCountry;
-  String? _createdAt;
-  String? _updatedAt;
-Networkslist copyWith({  num? id,
-  String? name,
-  dynamic logoPath,
-  dynamic originCountry,
-  String? createdAt,
-  String? updatedAt,
-}) => Networkslist(  id: id ?? _id,
-  name: name ?? _name,
-  logoPath: logoPath ?? _logoPath,
-  originCountry: originCountry ?? _originCountry,
-  createdAt: createdAt ?? _createdAt,
-  updatedAt: updatedAt ?? _updatedAt,
-);
-  num? get id => _id;
-  String? get name => _name;
-  dynamic get logoPath => _logoPath;
-  dynamic get originCountry => _originCountry;
-  String? get createdAt => _createdAt;
-  String? get updatedAt => _updatedAt;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['id'] = _id;
-    map['name'] = _name;
-    map['logo_path'] = _logoPath;
-    map['origin_country'] = _originCountry;
-    map['created_at'] = _createdAt;
-    map['updated_at'] = _updatedAt;
-    return map;
-  }
-
-}
-
-/// id : 3144
-/// name : "Chris Pratt"
-/// original_name : "Chris Pratt"
-/// profile_path : "http://image.tmdb.org/t/p/w500//83o3koL82jt30EJ0rz4Bnzrt2dd.jpg"
-
-Casterslist casterslistFromJson(String str) => Casterslist.fromJson(json.decode(str));
-String casterslistToJson(Casterslist data) => json.encode(data.toJson());
-class Casterslist {
-  Casterslist({
-      num? id, 
-      String? name, 
-      String? originalName, 
-      String? profilePath,}){
-    _id = id;
-    _name = name;
-    _originalName = originalName;
-    _profilePath = profilePath;
-}
-
-  Casterslist.fromJson(dynamic json) {
-    _id = json['id'];
-    _name = json['name'];
-    _originalName = json['original_name'];
-    _profilePath = json['profile_path'];
-  }
-  num? _id;
-  String? _name;
-  String? _originalName;
-  String? _profilePath;
-Casterslist copyWith({  num? id,
-  String? name,
-  String? originalName,
-  String? profilePath,
-}) => Casterslist(  id: id ?? _id,
-  name: name ?? _name,
-  originalName: originalName ?? _originalName,
-  profilePath: profilePath ?? _profilePath,
-);
-  num? get id => _id;
-  String? get name => _name;
-  String? get originalName => _originalName;
-  String? get profilePath => _profilePath;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['id'] = _id;
-    map['name'] = _name;
-    map['original_name'] = _originalName;
-    map['profile_path'] = _profilePath;
     return map;
   }
 

@@ -37,8 +37,7 @@ void main() {
 startHappyTimeApp() async {
   runZonedGuarded(
     () async {
-
-await initHappyTimeApp();
+      await initHappyTimeApp();
       runApp(const MyApp());
     },
     (exception, stackTrace) async {
@@ -47,7 +46,8 @@ await initHappyTimeApp();
     },
   );
 }
-initHappyTimeApp()async{
+
+initHappyTimeApp() async {
   HttpOverrides.global = MyHttpOverrides();
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -70,6 +70,7 @@ initHappyTimeApp()async{
     DeviceOrientation.portraitUp,
   ]);
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -114,32 +115,32 @@ class ApiFetchDemoPage extends StatefulWidget {
 }
 
 class _ApiFetchDemoPageState extends State<ApiFetchDemoPage> {
- final MoviesRemoteDataSource _dataSource=happyTimeGetIt<MoviesRemoteDataSource>();
+  final MoviesRemoteDataSource _dataSource =
+      happyTimeGetIt<MoviesRemoteDataSource>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () async{
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          try {
+            var response = await _dataSource.fetchHomeContent();
 
-        try{
-
-          var response =await _dataSource.fetchHomeContent();
-
-          response.when(success: (data) {
-
-
-            for(var item in data.thisweek??[]){
-              AppLogger.it.logInfo("response ${item?.toJson()}");
-            }
-
-          }, failure: (errorResultEntity) {
-            AppLogger.it.logError(errorResultEntity.message.toString());
-          },);
-        }catch(e){
-          AppLogger.it.logError(e.toString());
-        }
-
-      },),
+            response.when(
+              success: (data) {
+                for (var item in data.thisweek ?? []) {
+                  AppLogger.it.logInfo("response ${item?.toJson()}");
+                }
+              },
+              failure: (errorResultEntity) {
+                AppLogger.it.logError(errorResultEntity.message.toString());
+              },
+            );
+          } catch (e) {
+            AppLogger.it.logError(e.toString());
+          }
+        },
+      ),
     );
   }
 }
-

@@ -6,6 +6,7 @@ import 'package:happy_time_module/src/core/utils/loading.dart';
 import 'package:happy_time_module/src/core/utils/logger_utils.dart';
 import 'package:happy_time_module/src/features/home/presentation/pages/single_media_page.dart';
 import 'package:happy_time_module/src/shared/datasources/remote_datasource/movies_remote_data_source.dart';
+import 'package:happy_time_module/src/shared/entities/MediaDetailsEntity.dart';
 import 'package:happy_time_module/src/shared/models/requests/PaginationRequestModel.dart';
 import 'package:happy_time_module/src/shared/models/responses/AnimeShowApiResponseModel.dart';
 import 'package:happy_time_module/src/shared/models/responses/AnimesSeasonsApiResponseModel.dart';
@@ -45,6 +46,7 @@ class HappyTimeHomeLogic extends BaseController
   SeriesShowApiResponseModel? selectedSeriesResponse;
   AnimeShowApiResponseModel? selectedAnimeShowResponse;
   AnimeSeasonApiResponseModel? selectedAnimeSeasonResponse;
+  MediaDetailsEntity? selectedMediaDetailsEntity;
   String? selectedType;
   Featured? selectedFeatured;
 
@@ -127,19 +129,22 @@ class HappyTimeHomeLogic extends BaseController
     });
   }
 
-
   //series/show
   fetchSeriesShow({
     required String seriesId,
-  })async{
+  }) async {
     try {
       showLoading();
-      var response = await moviesRemoteDataSource.fetchSeriesShow(seriesId: seriesId);
+      var response =
+          await moviesRemoteDataSource.fetchSeriesShow(seriesId: seriesId);
       hideLoading();
       response.when(
         success: (SeriesShowApiResponseModel seriesResponse) {
           selectedSeriesResponse = seriesResponse;
-          AppLogger.it.logDeveloper("seriesResponse ${seriesResponse.toJson()}");
+          selectedMediaDetailsEntity=seriesResponse.mapToEntity();
+          selectedMediaDetailsEntity?.setSelectedMediaTypeEnum= MediaTypeEnum.series;
+          AppLogger.it
+              .logDeveloper("seriesResponse ${seriesResponse.toJson()}");
           update();
         },
         failure: (errorResultEntity) {},
@@ -150,14 +155,17 @@ class HappyTimeHomeLogic extends BaseController
     }
   }
 
-  fetchAnimeShow({required String animeId}) async{
+  fetchAnimeShow({required String animeId}) async {
     try {
       showLoading();
-      var response = await moviesRemoteDataSource.fetchAnimeShow(animeId: animeId);
+      var response =
+          await moviesRemoteDataSource.fetchAnimeShow(animeId: animeId);
       hideLoading();
       response.when(
         success: (AnimeShowApiResponseModel showResponse) {
           selectedAnimeShowResponse = showResponse;
+          selectedMediaDetailsEntity=showResponse.mapToEntity();
+          selectedMediaDetailsEntity?.setSelectedMediaTypeEnum= MediaTypeEnum.anime;
           AppLogger.it.logDeveloper("seriesResponse ${showResponse.toJson()}");
           update();
         },
@@ -168,76 +176,93 @@ class HappyTimeHomeLogic extends BaseController
       hideLoading();
     }
   }
+
   //animes/seasons/759
-   fetchAnimeSeasons({
+  fetchAnimeSeasons({
     required String animeId,
     PaginationRequestModel? pagination,
-  })async{
-     try {
-       showLoading();
-       var response = await moviesRemoteDataSource.fetchAnimeSeasons(animeId: animeId);
-       hideLoading();
-       response.when(
-         success: (AnimeSeasonApiResponseModel seriesResponse) {
-           selectedAnimeSeasonResponse = seriesResponse;
-           AppLogger.it.logDeveloper("seriesResponse ${seriesResponse.toJson()}");
-           update();
-         },
-         failure: (errorResultEntity) {},
-       );
-     } catch (e) {
-       //
-       hideLoading();
-     }
-   }
-  //animes/seasons/759
-   fetchMediaDetail({
-    required String mediaId,
-  })async{
-
-     try {
-       showLoading();
-       var response = await moviesRemoteDataSource.fetchMediaDetail(mediaId: mediaId);
-       hideLoading();
-       response.when(
-         success: (MediaDetailApiResponseModel mediaDetailApiResponse) {
-           selectedMediaDetail = mediaDetailApiResponse;
-           AppLogger.it.logDeveloper("selectedMediaDetail ${mediaDetailApiResponse.toJson()}");
-           update();
-         },
-         failure: (errorResultEntity) {},
-       );
-     } catch (e) {
-       //
-       hideLoading();
-     }
-
-   }
-
-  fetchDetails({required item,  bool? featured}) async{
-
-      AppLogger.it.logInfo("type=> ${item.type}");
-
-      selectedType="${item.type}";
-
-      String itemId = featured==true? item.featuredId.toString(): item.id.toString();
-
-      if(item.type.toString().toLowerCase()=='movie'){
-      await  fetchMediaDetail(
-            mediaId: itemId);
-      }
-
-      if(item.type.toString().toLowerCase()=='anime'){
-       await fetchAnimeShow(
-            animeId: itemId);
-      }
-
-      if(item.type.toString().toLowerCase()=='serie'){
-       await fetchSeriesShow(
-            seriesId: itemId);
-      }
-update();
-      Get.to(()=>const SingleMediaPage());
-    
+  }) async {
+    try {
+      showLoading();
+      var response =
+          await moviesRemoteDataSource.fetchAnimeSeasons(animeId: animeId);
+      hideLoading();
+      response.when(
+        success: (AnimeSeasonApiResponseModel seriesResponse) {
+          selectedAnimeSeasonResponse = seriesResponse;
+          AppLogger.it
+              .logDeveloper("seriesResponse ${seriesResponse.toJson()}");
+          update();
+        },
+        failure: (errorResultEntity) {},
+      );
+    } catch (e) {
+      //
+      hideLoading();
+    }
   }
+
+  //animes/seasons/759
+  fetchMediaDetail({
+    required String mediaId,
+  }) async {
+    try {
+      showLoading();
+      var response =
+          await moviesRemoteDataSource.fetchMediaDetail(mediaId: mediaId);
+      hideLoading();
+      response.when(
+        success: (MediaDetailApiResponseModel mediaDetailApiResponse) {
+          selectedMediaDetail = mediaDetailApiResponse;
+
+          selectedMediaDetailsEntity=mediaDetailApiResponse.mapToEntity();
+          selectedMediaDetailsEntity?.setSelectedMediaTypeEnum= MediaTypeEnum.movie;
+
+          AppLogger.it.logDeveloper(
+              "selectedMediaDetail ${mediaDetailApiResponse.toJson()}");
+          update();
+        },
+        failure: (errorResultEntity) {},
+      );
+    } catch (e) {
+      //
+      hideLoading();
+    }
+  }
+
+  fetchDetails({required item, bool? featured}) async {
+    AppLogger.it.logInfo("type=> ${item.type}");
+
+    selectedType = "${item.type}";
+
+    String itemId =
+        featured == true ? item.featuredId.toString() : item.id.toString();
+
+    if (item.type.toString().toLowerCase() == 'movie') {
+      await fetchMediaDetail(mediaId: itemId);
+    }
+
+    if (item.type.toString().toLowerCase() == 'anime') {
+      await fetchAnimeShow(animeId: itemId);
+    }
+
+    if (item.type.toString().toLowerCase() == 'serie') {
+      await fetchSeriesShow(seriesId: itemId);
+    }
+    update();
+    Get.to(() => const SingleMediaPage());
+  }
+
+  getTextStyle({required double fontSize}) => Theme.of(Get.context!).textTheme.headlineMedium?.copyWith(
+    color: Colors.white,
+    fontWeight: FontWeight.w600,
+    fontSize: fontSize,
+    shadows: <Shadow>[
+      const Shadow(
+        offset: Offset(1.0, 1.0),
+        blurRadius: 10.0,
+        color: Colors.black87,
+      ),
+    ],
+  );
 }

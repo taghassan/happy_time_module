@@ -332,6 +332,8 @@ extension EmptyWidget on BuildContext {
   Widget get sizedBoxWidthFill => SizedBox(
         width: Get.width,
       );
+
+
 }
 
 extension ShowSnackBar on BuildContext {
@@ -444,6 +446,11 @@ extension DaFormatter on DateTime {
     return formattedDate;
   }
 
+  String? yearOnlyFormatToHuman() {
+    String formattedDate = DateFormat.y().format(this);
+    return formattedDate;
+  }
+
   String? dateOnlyFormat() {
     String formattedDate = DateFormat.yMMMd().format(this);
     return formattedDate;
@@ -520,5 +527,31 @@ extension ConvertDioException on DioException {
         break;
     }
     return errorMessage;
+  }
+}
+
+extension MagicWidgets on Widget{
+  toCardContainer ({Color? color}){
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 6.0),
+      margin: const EdgeInsets.all(5.0),
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        color:color?? Colors.white,
+
+      ),
+      child: this,);
+  }
+}
+
+extension Words on String?{
+  String extractFirstWord() {
+    final regex = RegExp(r'https?:\/\/(?:www\.)?([^\/]+)');
+    final match = regex.firstMatch(this??'');
+    if (match != null) {
+      String domain = match.group(1) ?? '';
+      return domain.split('.').first; // Extract the first word of the domain.
+    }
+    return '';
   }
 }

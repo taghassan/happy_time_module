@@ -5,8 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewPage extends StatefulWidget {
-  final String url;
-  const WebViewPage({super.key, required this.url});
+  final String url,redirectPrevent;
+  const WebViewPage({super.key, required this.url,required this.redirectPrevent});
 
   @override
   State<WebViewPage> createState() => _WebViewWidgetState();
@@ -31,7 +31,7 @@ late  WebViewController controller;
         onHttpError: (HttpResponseError error) {},
         onWebResourceError: (WebResourceError error) {},
         onNavigationRequest: (NavigationRequest request) {
-          if (!request.url.contains('vidlink')) {
+          if (!request.url.contains(widget.redirectPrevent)) {
             return NavigationDecision.prevent;
           }
           return NavigationDecision.navigate;
