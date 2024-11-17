@@ -59,6 +59,8 @@ dependencies:
   chewie:
   video_player:
 
+  pretty_dio_logger:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

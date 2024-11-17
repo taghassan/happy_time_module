@@ -19,6 +19,8 @@ import 'package:happy_time_module/src/shared/models/responses/HomeContentRespons
 import 'package:happy_time_module/src/shared/models/responses/MediaDetailApiResponseModel.dart';
 import 'package:happy_time_module/src/shared/models/responses/SeriesShowApiResponseModel.dart';
 import 'package:happy_time_module/src/shared/models/responses/videos_list.dart';
+import 'package:happy_time_module/src/shared/themoviedb/the_movie_db_mixin.dart';
+import 'package:happy_time_module/src/shared/themoviedb/themoviedb.dart';
 import 'package:happy_time_module/webview_widget.dart';
 
 import 'home_state.dart';
@@ -41,7 +43,7 @@ enum HomeSectionEnum {
 }
 
 class HappyTimeHomeLogic extends BaseController
-    with StateMixin<HomeState>, LoaderOverlayMixin {
+    with StateMixin<HomeState>, LoaderOverlayMixin,TheMovieDbMixin {
   List<ScrollController> scrollController = [];
   int tempItemCount = 10;
 
@@ -56,6 +58,7 @@ class HappyTimeHomeLogic extends BaseController
   MediaDetailsEntity? selectedMediaDetailsEntity;
   String? selectedType;
   Featured? selectedFeatured;
+
 
   @override
   void onInit() async {
@@ -348,4 +351,7 @@ class HappyTimeHomeLogic extends BaseController
       ),
     ));
   }
+
+
+
 }

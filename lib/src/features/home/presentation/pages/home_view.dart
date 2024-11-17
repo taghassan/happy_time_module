@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide WidgetPaddingX;
 import 'package:happy_time_module/src/core/utils/logger_utils.dart';
+import 'package:happy_time_module/src/features/home/presentation/pages/family_guy.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:happy_time_module/src/core/utils/extensions.dart';
 import 'package:happy_time_module/src/features/home/presentation/pages/list_of_case_view.dart';
@@ -19,6 +20,30 @@ class HappyTimeHomePage extends GetView<HappyTimeHomeLogic> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          try{
+            controller.showLoading();
+            await controller.fetchSeasons(id: '1434-family-guy');
+            controller.hideLoading();
+            Get.to(()=>const FamilyGuyPage());
+          }catch(e){
+            controller.hideLoading();
+          }
+        },
+        backgroundColor: Colors.transparent,
+        child: Container(
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: NetworkImage(
+                    "https://media.themoviedb.org/t/p/w130_and_h195_bestv2/wR0yAfQKFMtITi1Iiy9CuqDPTfZ.jpg",
+                  ),
+                  fit: BoxFit.cover),
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          height: 70,
+          width: 50,
+        ),
+      ),
       body: controller.obx(
         (state) {
           if (controller.homeContentResponse == null) {
@@ -76,7 +101,8 @@ class HappyTimeHomePage extends GetView<HappyTimeHomeLogic> {
                         return Builder(
                           builder: (BuildContext context) {
                             return InkWell(
-                              onTap: () => controller.fetchDetails(item:featuredItem,featured:true),
+                              onTap: () => controller.fetchDetails(
+                                  item: featuredItem, featured: true),
                               child: Stack(
                                 children: [
                                   CachedNetworkImage(
@@ -263,7 +289,7 @@ class BigCardList extends GetView<HappyTimeHomeLogic> {
                           imageUrl: item.posterPath ??
                               "http://via.placeholder.com/200x150",
                           imageBuilder: (context, imageProvider) => InkWell(
-                            onTap: () => controller.fetchDetails(item:item),
+                            onTap: () => controller.fetchDetails(item: item),
                             child: Stack(
                               children: [
                                 Container(
@@ -280,7 +306,6 @@ class BigCardList extends GetView<HappyTimeHomeLogic> {
                                     ),
                                   ),
                                 ),
-
                                 Positioned(
                                   top: 10,
                                   right: 0,
@@ -320,7 +345,6 @@ class BigCardList extends GetView<HappyTimeHomeLogic> {
                       : const Icon(Icons.error);
                 }).size(
               height: Get.height * 0.36,
-
             ),
             // Text("${scrollController.position.maxScrollExtent??''}")
           ],
