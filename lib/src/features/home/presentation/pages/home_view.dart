@@ -21,16 +21,7 @@ class HappyTimeHomePage extends GetView<HappyTimeHomeLogic> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          try{
-            controller.showLoading();
-            await controller.fetchSeasons(id: '1434-family-guy');
-            controller.hideLoading();
-            Get.to(()=>const FamilyGuyPage());
-          }catch(e){
-            controller.hideLoading();
-          }
-        },
+        onPressed: controller.goToTheMovieDbPage,
         backgroundColor: Colors.transparent,
         child: Container(
           decoration: const BoxDecoration(
@@ -88,8 +79,8 @@ class HappyTimeHomePage extends GetView<HappyTimeHomeLogic> {
                             controller.selectedFeatured = controller
                                 .homeContentResponse?.featured?[index];
                             controller.update();
-                            AppLogger.it.logInfo("index $index");
-                            AppLogger.it.logInfo("reason $reason");
+                            // AppLogger.it.logInfo("index $index");
+                            // AppLogger.it.logInfo("reason $reason");
                           } catch (_) {}
                         },
                         scrollDirection: Axis.horizontal,
@@ -258,7 +249,7 @@ class BigCardList extends GetView<HappyTimeHomeLogic> {
     return controller.obx(
       (state) => InkWell(
         onTap: () {
-          Get.to(() => const SingleCaseView());
+          // Get.to(() => const SingleCaseView());
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

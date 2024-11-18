@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:happy_time_module/src/core/utils/logger_utils.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewPage extends StatefulWidget {
@@ -16,7 +17,7 @@ class _WebViewWidgetState extends State<WebViewPage> {
 late  WebViewController controller;
 @override
   void initState() {
-
+  AppLogger.it.logInfo("url is : ${widget.url}");
   controller = WebViewController()
     ..setJavaScriptMode(JavaScriptMode.unrestricted)
     ..setNavigationDelegate(

@@ -6,7 +6,9 @@ import 'package:happy_time_module/src/core/injectable/injection.dart';
 import 'package:happy_time_module/src/core/utils/extensions.dart';
 import 'package:happy_time_module/src/core/utils/loading.dart';
 import 'package:happy_time_module/src/core/utils/logger_utils.dart';
+import 'package:happy_time_module/src/features/home/presentation/pages/family_guy.dart';
 import 'package:happy_time_module/src/features/home/presentation/pages/single_media_page.dart';
+import 'package:happy_time_module/src/features/home/presentation/pages/the_movie_db_page.dart';
 import 'package:happy_time_module/src/shared/datasources/remote_datasource/movies_remote_data_source.dart';
 import 'package:happy_time_module/src/shared/entities/MediaDetailsEntity.dart';
 import 'package:happy_time_module/src/shared/hosts/check.dart';
@@ -60,8 +62,12 @@ class HappyTimeHomeLogic extends BaseController
   Featured? selectedFeatured;
 
 
+
   @override
   void onInit() async {
+
+    initPagingController();
+
     scrollController = List.generate(
       20,
       (index) => ScrollController(),
@@ -80,6 +86,8 @@ class HappyTimeHomeLogic extends BaseController
     for (ScrollController controller in scrollController) {
       controller.dispose();
     }
+
+    disposePagingController();
     super.onClose();
   }
 
@@ -354,4 +362,25 @@ class HappyTimeHomeLogic extends BaseController
 
 
 
+
+  void goToTheMovieDbPage() async{
+    try{
+      Get.to(()=>const TheMovieDbPage());
+    }catch(e){
+      hideLoading();
+    }
+  }
+
+  openTvShowPage({required String tvShowPath,required String theId}) async {
+  try{
+  showLoading();
+
+  theMovieDBId=theId;
+  await fetchSeasons(tvShowPath: tvShowPath);
+  hideLoading();
+  Get.to(()=>const FamilyGuyPage());
+  }catch(e){
+  hideLoading();
+  }
+}
 }

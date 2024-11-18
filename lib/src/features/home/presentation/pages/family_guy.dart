@@ -1,6 +1,7 @@
+import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide WidgetPaddingX;
 import 'package:happy_time_module/src/features/home/presentation/controllers/home_logic.dart';
 import 'package:happy_time_module/webview_widget.dart';
 
@@ -13,21 +14,14 @@ class FamilyGuyPage extends GetView<HappyTimeHomeLogic> {
       appBar: AppBar(),
       body: controller.obx((state) {
 
-        return ListView.builder(
+        return GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3,mainAxisSpacing: 3,crossAxisSpacing: 3,childAspectRatio: 0.5),
           itemCount: controller.selectedTheMovieDbSeason.length,
           itemBuilder: (context, index) {
           var season =controller.selectedTheMovieDbSeason[index];
-            return InkWell(child: ListTile(
-              shape: RoundedRectangleBorder(
-                side: const BorderSide(
-                    color: Colors.black54, width: 0.3),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              title: Text("${season.name}"),
-              subtitle: const Text(""),
-              trailing: FamilyGuyImageBuilder(url: "${season.image}",width: Get.width*0.15,height: Get.height*0.1,),
+            return InkWell(child:
 
-            ).paddingAll(5),onTap: () async{
+            FamilyGuyImageBuilder(url: "${season.image}",width: Get.width,height: Get.height*0.1,),onTap: () async{
 
               try{
 
@@ -56,10 +50,20 @@ class FamilyGuyPageEpisode extends GetView<HappyTimeHomeLogic> {
         appBar: AppBar(),
         body: controller.obx((state) {
 
-          return ListView.builder(
+          return GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3,crossAxisSpacing: 3,mainAxisSpacing: 3,childAspectRatio: 0.7),
             itemCount: controller.selectedTheMovieDbEpisodes.length,
             itemBuilder: (context, index) {
               var episode =controller.selectedTheMovieDbEpisodes[index];
+
+              return InkWell(
+                onTap: () async{
+
+                  Get.to(()=> WebViewPage(url: "https://vidlink.pro/tv/${controller.theMovieDBId}/${episode.season}/${episode.episode}", redirectPrevent: 'vidlink'));
+
+                },
+                child: FamilyGuyImageBuilder(url: "${episode.image}",width: Get.width*0.15,height: Get.height*0.1,),
+              );
               return InkWell(child: ListTile(
                 shape: RoundedRectangleBorder(
                   side: const BorderSide(
@@ -106,8 +110,12 @@ class FamilyGuyImageBuilder extends StatelessWidget {
         height: height,
         color: Colors.white,
         child: const Center(child: CircularProgressIndicator()),
-      ),
-      errorWidget: (context, url, error) => const Icon(Icons.error),
+      ).applyShimmer(),
+      errorWidget: (context, url, error) => Container(
+        width: width,
+        height: height,
+        color: Colors.white,
+      ).applyShimmer(baseColor: Colors.red,highlightColor: Colors.white30)
     );
   }
 }

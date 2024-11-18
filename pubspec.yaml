@@ -59,6 +59,7 @@ dependencies:
   chewie:
   video_player:
 
+  infinite_scroll_pagination:
   pretty_dio_logger:
 
 dev_dependencies:
