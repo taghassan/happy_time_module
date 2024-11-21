@@ -1,34 +1,50 @@
 import 'dart:convert';
+
 /// name : ""
 /// image : ""
 /// url_path : ""
+enum ShowTypes { movie, tv }
 
-TheMovieDBShowResponse theMovieDbShowResponseFromJson(String str) => TheMovieDBShowResponse.fromJson(json.decode(str));
-String theMovieDbShowResponseToJson(TheMovieDBShowResponse data) => json.encode(data.toJson());
+TheMovieDBShowResponse theMovieDbShowResponseFromJson(String str) =>
+    TheMovieDBShowResponse.fromJson(json.decode(str));
+
+String theMovieDbShowResponseToJson(TheMovieDBShowResponse data) =>
+    json.encode(data.toJson());
+
 class TheMovieDBShowResponse {
   TheMovieDBShowResponse({
-      String? name, 
-      String? image, 
-      String? urlPath,
-  }){
+    String? name,
+    String? image,
+    String? urlPath,
+    ShowTypes? showType,
+  }) {
     _name = name;
     _image = image;
     _urlPath = urlPath;
-}
+    _showType = showType;
+  }
 
   TheMovieDBShowResponse.fromJson(dynamic json) {
     _name = json['name'];
     _image = json['image'];
     _urlPath = json['url_path'];
   }
+
   String? _name;
   String? _image;
   String? _urlPath;
+  ShowTypes? _showType;
 
   String? get name => _name;
+
   String? get image => _image;
+
   String? get urlPath => _urlPath;
-  String? get theMovieDBId => _urlPath?.split('/').last.toString().split('-').first.toString()??'';
+
+  String? get theMovieDBId =>
+      _urlPath?.split('/').last ??
+      ''; //.toString().split('-').first.toString()??'';
+  ShowTypes? get showType => _showType??ShowTypes.tv;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -37,5 +53,4 @@ class TheMovieDBShowResponse {
     map['url_path'] = _urlPath;
     return map;
   }
-
 }

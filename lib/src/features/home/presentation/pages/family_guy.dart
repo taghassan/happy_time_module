@@ -114,8 +114,8 @@ class FamilyGuyImageBuilder extends StatelessWidget {
       errorWidget: (context, url, error) => Container(
         width: width,
         height: height,
-        color: Colors.white,
-      ).applyShimmer(baseColor: Colors.red,highlightColor: Colors.white30)
+        color: Colors.grey,
+      )//.applyShimmer(baseColor: Colors.red,highlightColor: Colors.white30)
     );
   }
 }

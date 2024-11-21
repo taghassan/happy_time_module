@@ -376,6 +376,7 @@ class HappyTimeHomeLogic extends BaseController
   showLoading();
 
   theMovieDBId=theId;
+  // await fetchMovies(page:1);
   await fetchSeasons(tvShowPath: tvShowPath);
   hideLoading();
   Get.to(()=>const FamilyGuyPage());

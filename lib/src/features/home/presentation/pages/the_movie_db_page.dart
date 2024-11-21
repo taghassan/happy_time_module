@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:happy_time_module/src/features/home/presentation/controllers/home_logic.dart';
 import 'package:happy_time_module/src/shared/themoviedb/models/TheMovieDBShowResponse.dart';
+import 'package:happy_time_module/webview_widget.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class TheMovieDbPage extends GetView<HappyTimeHomeLogic> {
@@ -29,15 +30,40 @@ class TheMovieDbPage extends GetView<HappyTimeHomeLogic> {
         ),
       ),
       body:
-      PagedGridView<int, TheMovieDBShowResponse>(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3,mainAxisSpacing: 3,crossAxisSpacing: 3,childAspectRatio: 0.5,),
-        pagingController: controller.tvShowsPagingController,
-        builderDelegate: PagedChildBuilderDelegate<TheMovieDBShowResponse>(
-          itemBuilder: (context, item, index) => BuildListItem(
-            item: item,
-          ),
-        ),
-      ),
+      DefaultTabController(length: 2, child: Column(
+        children: [
+          
+          const TabBar(tabs: [
+            Tab(
+              child: Text("Tv shows"),
+            ),
+            Tab(
+              child: Text("Movies"),
+            )
+          ]),
+          
+          Expanded(child: TabBarView(children: [
+            PagedGridView<int, TheMovieDBShowResponse>(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3,mainAxisSpacing: 3,crossAxisSpacing: 3,childAspectRatio: 0.5,),
+              pagingController: controller.tvShowsPagingController,
+              builderDelegate: PagedChildBuilderDelegate<TheMovieDBShowResponse>(
+                itemBuilder: (context, item, index) => BuildListItem(
+                  item: item,
+                ),
+              ),
+            ),
+            PagedGridView<int, TheMovieDBShowResponse>(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3,mainAxisSpacing: 3,crossAxisSpacing: 3,childAspectRatio: 0.5,),
+              pagingController: controller.moviesPagingController,
+              builderDelegate: PagedChildBuilderDelegate<TheMovieDBShowResponse>(
+                itemBuilder: (context, item, index) => BuildListItem(
+                  item: item,
+                ),
+              ),
+            ),
+          ]))
+        ],
+      ))
     );
   }
 }
@@ -49,7 +75,14 @@ class BuildListItem extends GetView<HappyTimeHomeLogic>  {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => controller.openTvShowPage(tvShowPath: item.urlPath.toString(),theId: item.theMovieDBId.toString(),),
+      onTap: () {
+
+        if(item.showType==ShowTypes.tv) {
+          controller.openTvShowPage(tvShowPath: item.urlPath.toString(),theId: item.theMovieDBId.toString(),);
+        }else if(item.showType==ShowTypes.movie){
+          Get.to(()=> WebViewPage(url: "https://vidlink.pro/movie/${item.theMovieDBId}", redirectPrevent: 'vidlink'));
+        }
+      },
       child: CachedNetworkImage(
         imageUrl: item.image??"http://via.placeholder.com/200x150",
         imageBuilder: (context, imageProvider) => Container(
@@ -63,7 +96,7 @@ class BuildListItem extends GetView<HappyTimeHomeLogic>  {
           ),
         ),
         placeholder: (context, url) => Container(
-          color: Colors.white,
+          color: Colors.grey,
         ).applyShimmer(),
         errorWidget: (context, url, error) => const Icon(Icons.error),
       ),

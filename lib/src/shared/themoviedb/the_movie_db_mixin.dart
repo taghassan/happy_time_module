@@ -18,9 +18,11 @@ mixin TheMovieDbMixin on GetxController
   List<TheMovieDBShowResponse> tvShows = [];
 
   static const pageSize = 20;
-  int pageKey=1;
 
   final PagingController<int, TheMovieDBShowResponse> tvShowsPagingController =
+  PagingController(firstPageKey: 0);
+
+  final PagingController<int, TheMovieDBShowResponse> moviesPagingController =
   PagingController(firstPageKey: 0);
 
 
@@ -28,6 +30,11 @@ mixin TheMovieDbMixin on GetxController
     tvShowsPagingController.addPageRequestListener((pageKey) {
       AppLogger.it.logInfo("PageRequestListener $pageKey");
       fetchTvItems(page: pageKey);
+    });
+
+    moviesPagingController.addPageRequestListener((pageKey) {
+      AppLogger.it.logInfo("moviesPagingController  $pageKey");
+      fetchMovies(page: pageKey);
     });
   }
   void disposePagingController() {
@@ -48,6 +55,24 @@ mixin TheMovieDbMixin on GetxController
     update();
   }
 
+  fetchMovies({required int page})async{//moviesPagingController
+    // await theMovieDBHelper.fetchMovies(page: page);
+   AppLogger.it.logInfo("page $page");
+   try {
+     final newItems = await theMovieDBHelper.fetchMovies(page: page);
+     final isLastPage = newItems.length < pageSize;
+     if (isLastPage) {
+       moviesPagingController.appendLastPage(newItems);
+     } else {
+       final nextPageKey = page + 1;
+       AppLogger.it.logInfo("nextPageKey $nextPageKey");
+       moviesPagingController.appendPage(newItems, nextPageKey);
+     }
+   } catch (error) {
+     moviesPagingController.error = error;
+   }
+
+  }
   fetchTvItems({required int page})async{
 
 
