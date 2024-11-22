@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide WidgetPaddingX;
 import 'package:happy_time_module/src/core/widgets/components/plus_search_bar.dart';
 import 'package:happy_time_module/src/features/home/presentation/controllers/home_logic.dart';
+import 'package:happy_time_module/src/shared/entities/MediaDetailsEntity.dart';
 import 'package:happy_time_module/src/shared/themoviedb/models/TheMovieDBShowResponse.dart';
 import 'package:happy_time_module/webview_widget.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -52,6 +53,7 @@ class TheMovieDbPage extends GetView<HappyTimeHomeLogic> {
                     child: Text("Movies"),
                   )
                 ]),
+                controller.nativeAdWidget(6),
                 Expanded(
                     child: TabBarView(children: [
                   PagedGridView<int, TheMovieDBShowResponse>(
@@ -109,9 +111,10 @@ class BuildListItem extends GetView<HappyTimeHomeLogic> {
           );
         } else if (item.showType == ShowTypes.movie) {
           await controller.showInterstitialAd();
-          Get.to(() => WebViewPage(
-              url: "https://vidlink.pro/movie/${item.theMovieDBId}",
-              redirectPrevent: 'vidlink'));
+          controller.playMedia(
+            mediaType: MediaTypeEnum.movie,
+            theMovieDBId: item.theMovieDBId??''
+          );
         }
       },
       child: CachedNetworkImage(

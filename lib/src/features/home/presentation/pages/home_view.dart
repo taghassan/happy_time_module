@@ -156,6 +156,7 @@ class HappyTimeHomePage extends GetView<HappyTimeHomeLogic> {
                       ).paddingOnly(bottom: 10,left: 10,right: 10),
                     ),
                 SmallCardList(scrollController: ScrollController()),
+                controller.nativeAdWidget(3),
                 BigCardList(
                   scrollController: ScrollController(),
                   homeSectionEnum: HomeSectionEnum.choosed,

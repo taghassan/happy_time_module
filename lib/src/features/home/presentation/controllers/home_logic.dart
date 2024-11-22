@@ -47,7 +47,7 @@ enum HomeSectionEnum {
 }
 
 class HappyTimeHomeLogic extends BaseController
-    with StateMixin<HomeState>, LoaderOverlayMixin, TheMovieDbMixin,AdmobManagerPlus {
+    with StateMixin<HomeState>, LoaderOverlayMixin, TheMovieDbMixin,AdmobManagerPlus ,HasNativeAdsMixin {
   List<ScrollController> scrollController = [];
   int tempItemCount = 10;
 
@@ -72,6 +72,16 @@ class HappyTimeHomeLogic extends BaseController
     Future.delayed(Duration.zero,() async{
 
       banner=await  createAndLoadBanner(adUnitId: 'ca-app-pub-8107574011529731/2912692739');
+
+      adInterval=3;
+
+      initAds(adUnitIds: [
+        'ca-app-pub-8107574011529731/1305797714',
+        'ca-app-pub-8107574011529731/7123260860',
+        'ca-app-pub-8107574011529731/3403507702',
+        'ca-app-pub-8107574011529731/6303534606',
+        'ca-app-pub-8107574011529731/5899648847',
+      ]);
 
       await loadInterstitialAd();
     },);
