@@ -133,7 +133,7 @@ class TheMovieDBHelper {
 
 
       var data =
-          '''air_date.gte=&air_date.lte=2025-05-18&certification=&certification_country=AE&debug=&first_air_date.gte=&first_air_date.lte=&page=$page&primary_release_date.gte=&primary_release_date.lte=&region=AE%7CXX&release_date.gte=&release_date.lte=&show_me=everything&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=AE&with_genres=&with_keywords=&with_networks=&with_origin_country=&with_original_language=&with_watch_monetization_types=flatrate%7Cfree%7Cads%7Crent%7Cbuy&with_watch_providers=&with_release_type=&with_runtime.gte=0&with_runtime.lte=400''';
+          '''air_date.gte=&air_date.lte=&certification=&certification_country=AE&debug=&first_air_date.gte=&first_air_date.lte=&page=$page&primary_release_date.gte=&primary_release_date.lte=&region=AE%7CXX&release_date.gte=&release_date.lte=&show_me=everything&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=AE&with_genres=&with_keywords=&with_networks=&with_origin_country=&with_original_language=&with_watch_monetization_types=flatrate%7Cfree%7Cads%7Crent%7Cbuy&with_watch_providers=&with_release_type=&with_runtime.gte=0&with_runtime.lte=400''';
 
       var response = await _client.request(
         '/discover/tv/items',

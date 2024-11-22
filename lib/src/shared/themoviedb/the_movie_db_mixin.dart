@@ -9,8 +9,41 @@ import 'package:happy_time_module/src/shared/themoviedb/models/TheMovieDBShowRes
 import 'package:happy_time_module/src/shared/themoviedb/themoviedb.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
+
+//popularity.desc
+//popularity.asc
+//vote_average.desc
+//vote_average.asc
+//first_air_date.desc
+//first_air_date.asc
+//name.asc
+//name.desc
+
+enum SortByEnum {
+  voteAverageDesc,
+  voteAverageAsc,
+  popularityDesc,
+  popularityAsc,
+  firstAirDateDesc,
+  firstAirDateAsc,
+  nameAsc,
+  nameDesc,
+}
+
+Map<SortByEnum, String> sortOptions = {
+  SortByEnum.voteAverageDesc: "vote_average.desc",
+  SortByEnum.voteAverageAsc: "vote_average.asc",
+  SortByEnum.popularityDesc: "popularity.desc",
+  SortByEnum.popularityAsc: "popularity.asc",
+  SortByEnum.firstAirDateDesc: "first_air_date.desc",
+  SortByEnum.firstAirDateAsc: "first_air_date.asc",
+  SortByEnum.nameAsc: "name.asc",
+  SortByEnum.nameDesc: "name.desc",
+};
+
 mixin TheMovieDbMixin on GetxController
 {
+ 
   TheMovieDBHelper theMovieDBHelper=TheMovieDBHelper();
 
   String theMovieDBId ='1434';
