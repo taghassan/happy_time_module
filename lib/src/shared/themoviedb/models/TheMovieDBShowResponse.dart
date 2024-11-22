@@ -3,7 +3,7 @@ import 'dart:convert';
 /// name : ""
 /// image : ""
 /// url_path : ""
-enum ShowTypes { movie, tv }
+enum ShowTypes { movie, tv ,collection }
 
 TheMovieDBShowResponse theMovieDbShowResponseFromJson(String str) =>
     TheMovieDBShowResponse.fromJson(json.decode(str));

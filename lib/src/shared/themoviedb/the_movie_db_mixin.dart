@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:happy_time_module/src/core/utils/loading.dart';
 import 'package:happy_time_module/src/core/utils/logger_utils.dart';
@@ -13,9 +14,14 @@ mixin TheMovieDbMixin on GetxController
   TheMovieDBHelper theMovieDBHelper=TheMovieDBHelper();
 
   String theMovieDBId ='1434';
+  String theMovieDBTitle ='';
+  String theMovieDBEpisodePageTitle ='';
+  TextEditingController searchTextEditController=TextEditingController();
   List<TheMovieDbSeasonResponse>  selectedTheMovieDbSeason=[];
   List<TheMovieDbEpisodeResponse> selectedTheMovieDbEpisodes = [];
-  List<TheMovieDBShowResponse> tvShows = [];
+  // List<TheMovieDBShowResponse> tvShows = [];
+
+  List<TheMovieDBShowResponse> searchResults = [];
 
   static const pageSize = 20;
 
@@ -39,6 +45,8 @@ mixin TheMovieDbMixin on GetxController
   }
   void disposePagingController() {
     tvShowsPagingController.dispose();
+    moviesPagingController.dispose();
+    searchTextEditController.dispose();
     super.dispose();
   }
 
@@ -91,6 +99,11 @@ AppLogger.it.logInfo("page $page");
      tvShowsPagingController.error = error;
    }
 
+  }
+
+  theMovieDbSearch({String? query}) async {
+    searchResults= await theMovieDBHelper.search(query: query);
+    update();
   }
 
 }

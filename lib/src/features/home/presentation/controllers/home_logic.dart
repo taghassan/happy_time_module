@@ -45,7 +45,7 @@ enum HomeSectionEnum {
 }
 
 class HappyTimeHomeLogic extends BaseController
-    with StateMixin<HomeState>, LoaderOverlayMixin,TheMovieDbMixin {
+    with StateMixin<HomeState>, LoaderOverlayMixin, TheMovieDbMixin {
   List<ScrollController> scrollController = [];
   int tempItemCount = 10;
 
@@ -61,11 +61,8 @@ class HappyTimeHomeLogic extends BaseController
   String? selectedType;
   Featured? selectedFeatured;
 
-
-
   @override
   void onInit() async {
-
     initPagingController();
 
     scrollController = List.generate(
@@ -289,44 +286,43 @@ class HappyTimeHomeLogic extends BaseController
       );
 
   playVideo({required Videos video}) {
-   try{
-     AppLogger.it.logInfo("link ${video.link??''}");
-     AppLogger.it.logInfo("server ${video.server??''}");
-     AppLogger.it.logInfo("header ${video.header??''}");
-     AppLogger.it.logInfo("useragent ${video.useragent??''}");
-     UrlExtractor(
-       useRemote: false,
-       onComplete: (hosts) {
-         if (hosts is List<EasyPlexSupportedHostsModel>) {
-           var host = hosts.firstOrNull;
-           if (host != null) {
-             AppLogger.it.logInfo("message ${host.url}");
-             AppLogger.it.logInfo("message ${host.quality}");
-             AppLogger.it.logInfo("message ${host.cookie}");
-             AppLogger.it.logInfo("message ${host.httpHeaders}");
-             Get.to(() => HappyTimeVideoPlayerView(
-               videoPath: host.url,
-               httpHeaders: host.httpHeaders,
-             ));
-           }
-         } else {
-           Get.to(() => WebViewPage(
-             url: "${video.link}",
-             redirectPrevent: video.link.extractFirstWord(),
-           ));
+    try {
+      AppLogger.it.logInfo("link ${video.link ?? ''}");
+      AppLogger.it.logInfo("server ${video.server ?? ''}");
+      AppLogger.it.logInfo("header ${video.header ?? ''}");
+      AppLogger.it.logInfo("useragent ${video.useragent ?? ''}");
+      UrlExtractor(
+        useRemote: false,
+        onComplete: (hosts) {
+          if (hosts is List<EasyPlexSupportedHostsModel>) {
+            var host = hosts.firstOrNull;
+            if (host != null) {
+              AppLogger.it.logInfo("message ${host.url}");
+              AppLogger.it.logInfo("message ${host.quality}");
+              AppLogger.it.logInfo("message ${host.cookie}");
+              AppLogger.it.logInfo("message ${host.httpHeaders}");
+              Get.to(() => HappyTimeVideoPlayerView(
+                    videoPath: host.url,
+                    httpHeaders: host.httpHeaders,
+                  ));
+            }
+          } else {
+            Get.to(() => WebViewPage(
+                  url: "${video.link}",
+                  redirectPrevent: video.link.extractFirstWord(),
+                ));
 
-           AppLogger.it.logInfo(" Link  $hosts");
-         }
-       },
-
-     ).find(video.link??'');
-   }catch(e){
-     AppLogger.it.logError(e.toString());
-     Get.to(() => WebViewPage(
-       url: "${video.link}",
-       redirectPrevent: video.link.extractFirstWord(),
-     ));
-   }
+            AppLogger.it.logInfo(" Link  $hosts");
+          }
+        },
+      ).find(video.link ?? '');
+    } catch (e) {
+      AppLogger.it.logError(e.toString());
+      Get.to(() => WebViewPage(
+            url: "${video.link}",
+            redirectPrevent: video.link.extractFirstWord(),
+          ));
+    }
   }
 
   void showVideosBottomSheet({required List<Videos> videos}) {
@@ -340,18 +336,15 @@ class HappyTimeHomeLogic extends BaseController
             child: Container(
               width: Get.width,
               padding: const EdgeInsets.all(10),
-              child:
-              Text(
+              child: Text(
                 "${video.server}",
                 style: getTextStyle(
                   fontSize: 14.0,
                 ),
-              ).toCenter() .toCardContainer(
+              ).toCenter().toCardContainer(
                   padding:
-                  const EdgeInsets.symmetric(
-                      horizontal: 15,
-                      vertical: 15),
-                  height: Get.height*0.08,
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                  height: Get.height * 0.08,
                   color: Colors.white),
             ),
           );
@@ -360,28 +353,36 @@ class HappyTimeHomeLogic extends BaseController
     ));
   }
 
-
-
-
-  void goToTheMovieDbPage() async{
-    try{
-      Get.to(()=>const TheMovieDbPage());
-    }catch(e){
+  void goToTheMovieDbPage() async {
+    try {
+      Get.to(() => const TheMovieDbPage());
+    } catch (e) {
       hideLoading();
     }
   }
 
-  openTvShowPage({required String tvShowPath,required String theId}) async {
-  try{
-  showLoading();
+  openTvShowPage({required String tvShowPath, required String theId, String? title}) async {
+    try {
+      showLoading();
 
-  theMovieDBId=theId;
-  // await fetchMovies(page:1);
-  await fetchSeasons(tvShowPath: tvShowPath);
-  hideLoading();
-  Get.to(()=>const FamilyGuyPage());
-  }catch(e){
-  hideLoading();
+      theMovieDBId = theId;
+      theMovieDBTitle=title??'';
+      // await fetchMovies(page:1);
+      await fetchSeasons(tvShowPath: tvShowPath);
+      hideLoading();
+      Get.to(() => const FamilyGuyPage());
+    } catch (e) {
+      hideLoading();
+    }
   }
-}
+
+  void doSearch() async {
+    try {
+      showLoading();
+      await theMovieDbSearch(query: searchTextEditController.text);
+      hideLoading();
+    } catch (e) {
+      hideLoading();
+    }
+  }
 }

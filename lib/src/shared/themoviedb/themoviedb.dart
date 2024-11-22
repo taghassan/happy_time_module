@@ -16,6 +16,13 @@ class TheMovieDBHelper {
         'Mozilla/5.0 (Linux; Android 10; Pixel 4 XL Build/QP1A.191005.007) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Mobile Safari/537.36',
   }));
 
+  var headers = {
+    'accept': 'text/html, */*; q=0.01',
+    'accept-language':
+    'ar-SD,ar;q=0.9,en-GB;q=0.8,en;q=0.7,en-US;q=0.6,zh-CN;q=0.5,zh;q=0.4',
+    'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+  };
+
   Future<List<TheMovieDbSeasonResponse>> fetchSeasons(
       {required String tvShowPath}) async {
     // addPrettyDioLogger(_client);
@@ -63,9 +70,11 @@ class TheMovieDBHelper {
         var linkSeason = link?.attributes['season'];
 
         var seasonTitle = link?.attributes['title'];
-        var season = linkSeason.toString()=='0'? int.tryParse(linkSeason.toString()) != null
-            ? "${int.parse(linkSeason.toString()) + 1}"
-            : '1':linkSeason.toString();
+        var season = linkSeason.toString() == '0'
+            ? int.tryParse(linkSeason.toString()) != null
+                ? "${int.parse(linkSeason.toString()) + 1}"
+                : '1'
+            : linkSeason.toString();
         var episode = link?.attributes['episode'];
         var imageUrl = image?.attributes['src'];
         episodes.add(TheMovieDbEpisodeResponse(
@@ -123,14 +132,8 @@ class TheMovieDBHelper {
 
 
 
-      var headers = {
-        'accept': 'text/html, */*; q=0.01',
-        'accept-language': 'ar-SD,ar;q=0.9,en-GB;q=0.8,en;q=0.7,en-US;q=0.6,zh-CN;q=0.5,zh;q=0.4',
-        'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-
-      };
-
-      var data = '''air_date.gte=&air_date.lte=2025-05-18&certification=&certification_country=AE&debug=&first_air_date.gte=&first_air_date.lte=&page=$page&primary_release_date.gte=&primary_release_date.lte=&region=AE%7CXX&release_date.gte=&release_date.lte=&show_me=everything&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=AE&with_genres=&with_keywords=&with_networks=&with_origin_country=&with_original_language=&with_watch_monetization_types=flatrate%7Cfree%7Cads%7Crent%7Cbuy&with_watch_providers=&with_release_type=&with_runtime.gte=0&with_runtime.lte=400''';
+      var data =
+          '''air_date.gte=&air_date.lte=2025-05-18&certification=&certification_country=AE&debug=&first_air_date.gte=&first_air_date.lte=&page=$page&primary_release_date.gte=&primary_release_date.lte=&region=AE%7CXX&release_date.gte=&release_date.lte=&show_me=everything&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=AE&with_genres=&with_keywords=&with_networks=&with_origin_country=&with_original_language=&with_watch_monetization_types=flatrate%7Cfree%7Cads%7Crent%7Cbuy&with_watch_providers=&with_release_type=&with_runtime.gte=0&with_runtime.lte=400''';
 
       var response = await _client.request(
         '/discover/tv/items',
@@ -162,52 +165,84 @@ class TheMovieDBHelper {
     }
   }
 
-  Future<List<TheMovieDBShowResponse>> fetchMovies({required int page})async{
-  try{
-    List<TheMovieDBShowResponse> tvShows = [];
-    var headers = {
-      'accept': 'text/html, */*; q=0.01',
-      'accept-language': 'ar-SD,ar;q=0.9,en-GB;q=0.8,en;q=0.7,en-US;q=0.6,zh-CN;q=0.5,zh;q=0.4',
-      'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-
-    };
-
-    var data = '''air_date.gte=&air_date.lte=&certification=&certification_country=AE&debug=&first_air_date.gte=&first_air_date.lte=&page=$page&primary_release_date.gte=&primary_release_date.lte=&region=&release_date.gte=&release_date.lte=2025-05-21&show_me=everything&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=AE&with_genres=&with_keywords=&with_networks=&with_origin_country=&with_original_language=&with_watch_monetization_types=&with_watch_providers=&with_release_type=&with_runtime.gte=0&with_runtime.lte=400''';
-
-    var response = await _client.request(
-      '/discover/movie/items',
-      options: Options(
-        method: 'POST',
-        headers: headers,
-      ),
-      data: data,
-    );
-
-    var document = parser.parse(response.data);
+  Future<List<TheMovieDBShowResponse>> fetchMovies({required int page}) async {
+    try {
+      List<TheMovieDBShowResponse> tvShows = [];
 
 
+      var data =
+          '''air_date.gte=&air_date.lte=&certification=&certification_country=AE&debug=&first_air_date.gte=&first_air_date.lte=&page=$page&primary_release_date.gte=&primary_release_date.lte=&region=&release_date.gte=&release_date.lte=2025-05-21&show_me=everything&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=AE&with_genres=&with_keywords=&with_networks=&with_origin_country=&with_original_language=&with_watch_monetization_types=&with_watch_providers=&with_release_type=&with_runtime.gte=0&with_runtime.lte=400''';
 
-    var showCards = document.querySelectorAll('.card');
-    for (var showCard in showCards) {
-      var name = "${showCard.querySelector('h2')?.text}".trim();
-      var urlPath =
-          "${showCard.querySelector('.wrapper')?.querySelector('a')?.attributes['href']}";
-      var image =
-          "${showCard.querySelector('.wrapper')?.querySelector('.image')?.querySelector('img')?.attributes['src']}";
+      var response = await _client.request(
+        '/discover/movie/items',
+        options: Options(
+          method: 'POST',
+          headers: headers,
+        ),
+        data: data,
+      );
 
+      var document = parser.parse(response.data);
 
-      AppLogger.it.logInfo("name $name");
-      AppLogger.it.logInfo("urlPath $urlPath");
-      AppLogger.it.logInfo("image $image");
-      tvShows.add(
-          TheMovieDBShowResponse(name: name, image: image, urlPath: urlPath,showType: ShowTypes.movie));
+      var showCards = document.querySelectorAll('.card');
+      for (var showCard in showCards) {
+        var name = "${showCard.querySelector('h2')?.text}".trim();
+        var urlPath =
+            "${showCard.querySelector('.wrapper')?.querySelector('a')?.attributes['href']}";
+        var image =
+            "${showCard.querySelector('.wrapper')?.querySelector('.image')?.querySelector('img')?.attributes['src']}";
+
+        AppLogger.it.logInfo("name $name");
+        AppLogger.it.logInfo("urlPath $urlPath");
+        AppLogger.it.logInfo("image $image");
+        tvShows.add(TheMovieDBShowResponse(
+            name: name,
+            image: image,
+            urlPath: urlPath,
+            showType: ShowTypes.movie));
+      }
+      return tvShows;
+    } catch (e) {
+      AppLogger.it.logError(e.toString());
+      rethrow;
     }
-return tvShows;
-  }catch(e){
-    AppLogger.it.logError(e.toString());
-    rethrow;
   }
 
- }
+  Future<List<TheMovieDBShowResponse>> search({String? query}) async {
+    try {
+      List<TheMovieDBShowResponse> tvShows = [];
+      var response = await _client.request(
+        '/search?query=${query?.replaceAll(" ", "+")}',
+        options: Options(
+          method: 'GET',
+          headers: headers,
+        ),
+      );
+      // AppLogger.it.logInfo("response $response");
 
+      var document = parser.parse(response.data);
+
+      var showCards = document.querySelectorAll('.card');
+      for (var showCard in showCards) {
+        var name = "${showCard.querySelector('h2')?.text}".trim();
+        var urlPath =
+            "${showCard.querySelector('.wrapper')?.querySelector('a')?.attributes['href']}";
+        var image =
+            "${showCard.querySelector('.wrapper')?.querySelector('.image')?.querySelector('img')?.attributes['src']}";
+
+        AppLogger.it.logInfo("name $name");
+        AppLogger.it.logInfo("urlPath $urlPath");
+        AppLogger.it.logInfo("image $image");
+        tvShows.add(TheMovieDBShowResponse(
+            name: name,
+            image: image,
+            urlPath: urlPath,
+            showType: urlPath.contains("movie")? ShowTypes.movie :urlPath.contains("collection")? ShowTypes.collection:  ShowTypes.tv));
+      }
+return tvShows;
+    } catch (e) {
+      AppLogger.it.logError(e.toString());
+      rethrow;
+    }
+  }
 }

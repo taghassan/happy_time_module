@@ -4,8 +4,18 @@ class PlusSearchInput extends StatelessWidget {
   final TextEditingController searchController;
   final String hintText;
   final void Function(String)? onChanged;
+  final void Function()? onEditingComplete;
   final void Function(String)? onSubmitted;
-  const PlusSearchInput({required this.searchController,this.onSubmitted,required this.hintText,this.onChanged, super.key});
+final Widget? suffixIcon;
+  const PlusSearchInput({
+    required this.searchController,
+    required this.hintText,
+    this.onChanged,
+    this.suffixIcon,
+    this.onEditingComplete,
+    this.onSubmitted,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,21 +32,21 @@ class PlusSearchInput extends StatelessWidget {
         controller: searchController,
         textAlign: TextAlign.center,
         onChanged: onChanged,
-        onSubmitted:onSubmitted ,
-        keyboardType: TextInputType.text,
-        textInputAction: TextInputAction.search,
+        onEditingComplete: onEditingComplete,
+        onSubmitted:onSubmitted,
         style: const TextStyle(fontSize: 14),
+        textInputAction: TextInputAction.search,
         decoration: InputDecoration(
-
           // prefixIcon: Icon(Icons.email),
           prefixIcon:
-          const Icon(Icons.search, size: 20, color: Color(0xffFF5A60)),
+               Icon(Icons.search, size: 20, color: Theme.of(context).primaryColor),
           filled: true,
           fillColor: Colors.white,
           hintText: hintText,
           hintStyle: TextStyle(color: Colors.black.withOpacity(.75)),
+          suffixIcon: suffixIcon,
           contentPadding:
-          const EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
+              const EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
           border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(15.0)),
           ),
