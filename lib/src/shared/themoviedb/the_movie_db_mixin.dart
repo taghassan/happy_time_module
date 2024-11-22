@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:happy_time_module/src/core/utils/loading.dart';
 import 'package:happy_time_module/src/core/utils/logger_utils.dart';
 import 'package:happy_time_module/src/features/home/presentation/controllers/home_logic.dart';
+import 'package:happy_time_module/src/shared/models/responses/NetworkListApiResponseModel.dart';
 import 'package:happy_time_module/src/shared/themoviedb/models/TheMovieDBEpisodeResponse.dart';
+import 'package:happy_time_module/src/shared/themoviedb/models/TheMovieDBNetowrkResponse.dart';
 import 'package:happy_time_module/src/shared/themoviedb/models/TheMovieDBSeasonResponse.dart';
 import 'package:happy_time_module/src/shared/themoviedb/models/TheMovieDBShowResponse.dart';
 import 'package:happy_time_module/src/shared/themoviedb/themoviedb.dart';
@@ -41,9 +43,84 @@ Map<SortByEnum, String> sortOptions = {
   SortByEnum.nameDesc: "name.desc",
 };
 
+//with_watch_providers
+
+var networksData=[
+  {
+    "id": 8,
+    "name": "Netflix",
+    "logo": "https://media.themoviedb.org/t/p/original/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg"
+  },
+  {
+    "id": 350,
+    "name": "Apple TV Plus",
+    "logo": "https://media.themoviedb.org/t/p/original/2E03IAZsX4ZaUqM7tXlctEPMGWS.jpg"
+  },
+  {
+    "id": 232,
+    "name": "Zee5",
+    "logo": "https://media.themoviedb.org/t/p/original/vPIW5b0ebTLj9bFCZypoBbF8wSl.jpg"
+  },
+  {
+    "id": 309,
+    "name": "Sun Nxt",
+    "logo": "https://media.themoviedb.org/t/p/original/6KEQzITx2RrCAQt5Nw9WrL1OI8z.jpg"
+  },
+  {
+    "id": 630,
+    "name": "STARZPLAY",
+    "logo": "https://media.themoviedb.org/t/p/original/pDroY6RxYdVw63eAepag4b116Ub.jpg"
+  },
+  {
+    "id": 629,
+    "name": "OSN",
+    "logo": "https://media.themoviedb.org/t/p/original/kC6JTo59Gj6I4vJPyBAYGh0sKAE.jpg"
+  },
+  {
+    "id": 119,
+    "name": "Amazon Prime Video",
+    "logo": "https://media.themoviedb.org/t/p/original/dQeAar5H991VYporEjUspolDarG.jpg"
+  },
+  {
+    "id": 692,
+    "name": "Cultpix",
+    "logo": "https://media.themoviedb.org/t/p/original/uauVx3dGWt0GICqdMCBYJObd3Mo.jpg"
+  },
+  {
+    "id": 701,
+    "name": "FilmBox+",
+    "logo": "https://media.themoviedb.org/t/p/original/fbveJTcro9Xw2KuPIIoPPePHiwy.jpg"
+  },
+  {
+    "id": 1715,
+    "name": "Shahid VIP",
+    "logo": "https://media.themoviedb.org/t/p/original/7qZED0kLBtiV8mLRNBtW4PQCAqW.jpg"
+  },
+  {
+    "id": 1750,
+    "name": "TOD",
+    "logo": "https://media.themoviedb.org/t/p/original/bFxDjHDXP02u1dLPZfTsTC1L6EA.jpg"
+  },
+  {
+    "id": 283,
+    "name": "Crunchyroll",
+    "logo": "https://media.themoviedb.org/t/p/original/mXeC4TrcgdU6ltE9bCBCEORwSQR.jpg"
+  },
+  {
+    "id": 1958,
+    "name": "AD tv",
+    "logo": "https://media.themoviedb.org/t/p/original/mK8nfCXfwoAa6cAkHUSKCkLEIKK.jpg"
+  },
+  {
+    "id": 2285,
+    "name": "JustWatchTV",
+    "logo": "https://media.themoviedb.org/t/p/original/uCMLyl8jGIbInVyDeCeV6kpciFm.jpg"
+  }
+];
+
 mixin TheMovieDbMixin on GetxController
 {
- 
+
   TheMovieDBHelper theMovieDBHelper=TheMovieDBHelper();
 
   String theMovieDBId ='1434';
@@ -53,6 +130,7 @@ mixin TheMovieDbMixin on GetxController
   List<TheMovieDbSeasonResponse>  selectedTheMovieDbSeason=[];
   List<TheMovieDbEpisodeResponse> selectedTheMovieDbEpisodes = [];
   // List<TheMovieDBShowResponse> tvShows = [];
+  List<TheMovieDbNetWorksResponse> networks=networksData.map<TheMovieDbNetWorksResponse>((e) => TheMovieDbNetWorksResponse.fromJson(e),).toList();
 
   List<TheMovieDBShowResponse> searchResults = [];
 
