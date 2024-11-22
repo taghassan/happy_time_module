@@ -100,7 +100,7 @@ class BuildListItem extends GetView<HappyTimeHomeLogic> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
+      onTap: () async{
         if (item.showType == ShowTypes.tv) {
           controller.openTvShowPage(
             tvShowPath: item.urlPath.toString(),
@@ -108,6 +108,7 @@ class BuildListItem extends GetView<HappyTimeHomeLogic> {
             title: item.name
           );
         } else if (item.showType == ShowTypes.movie) {
+          await controller.showInterstitialAd();
           Get.to(() => WebViewPage(
               url: "https://vidlink.pro/movie/${item.theMovieDBId}",
               redirectPrevent: 'vidlink'));

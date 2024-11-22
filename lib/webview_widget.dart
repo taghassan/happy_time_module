@@ -61,10 +61,15 @@ late  WebViewController controller;
   Widget build(BuildContext context) {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
-  return RotatedBox(quarterTurns: 1,child: WebViewWidget(
-      key: UniqueKey(),
-      controller: controller,
-      gestureRecognizers: Set()..add(Factory<TapGestureRecognizer>(() => TapGestureRecognizer(),)),
-    ),);
+  return RotatedBox(quarterTurns: 1,child:Stack(
+    children: [
+      WebViewWidget(
+        key: UniqueKey(),
+        controller: controller,
+        gestureRecognizers: Set()..add(Factory<TapGestureRecognizer>(() => TapGestureRecognizer(),)),
+      ),
+
+    ],
+  ),);
   }
 }

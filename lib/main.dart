@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:happy_time_module/src/shared/datasources/remote_datasource/movies_remote_data_source.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:toastification/toastification.dart';
@@ -30,13 +31,17 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
-void main() {
-  startHappyTimeApp();
+void main() async{
+
+  await startHappyTimeApp();
 }
 
 startHappyTimeApp() async {
   runZonedGuarded(
     () async {
+      WidgetsFlutterBinding.ensureInitialized();
+      MobileAds.instance.initialize();
+
       await initHappyTimeApp();
       runApp(const MyApp());
     },

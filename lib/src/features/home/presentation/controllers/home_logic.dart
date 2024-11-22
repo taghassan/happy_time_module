@@ -1,6 +1,8 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:happy_time_module/admob_manager_plus.dart';
 import 'package:happy_time_module/src/core/controller/base_controller.dart';
 import 'package:happy_time_module/src/core/injectable/injection.dart';
 import 'package:happy_time_module/src/core/utils/extensions.dart';
@@ -45,7 +47,7 @@ enum HomeSectionEnum {
 }
 
 class HappyTimeHomeLogic extends BaseController
-    with StateMixin<HomeState>, LoaderOverlayMixin, TheMovieDbMixin {
+    with StateMixin<HomeState>, LoaderOverlayMixin, TheMovieDbMixin,AdmobManagerPlus {
   List<ScrollController> scrollController = [];
   int tempItemCount = 10;
 
@@ -61,8 +63,19 @@ class HappyTimeHomeLogic extends BaseController
   String? selectedType;
   Featured? selectedFeatured;
 
+  BannerAd? banner;
+
+
   @override
   void onInit() async {
+
+    Future.delayed(Duration.zero,() async{
+
+      banner=await  createAndLoadBanner(adUnitId: 'ca-app-pub-8107574011529731/2912692739');
+
+      await loadInterstitialAd();
+    },);
+
     initPagingController();
 
     scrollController = List.generate(
@@ -249,6 +262,7 @@ class HappyTimeHomeLogic extends BaseController
   }
 
   fetchDetails({required item, bool? featured}) async {
+    await showInterstitialAd();
     AppLogger.it.logInfo("type=> ${item.type}");
 
     selectedType = "${item.type}";
@@ -285,8 +299,11 @@ class HappyTimeHomeLogic extends BaseController
         ],
       );
 
-  playVideo({required Videos video}) {
+  playVideo({required Videos video})async {
     try {
+
+      await showInterstitialAd();
+
       AppLogger.it.logInfo("link ${video.link ?? ''}");
       AppLogger.it.logInfo("server ${video.server ?? ''}");
       AppLogger.it.logInfo("header ${video.header ?? ''}");
@@ -355,7 +372,9 @@ class HappyTimeHomeLogic extends BaseController
 
   void goToTheMovieDbPage() async {
     try {
-      Get.to(() => const TheMovieDbPage());
+      await showInterstitialAd();
+
+     Get.to(() => const TheMovieDbPage());
     } catch (e) {
       hideLoading();
     }
@@ -384,5 +403,10 @@ class HappyTimeHomeLogic extends BaseController
     } catch (e) {
       hideLoading();
     }
+  }
+
+  showInterstitialAd()async{
+     interstitialAd?.show();
+    loadInterstitialAd();
   }
 }

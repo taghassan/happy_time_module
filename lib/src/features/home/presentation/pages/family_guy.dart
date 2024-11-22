@@ -75,6 +75,7 @@ class FamilyGuyPageEpisode extends GetView<HappyTimeHomeLogic> {
 
                 return InkWell(
                   onTap: () async {
+                    await controller.showInterstitialAd();
                     Get.to(() => WebViewPage(
                         url:
                             "https://vidlink.pro/tv/${controller.theMovieDBId}/${episode.season}/${episode.episode}",
