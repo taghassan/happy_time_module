@@ -262,7 +262,7 @@ class BigCardList extends GetView<HappyTimeHomeLogic> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  homeSectionEnum.name,
+                  homeSectionEnum.name.tr,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const Icon(Icons.open_in_new)
