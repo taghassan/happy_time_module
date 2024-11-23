@@ -15,7 +15,7 @@ const Map<String, String> ar = {
   "popularSeries": "المسلسلات الشهيرة",
   "livetv": "البث المباشر",
 
-  "home":"الصفحة الرئيسية",
+  "home":"الرئيسية",
   "tv shows":"مسلسلات",
   "movies":"الأفلام"
 };
