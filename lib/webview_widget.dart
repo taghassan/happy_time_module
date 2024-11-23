@@ -33,18 +33,18 @@ BannerAd? banner;
       // Called when an ad is successfully received.
       onAdLoaded: (ad) {
         debugPrint('$ad loaded.');
-        setState(() {
-
-        });
+        // setState(() {
+        //
+        // });
       },
       // Called when an ad request failed.
       onAdFailedToLoad: (ad, err) {
         debugPrint('BannerAd failed to load: $err');
         // Dispose the ad here to free resources.
         ad.dispose();
-        setState(() {
-
-        });
+        // setState(() {
+        //
+        // });
       },
       // Called when an ad opens an overlay that covers the screen.
       onAdOpened: (Ad ad) {},
