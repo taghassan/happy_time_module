@@ -272,7 +272,7 @@ class HappyTimeHomeLogic extends BaseController
   }
 
   fetchDetails({required item, bool? featured}) async {
-    await showInterstitialAd();
+  await showInterstitialAd();
     AppLogger.it.logInfo("type=> ${item.type}");
 
     selectedType = "${item.type}";
@@ -312,7 +312,7 @@ class HappyTimeHomeLogic extends BaseController
   playVideo({required Videos video})async {
     try {
 
-      await showInterstitialAd();
+    //  await showInterstitialAd();
 
       AppLogger.it.logInfo("link ${video.link ?? ''}");
       AppLogger.it.logInfo("server ${video.server ?? ''}");
@@ -382,7 +382,7 @@ class HappyTimeHomeLogic extends BaseController
 
   void goToTheMovieDbPage() async {
     try {
-      await showInterstitialAd();
+    //  await showInterstitialAd();
 
      Get.to(() => const TheMovieDbPage());
     } catch (e) {

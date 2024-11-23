@@ -146,10 +146,11 @@ class HappyTimeHomePage extends GetView<HappyTimeHomeLogic> {
                       child: Container(
                         decoration: const BoxDecoration(
                             image: DecorationImage(
-                                image: NetworkImage(
-                                  "https://media.themoviedb.org/t/p/w130_and_h195_bestv2/wR0yAfQKFMtITi1Iiy9CuqDPTfZ.jpg",
-                                ),
-                                fit: BoxFit.cover),
+                                // image: NetworkImage(
+                                //   "https://media.themoviedb.org/t/p/w130_and_h195_bestv2/wR0yAfQKFMtITi1Iiy9CuqDPTfZ.jpg",
+                                // ),
+                              image: AssetImage("assets/images/cima.jpg"),
+                                fit: BoxFit.fill),
                             borderRadius: BorderRadius.all(Radius.circular(10))),
                         height: Get.height * 0.2,
                         width: Get.width,
