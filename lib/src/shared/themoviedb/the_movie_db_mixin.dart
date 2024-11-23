@@ -135,6 +135,20 @@ var networksData = [
   }
 ];
 
+enum TheMovieDBGroupEnum {
+  today,
+  popular,
+  streaming,
+  movie,
+  tv
+
+}
+enum TheMovieDBPanelEnum {
+  free_scroller,
+  trending_scroller,
+  popular_scroller,
+}
+
 mixin TheMovieDbMixin on GetxController {
   TheMovieDBHelper theMovieDBHelper = TheMovieDBHelper();
 
@@ -145,6 +159,11 @@ mixin TheMovieDbMixin on GetxController {
   List<TheMovieDbSeasonResponse> selectedTheMovieDbSeason = [];
   List<TheMovieDbEpisodeResponse> selectedTheMovieDbEpisodes = [];
 
+
+  List<TheMovieDBShowResponse> trendingScrollerList = [];
+  List<TheMovieDBShowResponse> popularScrollerList = [];
+  List<TheMovieDBShowResponse> freeScrollerList = [];
+
   // List<TheMovieDBShowResponse> tvShows = [];
   List<TheMovieDbNetWorksResponse> networks = networksData
       .map<TheMovieDbNetWorksResponse>(
@@ -152,15 +171,23 @@ mixin TheMovieDbMixin on GetxController {
       )
       .toList();
 
+  String? networkId='8';
+
   List<TheMovieDBShowResponse> searchResults = [];
+
+  String? selectedNetwork;
+  List<TheMovieDBShowResponse> networkSearchResults = [];
 
   static const pageSize = 20;
 
   final PagingController<int, TheMovieDBShowResponse> tvShowsPagingController =
-      PagingController(firstPageKey: 0);
+      PagingController(firstPageKey: 1);
 
   final PagingController<int, TheMovieDBShowResponse> moviesPagingController =
-      PagingController(firstPageKey: 0);
+      PagingController(firstPageKey: 1);
+
+  final PagingController<int, TheMovieDBShowResponse> networkPagingController =
+  PagingController(firstPageKey: 1);
 
   initPagingController() {
     tvShowsPagingController.addPageRequestListener((pageKey) {
@@ -171,6 +198,11 @@ mixin TheMovieDbMixin on GetxController {
     moviesPagingController.addPageRequestListener((pageKey) {
       AppLogger.it.logInfo("moviesPagingController  $pageKey");
       fetchMovies(page: pageKey);
+    });
+
+    networkPagingController.addPageRequestListener((pageKey) {
+      AppLogger.it.logInfo("moviesPagingController  $pageKey");
+      theMovieDbSearchByNetwork(network: networkId,page: pageKey);
     });
   }
 
@@ -231,9 +263,61 @@ mixin TheMovieDbMixin on GetxController {
   }
 
   theMovieDbSearch({String? query}) async {
+
     searchResults = await theMovieDBHelper.search(query: query);
     update();
   }
+
+  theMovieDbSearchByNetwork({String? network,required int page}) async {
+
+
+    try {
+
+      AppLogger.it.logInfo(" page: $page  \nnetwork: $network ");
+
+      var movies = await theMovieDBHelper.fetchMovies(page: page,watchProviders: network);
+      var tvShow = await theMovieDBHelper.fetchTvItems(page: page.toString(),watchProviders: network);
+      final newItems =[
+        ...movies,
+        ...tvShow
+      ];
+
+      final isLastPage = newItems.length < pageSize;
+      if (isLastPage) {
+        networkPagingController.appendLastPage(newItems);
+      } else {
+        final nextPageKey = page + 1;
+        AppLogger.it.logInfo("nextPageKey $nextPageKey");
+        networkPagingController.appendPage(newItems, nextPageKey);
+      }
+    } catch (error) {
+      networkPagingController.error = error;
+    }
+
+
+    update();
+  }
+
+
+  Future<List<TheMovieDBShowResponse>> queryPanel({required TheMovieDBPanelEnum panel, required TheMovieDBGroupEnum group})async{
+     return await theMovieDBHelper.queryPanel(group: group.name,panel: panel.name);
+  }
+
+ fetchTrendingScroller()async{
+   trendingScrollerList=await queryPanel(panel: TheMovieDBPanelEnum.trending_scroller, group: TheMovieDBGroupEnum.today);
+   update();
+  }
+
+ fetchPopularScroller()async{
+   popularScrollerList=await queryPanel(panel: TheMovieDBPanelEnum.popular_scroller, group: TheMovieDBGroupEnum.streaming);
+   update();
+  }
+
+ fetchFreeScroller()async{
+   freeScrollerList=await queryPanel(panel: TheMovieDBPanelEnum.free_scroller, group: TheMovieDBGroupEnum.tv);
+   update();
+  }
+
 
 //https://vidsrc.cc/#api
 
@@ -340,8 +424,6 @@ mixin TheMovieDbMixin on GetxController {
   }
 
   openWebViewPage({String? url, String? redirectPrevent}) {
-    // Get.to(() =>
-    //     WebViewPage(url: 'https://tv2.idlix.asia/episode/avatar-the-last-airbender-season-1-episode-1' ?? '', redirectPrevent:  'tv2.idlix.asia'));
 
     Get.to(
       () => WebViewPage(url: url ?? '', redirectPrevent: redirectPrevent ?? ''),

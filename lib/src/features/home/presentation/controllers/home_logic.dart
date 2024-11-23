@@ -68,11 +68,9 @@ class HappyTimeHomeLogic extends BaseController
 
   @override
   void onInit() async {
+    banner=await  createAndLoadBanner(adUnitId: 'ca-app-pub-8107574011529731/2912692739');
 
     Future.delayed(Duration.zero,() async{
-
-      banner=await  createAndLoadBanner(adUnitId: 'ca-app-pub-8107574011529731/2912692739');
-
       adInterval=3;
 
       initAds(adUnitIds: [
@@ -110,6 +108,24 @@ class HappyTimeHomeLogic extends BaseController
     disposePagingController();
     super.onClose();
   }
+
+
+  Future<bool> askUserForAd() async {
+    bool userAction = await Get.defaultDialog(
+        title: '',
+        content: const Text("هل تريد مشاهدة إعلان\n هذا سيساعدنا علي الاسمرار"),
+        actions: [
+          TextButton(
+              onPressed: () => Get.back(result: true),
+              child: const Text("نعم")),
+          TextButton(
+              onPressed: () => Get.back(result: false),
+              child: const Text("لا،لا يهمني")),
+        ]);
+
+    return userAction;
+  }
+
 
   fetchHomeContent() async {
     try {
@@ -384,6 +400,11 @@ class HappyTimeHomeLogic extends BaseController
     try {
     //  await showInterstitialAd();
 
+      showLoading();
+      await  fetchTrendingScroller();
+      await  fetchPopularScroller();
+      await  fetchFreeScroller();
+      hideLoading();
      Get.to(() => const TheMovieDbPage());
     } catch (e) {
       hideLoading();
@@ -405,6 +426,21 @@ class HappyTimeHomeLogic extends BaseController
     }
   }
 
+  void doSearchByNetwork({String? network,String? networkName}) async {
+    try {
+      showLoading();
+      // await theMovieDbSearchByNetwork(network: network);
+      networkId=network;
+      selectedNetwork=networkName;
+      networkPagingController.itemList=[];
+      networkPagingController.refresh();
+
+      Get.to(()=>const NetworkSearchResulPage());
+      hideLoading();
+    } catch (e) {
+      hideLoading();
+    }
+  }
   void doSearch() async {
     try {
       showLoading();
@@ -416,7 +452,10 @@ class HappyTimeHomeLogic extends BaseController
   }
 
   showInterstitialAd()async{
-     interstitialAd?.show();
-    loadInterstitialAd();
+    if(await askUserForAd())
+    {
+      await interstitialAd?.show();
+      loadInterstitialAd();
+    }
   }
 }

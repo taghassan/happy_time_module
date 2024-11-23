@@ -43,17 +43,22 @@ mixin AdmobManagerPlus on GetxController {
   }
 
   Widget? loadBannerWidget({required BannerAd? bannerAd}) {
-    if (bannerAd != null) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: SizedBox(
-          width: bannerAd.size.width.toDouble(),
-          height: bannerAd.size.height.toDouble(),
-          child: AdWidget(ad: bannerAd),
-        ),
-      );
-    }
-    return const SizedBox.shrink();
+   try{
+     if (bannerAd != null) {
+       return Padding(
+         padding: const EdgeInsets.symmetric(horizontal: 15),
+         child: SizedBox(
+           width: bannerAd.size.width.toDouble(),
+           height: bannerAd.size.height.toDouble(),
+           child: AdWidget(ad: bannerAd),
+         ),
+       );
+     }
+     return const SizedBox.shrink();
+   }catch(e){
+
+     return const SizedBox.shrink();
+   }
   }
 
   //***************** created by TajEldeen *****************//
