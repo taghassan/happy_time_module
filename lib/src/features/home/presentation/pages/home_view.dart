@@ -3,15 +3,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide WidgetPaddingX;
-import 'package:happy_time_module/src/core/utils/logger_utils.dart';
-import 'package:happy_time_module/src/features/home/presentation/pages/family_guy.dart';
 import 'package:happy_time_module/src/features/home/presentation/widgets/caster_item_card_for_list.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:happy_time_module/src/core/utils/extensions.dart';
-import 'package:happy_time_module/src/features/home/presentation/pages/list_of_case_view.dart';
-import 'package:happy_time_module/src/features/home/presentation/pages/single_case_view.dart';
-import 'package:happy_time_module/src/features/home/presentation/widgets/case_card_widget.dart';
-import 'package:happy_time_module/src/features/home/presentation/widgets/category_item_card_for_list.dart';
 
 import '../controllers/home_logic.dart';
 
@@ -251,100 +245,95 @@ class BigCardList extends GetView<HappyTimeHomeLogic> {
     }
 
     return controller.obx(
-      (state) => InkWell(
-        onTap: () {
-          // Get.to(() => const SingleCaseView());
-        },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  homeSectionEnum.name.tr,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const Icon(Icons.open_in_new)
-              ],
-            ),
-            context.sizedBoxHeightMicro,
-            ListView.builder(
-                controller: scrollController,
-                // 👈 assign scrollController here
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                scrollDirection: Axis.horizontal,
-                itemCount: itemsList?.length,
-                // itemExtent: 100,
-                itemBuilder: (context, index) {
-                  var item = itemsList?[index];
+      (state) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                homeSectionEnum.name.tr,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const Icon(Icons.open_in_new)
+            ],
+          ),
+          context.sizedBoxHeightMicro,
+          ListView.builder(
+              controller: scrollController,
+              // 👈 assign scrollController here
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              scrollDirection: Axis.horizontal,
+              itemCount: itemsList?.length,
+              // itemExtent: 100,
+              itemBuilder: (context, index) {
+                var item = itemsList?[index];
 
-                  return item != null
-                      ? CachedNetworkImage(
-                          imageUrl: item.posterPath ??
-                              "http://via.placeholder.com/200x150",
-                          imageBuilder: (context, imageProvider) => InkWell(
-                            onTap: () => controller.fetchDetails(item: item),
-                            child: Stack(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.all(3),
-                                  width: Get.width * 0.4,
-                                  height: Get.height * 0.3,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: imageProvider,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  top: 10,
-                                  right: 0,
-                                  child: Container(
-                                    padding: const EdgeInsets.all(4),
-                                    decoration: const BoxDecoration(
-                                        color: Colors.black87,
-                                        borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(10),
-                                            bottomLeft: Radius.circular(10))),
-                                    child: Text(
-                                      item.subtitle ?? '',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelSmall
-                                          ?.copyWith(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w300),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                return item != null
+                    ? CachedNetworkImage(
+                  imageUrl: item.posterPath ??
+                      "http://via.placeholder.com/200x150",
+                  imageBuilder: (context, imageProvider) => InkWell(
+                    onTap: () => controller.fetchDetails(item: item),
+                    child: Stack(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.all(3),
+                          width: Get.width * 0.4,
+                          height: Get.height * 0.3,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: imageProvider,
+                              fit: BoxFit.cover,
+                            ),
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(10),
                             ),
                           ),
-                          placeholder: (context, url) => Container(
-                            width: Get.width * 0.4,
-                            height: Get.height * 0.3,
+                        ),
+                        Positioned(
+                          top: 10,
+                          right: 0,
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
                             decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
+                                color: Colors.black87,
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10))),
+                            child: Text(
+                              item.subtitle ?? '',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelSmall
+                                  ?.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w300),
                             ),
-                          ).applyShimmer(),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
-                        )
-                      : const Icon(Icons.error);
-                }).size(
-              height: Get.height * 0.36,
-            ),
-            // Text("${scrollController.position.maxScrollExtent??''}")
-          ],
-        ).paddingAll(8),
-      ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  placeholder: (context, url) => Container(
+                    width: Get.width * 0.4,
+                    height: Get.height * 0.3,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                    ),
+                  ).applyShimmer(),
+                  errorWidget: (context, url, error) =>
+                  const Icon(Icons.error),
+                )
+                    : const Icon(Icons.error);
+              }).size(
+            height: Get.height * 0.36,
+          ),
+          // Text("${scrollController.position.maxScrollExtent??''}")
+        ],
+      ).paddingAll(8),
     );
   }
 }
@@ -363,13 +352,9 @@ class SmallCardList extends GetView<HappyTimeHomeLogic>  {
       itemExtent: 100,
       itemBuilder: (context, index) {
         var caster = (controller.homeContentResponse?.popularCasters??[])[index];
-        return  InkWell(
-            onTap: () {
-              // Get.to(() => const ListOfCaseView());
-            },
-            child: CasterItemCardForList(
-                caster:caster,
-            ).marginAll(3));
+        return  CasterItemCardForList(
+          caster:caster,
+        ).marginAll(3);
       }
     ).size(
       height: Get.height * 0.2,
