@@ -79,8 +79,8 @@ class TheMovieDbPage extends GetView<HappyTimeHomeLogic> {
                     children: [
                       controller.nativeAdWidget(6),
                      Expanded(child:  PagedGridView<int, TheMovieDBShowResponse>(
-                       physics: const NeverScrollableScrollPhysics(),
-                       shrinkWrap: true,
+                       // physics: const NeverScrollableScrollPhysics(),
+                       // shrinkWrap: true,
                        gridDelegate:
                        const SliverGridDelegateWithFixedCrossAxisCount(
                          crossAxisCount: 3,
@@ -103,8 +103,8 @@ class TheMovieDbPage extends GetView<HappyTimeHomeLogic> {
                         children: [
                           controller.nativeAdWidget(15),
                           Expanded(child:  PagedGridView<int, TheMovieDBShowResponse>(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
+                            // physics: const NeverScrollableScrollPhysics(),
+                            // shrinkWrap: true,
                             gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 3,
@@ -385,7 +385,7 @@ class TheMovieDBBigCardList extends GetView<HappyTimeHomeLogic> {
                             ),
 
                           ),
-                          child: Center(child: Icon(Icons.warning_amber),),
+                          child: const Center(child: Icon(Icons.warning_amber),),
                         ),
                   );
                 }).size(
