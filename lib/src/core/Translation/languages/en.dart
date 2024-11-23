@@ -13,5 +13,9 @@ const Map<String, String> en = {
   "featured": "Featured",
   "anime": "Anime",
   "popularSeries": "Popular Series",
-  "livetv": "Live TV"
+  "livetv": "Live TV",
+
+  "home":"Home",
+  "tv shows":"Tv shows",
+  "movies":"Movies",
 };

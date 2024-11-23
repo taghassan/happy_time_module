@@ -46,15 +46,15 @@ class TheMovieDbPage extends GetView<HappyTimeHomeLogic> {
             length: 3,
             child: Column(
               children: [
-                const TabBar(tabs: [
+                 TabBar(tabs: [
                   Tab(
-                    child: Text("Home"),
+                    child: Text("home".tr),
                   ),
                   Tab(
-                    child: Text("Tv shows"),
+                    child: Text("tv shows".tr),
                   ),
                   Tab(
-                    child: Text("Movies"),
+                    child: Text("movies".tr),
                   )
                 ]),
 
