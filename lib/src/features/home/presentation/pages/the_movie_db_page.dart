@@ -69,7 +69,7 @@ class TheMovieDbPage extends GetView<HappyTimeHomeLogic> {
                             TheMovieDBBigCardList(scrollController: ScrollController(), homeSectionEnum: HomeSectionEnum.choosed, itemsList: controller.trendingScrollerList),
 
                             TheMovieDBBigCardList(scrollController: ScrollController(), homeSectionEnum: HomeSectionEnum.featured, itemsList: controller.freeScrollerList),
-                            TheMovieDBBigCardList(scrollController: ScrollController(), homeSectionEnum: HomeSectionEnum.popularSeries, itemsList: controller.popularScrollerList),
+                            TheMovieDBBigCardList(scrollController: ScrollController(), homeSectionEnum: HomeSectionEnum.trending, itemsList: controller.popularScrollerList),
 
                           ],
                         ),
