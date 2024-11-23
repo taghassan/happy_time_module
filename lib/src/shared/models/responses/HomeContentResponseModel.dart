@@ -774,6 +774,7 @@ Recents copyWith({  String? name,
   String? get subtitle => _subtitle;
   List<String>? get genreslist => _genreslist;
   List<Genres>? get genres => _genres;
+  String? get type => 'anime';
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
