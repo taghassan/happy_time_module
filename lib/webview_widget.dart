@@ -131,7 +131,7 @@ BannerAd? banner;
         gestureRecognizers: Set()..add(Factory<TapGestureRecognizer>(() => TapGestureRecognizer(),),),
       ),
 
-  loadBannerWidget(bannerAd: banner)??const SizedBox.shrink()
+  //loadBannerWidget(bannerAd: banner)??const SizedBox.shrink()
 
     ],
   ),);
