@@ -62,7 +62,7 @@ BannerAd? banner;
 @override
   void initState() {
 
-  createAndLoadBanner(adUnitId: 'ca-app-pub-8107574011529731/2912692739');
+ // createAndLoadBanner(adUnitId: 'ca-app-pub-8107574011529731/2912692739');
 
   AppLogger.it.logInfo("url is : ${widget.url}");
   controller = WebViewController()
@@ -101,6 +101,7 @@ BannerAd? banner;
   @override
   void dispose() {
   // controller.
+    banner?.dispose();
   super.dispose();
   }
 
