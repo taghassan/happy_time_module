@@ -28,7 +28,15 @@ class PlusSearchInput extends StatelessWidget {
         style: const TextStyle(fontSize: 14),
         decoration: InputDecoration(
 
-          // prefixIcon: Icon(Icons.email),
+          suffixIcon:
+          // searchController.text.isNotEmpty?
+          InkWell(
+            onTap: () {
+              searchController.clear();
+            },
+            child: const Icon(Icons.clear),
+          ),
+                // :const SizedBox.shrink(),
           prefixIcon:
           const Icon(Icons.search, size: 20, color: Color(0xffFF5A60)),
           filled: true,

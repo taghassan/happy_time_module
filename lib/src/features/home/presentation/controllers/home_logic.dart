@@ -1,6 +1,8 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:happy_time_module/admob_manager_plus.dart';
 import 'package:happy_time_module/src/core/controller/base_controller.dart';
 import 'package:happy_time_module/src/core/injectable/injection.dart';
 import 'package:happy_time_module/src/core/utils/extensions.dart';
@@ -45,7 +47,7 @@ enum HomeSectionEnum {
 }
 
 class HappyTimeHomeLogic extends BaseController
-    with StateMixin<HomeState>, LoaderOverlayMixin, TheMovieDbMixin {
+    with StateMixin<HomeState>, LoaderOverlayMixin, TheMovieDbMixin,AdmobManagerPlus ,HasNativeAdsMixin {
   List<ScrollController> scrollController = [];
   int tempItemCount = 10;
 
@@ -61,8 +63,27 @@ class HappyTimeHomeLogic extends BaseController
   String? selectedType;
   Featured? selectedFeatured;
 
+  BannerAd? banner;
+
+
   @override
   void onInit() async {
+    banner=await  createAndLoadBanner(adUnitId: 'ca-app-pub-8107574011529731/2912692739');
+
+    Future.delayed(Duration.zero,() async{
+      adInterval=3;
+
+      initAds(adUnitIds: [
+        'ca-app-pub-8107574011529731/1305797714',
+        'ca-app-pub-8107574011529731/7123260860',
+        'ca-app-pub-8107574011529731/3403507702',
+        'ca-app-pub-8107574011529731/6303534606',
+        'ca-app-pub-8107574011529731/5899648847',
+      ]);
+
+      await loadInterstitialAd();
+    },);
+
     initPagingController();
 
     scrollController = List.generate(
@@ -87,6 +108,24 @@ class HappyTimeHomeLogic extends BaseController
     disposePagingController();
     super.onClose();
   }
+
+
+  Future<bool> askUserForAd() async {
+    bool userAction = await Get.defaultDialog(
+        title: '',
+        content: const Text("هل تريد مشاهدة إعلان\n هذا سيساعدنا علي الاسمرار"),
+        actions: [
+          TextButton(
+              onPressed: () => Get.back(result: true),
+              child: const Text("نعم")),
+          TextButton(
+              onPressed: () => Get.back(result: false),
+              child: const Text("لا،لا يهمني")),
+        ]);
+
+    return userAction;
+  }
+
 
   fetchHomeContent() async {
     try {
@@ -249,6 +288,7 @@ class HappyTimeHomeLogic extends BaseController
   }
 
   fetchDetails({required item, bool? featured}) async {
+  await showInterstitialAd();
     AppLogger.it.logInfo("type=> ${item.type}");
 
     selectedType = "${item.type}";
@@ -285,8 +325,11 @@ class HappyTimeHomeLogic extends BaseController
         ],
       );
 
-  playVideo({required Videos video}) {
+  playVideo({required Videos video})async {
     try {
+
+    //  await showInterstitialAd();
+
       AppLogger.it.logInfo("link ${video.link ?? ''}");
       AppLogger.it.logInfo("server ${video.server ?? ''}");
       AppLogger.it.logInfo("header ${video.header ?? ''}");
@@ -355,7 +398,14 @@ class HappyTimeHomeLogic extends BaseController
 
   void goToTheMovieDbPage() async {
     try {
-      Get.to(() => const TheMovieDbPage());
+    //  await showInterstitialAd();
+
+      showLoading();
+      await  fetchTrendingScroller();
+      await  fetchPopularScroller();
+      await  fetchFreeScroller();
+      hideLoading();
+     Get.to(() => const TheMovieDbPage());
     } catch (e) {
       hideLoading();
     }
@@ -376,6 +426,21 @@ class HappyTimeHomeLogic extends BaseController
     }
   }
 
+  void doSearchByNetwork({String? network,String? networkName}) async {
+    try {
+      showLoading();
+      // await theMovieDbSearchByNetwork(network: network);
+      networkId=network;
+      selectedNetwork=networkName;
+      networkPagingController.itemList=[];
+      networkPagingController.refresh();
+
+      Get.to(()=>const NetworkSearchResulPage());
+      hideLoading();
+    } catch (e) {
+      hideLoading();
+    }
+  }
   void doSearch() async {
     try {
       showLoading();
@@ -383,6 +448,14 @@ class HappyTimeHomeLogic extends BaseController
       hideLoading();
     } catch (e) {
       hideLoading();
+    }
+  }
+
+  showInterstitialAd()async{
+    if(await askUserForAd())
+    {
+      await interstitialAd?.show();
+      loadInterstitialAd();
     }
   }
 }

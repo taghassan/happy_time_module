@@ -19,7 +19,7 @@ class TheMovieDBHelper {
   var headers = {
     'accept': 'text/html, */*; q=0.01',
     'accept-language':
-    'ar-SD,ar;q=0.9,en-GB;q=0.8,en;q=0.7,en-US;q=0.6,zh-CN;q=0.5,zh;q=0.4',
+        'ar-SD,ar;q=0.9,en-GB;q=0.8,en;q=0.7,en-US;q=0.6,zh-CN;q=0.5,zh;q=0.4',
     'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
   };
 
@@ -92,7 +92,7 @@ class TheMovieDBHelper {
     }
   }
 
-  Future<List<TheMovieDBShowResponse>> fetchTvItems({String? page}) async {
+  Future<List<TheMovieDBShowResponse>> fetchTvItems({String? page,String? watchProviders}) async {
     try {
       // addPrettyDioLogger(_client);
 
@@ -130,10 +130,8 @@ class TheMovieDBHelper {
         "with_runtime.lte": 400
       };
 
-
-
       var data =
-          '''air_date.gte=&air_date.lte=&certification=&certification_country=AE&debug=&first_air_date.gte=&first_air_date.lte=&page=$page&primary_release_date.gte=&primary_release_date.lte=&region=AE%7CXX&release_date.gte=&release_date.lte=&show_me=everything&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=AE&with_genres=&with_keywords=&with_networks=&with_origin_country=&with_original_language=&with_watch_monetization_types=flatrate%7Cfree%7Cads%7Crent%7Cbuy&with_watch_providers=&with_release_type=&with_runtime.gte=0&with_runtime.lte=400''';
+          '''air_date.gte=&air_date.lte=&certification=&certification_country=AE&debug=&first_air_date.gte=&first_air_date.lte=&page=$page&primary_release_date.gte=&primary_release_date.lte=&region=AE%7CXX&release_date.gte=&release_date.lte=&show_me=everything&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=AE&with_genres=&with_keywords=&with_networks=&with_origin_country=&with_original_language=&with_watch_monetization_types=flatrate%7Cfree%7Cads%7Crent%7Cbuy&with_watch_providers=${watchProviders??''}&with_release_type=&with_runtime.gte=0&with_runtime.lte=400''';
 
       var response = await _client.request(
         '/discover/tv/items',
@@ -144,34 +142,20 @@ class TheMovieDBHelper {
         data: data,
       );
 
-      var document = parser.parse(response.data);
+      return parseResponse(response);
 
-      var showCards = document.querySelectorAll('.card');
-      for (var showCard in showCards) {
-        var name = "${showCard.querySelector('h2')?.text}".trim();
-        var urlPath =
-            "${showCard.querySelector('.wrapper')?.querySelector('a')?.attributes['href']}";
-        var image =
-            "${showCard.querySelector('.wrapper')?.querySelector('.image')?.querySelector('img')?.attributes['src']}";
-
-        tvShows.add(
-            TheMovieDBShowResponse(name: name, image: image, urlPath: urlPath));
-      }
-
-      return tvShows;
     } catch (e) {
       AppLogger.it.logError(e.toString());
       rethrow;
     }
   }
 
-  Future<List<TheMovieDBShowResponse>> fetchMovies({required int page}) async {
+  Future<List<TheMovieDBShowResponse>> fetchMovies({required int page,String? watchProviders}) async {
     try {
       List<TheMovieDBShowResponse> tvShows = [];
 
-
       var data =
-          '''air_date.gte=&air_date.lte=&certification=&certification_country=AE&debug=&first_air_date.gte=&first_air_date.lte=&page=$page&primary_release_date.gte=&primary_release_date.lte=&region=&release_date.gte=&release_date.lte=2025-05-21&show_me=everything&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=AE&with_genres=&with_keywords=&with_networks=&with_origin_country=&with_original_language=&with_watch_monetization_types=&with_watch_providers=&with_release_type=&with_runtime.gte=0&with_runtime.lte=400''';
+          '''air_date.gte=&air_date.lte=&certification=&certification_country=AE&debug=&first_air_date.gte=&first_air_date.lte=&page=$page&primary_release_date.gte=&primary_release_date.lte=&region=&release_date.gte=&release_date.lte=2025-05-21&show_me=everything&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=AE&with_genres=&with_keywords=&with_networks=&with_origin_country=&with_original_language=&with_watch_monetization_types=&with_watch_providers=${watchProviders??''}&with_release_type=&with_runtime.gte=0&with_runtime.lte=400''';
 
       var response = await _client.request(
         '/discover/movie/items',
@@ -182,35 +166,16 @@ class TheMovieDBHelper {
         data: data,
       );
 
-      var document = parser.parse(response.data);
-
-      var showCards = document.querySelectorAll('.card');
-      for (var showCard in showCards) {
-        var name = "${showCard.querySelector('h2')?.text}".trim();
-        var urlPath =
-            "${showCard.querySelector('.wrapper')?.querySelector('a')?.attributes['href']}";
-        var image =
-            "${showCard.querySelector('.wrapper')?.querySelector('.image')?.querySelector('img')?.attributes['src']}";
-
-        AppLogger.it.logInfo("name $name");
-        AppLogger.it.logInfo("urlPath $urlPath");
-        AppLogger.it.logInfo("image $image");
-        tvShows.add(TheMovieDBShowResponse(
-            name: name,
-            image: image,
-            urlPath: urlPath,
-            showType: ShowTypes.movie));
-      }
-      return tvShows;
+      return parseResponse(response);
     } catch (e) {
       AppLogger.it.logError(e.toString());
       rethrow;
     }
   }
 
-  Future<List<TheMovieDBShowResponse>> search({String? query}) async {
+  Future<List<TheMovieDBShowResponse>> search({String? query,}) async {
     try {
-      List<TheMovieDBShowResponse> tvShows = [];
+
       var response = await _client.request(
         '/search?query=${query?.replaceAll(" ", "+")}',
         options: Options(
@@ -218,8 +183,36 @@ class TheMovieDBHelper {
           headers: headers,
         ),
       );
-      // AppLogger.it.logInfo("response $response");
 
+      return parseResponse(response);
+    } catch (e) {
+      AppLogger.it.logError(e.toString());
+      rethrow;
+    }
+  }
+
+  Future<List<TheMovieDBShowResponse>>   queryPanel({required String panel, required String group})async{
+    try {
+
+      var response = await _client.request(
+        '/remote/panel?panel=$panel&group=$group',
+        options: Options(
+          method: 'GET',
+          headers: headers,
+        ),
+      );
+
+      return parseResponse(response);
+    } catch (e) {
+      AppLogger.it.logError(e.toString());
+      rethrow;
+    }
+  }
+
+  List<TheMovieDBShowResponse> parseResponse(Response response){
+    List<TheMovieDBShowResponse> tvShows = [];
+
+    try{
       var document = parser.parse(response.data);
 
       var showCards = document.querySelectorAll('.card');
@@ -237,12 +230,16 @@ class TheMovieDBHelper {
             name: name,
             image: image,
             urlPath: urlPath,
-            showType: urlPath.contains("movie")? ShowTypes.movie :urlPath.contains("collection")? ShowTypes.collection:  ShowTypes.tv));
+            showType: urlPath.contains("movie")
+                ? ShowTypes.movie
+                : urlPath.contains("collection")
+                ? ShowTypes.collection
+                : ShowTypes.tv));
       }
-return tvShows;
-    } catch (e) {
-      AppLogger.it.logError(e.toString());
+      return tvShows;
+    }catch(e){
       rethrow;
     }
   }
+
 }
