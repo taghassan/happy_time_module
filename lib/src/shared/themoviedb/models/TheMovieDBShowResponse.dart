@@ -44,7 +44,7 @@ class TheMovieDBShowResponse {
   String? get theMovieDBId =>
       _urlPath?.split('/').last ??
       ''; //.toString().split('-').first.toString()??'';
-  ShowTypes? get showType => _showType??ShowTypes.tv;
+  ShowTypes? get showType => _showType?? (theMovieDBId?.contains("movie")==true? ShowTypes.movie :theMovieDBId?.contains("collection")==true? ShowTypes.collection:  ShowTypes.tv);
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
