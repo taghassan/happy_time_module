@@ -349,43 +349,73 @@ mixin TheMovieDbMixin on GetxController {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                OutlinedButton(
-                        onPressed: () {
-                          Get.back(result: 'vidlink.pro');
-                        },
-                        child: const Text("Server 1"))
-                    .size(width: Get.width * 0.8),
-                OutlinedButton(
-                        onPressed: () {
-                          Get.back(result: 'vidsrc.cc/v3/embed');
-                        },
-                        child: const Text("Server 2"))
-                    .size(width: Get.width * 0.8),
-                OutlinedButton(
-                        onPressed: () {
-                          Get.back(result: 'moviesapi.club');
-                        },
-                        child: const Text("Server 3"))
-                    .size(width: Get.width * 0.8),
 
-                OutlinedButton(
-                    onPressed: () {
-                      Get.back(result: 'flicky.host');
-                    },
-                    child: const Text("Server 4"))
-                    .size(width: Get.width * 0.8),
-                OutlinedButton(
-                    onPressed: () {
-                      Get.back(result: 'vidsrc.vip/embed');
-                    },
-                    child: const Text("Server 5"))
-                    .size(width: Get.width * 0.8),
+                serverBtn(server: 'vidlink.pro', name: 'Server 1'),
+                serverBtn(server: 'vidsrc.cc/v3/embed', name: 'Server 2'),
+                serverBtn(server: 'moviesapi.club', name: 'Server 3'),
+                serverBtn(server: 'flicky.host', name: 'Server 4'),
+                serverBtn(server: 'vidsrc.vip/embed', name: 'Server 5'),
+
+                // OutlinedButton(
+                //         onPressed: () {
+                //           Get.back(result: 'vidlink.pro');
+                //         },
+                //         child: const Text("Server 1"))
+                //     .size(width: Get.width * 0.8),
+                // OutlinedButton(
+                //         onPressed: () {
+                //           Get.back(result: 'vidsrc.cc/v3/embed');
+                //         },
+                //         child: const Text("Server 2"))
+                //     .size(width: Get.width * 0.8),
+                // OutlinedButton(
+                //         onPressed: () {
+                //           Get.back(result: 'moviesapi.club');
+                //         },
+                //         child: const Text("Server 3"))
+                //     .size(width: Get.width * 0.8),
+
+                // OutlinedButton(
+                //     onPressed: () {
+                //       Get.back(result: 'flicky.host');
+                //     },
+                //     child: const Row(
+                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //       children: [
+                //         Text("Server 4"),
+                //
+                //         Icon(Icons.report_gmailerrorred)
+                //       ],
+                //     ))
+                //     .size(width: Get.width * 0.8),
+                // OutlinedButton(
+                //     onPressed: () {
+                //       Get.back(result: 'vidsrc.vip/embed');
+                //     },
+                //     child: const Text("Server 5"))
+                //     .size(width: Get.width * 0.8),
               ],
             ),
           )),
     ));
 
     return server;
+  }
+
+  Widget serverBtn({required String server, required String name}){
+    return OutlinedButton(
+        onPressed: () {
+          Get.back(result: server);
+        },
+        child:  Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(name),
+
+            const Icon(Icons.report_gmailerrorred)
+          ],
+        ))
+        .size(width: Get.width * 0.8);
   }
 
   playMovieMedia({
