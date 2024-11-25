@@ -17,6 +17,9 @@ class WebViewPage extends StatefulWidget {
 
 class _WebViewWidgetState extends State<WebViewPage> {
 late  WebViewController controller;
+
+// late String embed;
+
 BannerAd? banner;
 //***************** created by TajEldeen *****************//
 // Banner Ads
@@ -61,7 +64,7 @@ BannerAd? banner;
 
 @override
   void initState() {
-
+// embed ='''<embed type="text/html" src="${widget.url}" >''';
  // createAndLoadBanner(adUnitId: 'ca-app-pub-8107574011529731/2912692739');
 
   AppLogger.it.logInfo("url is : ${widget.url}");
@@ -78,8 +81,12 @@ BannerAd? banner;
         onPageFinished: (String url) {
           // controller.setJavaScriptMode(JavaScriptMode.disabled);
         },
-        onHttpError: (HttpResponseError error) {},
-        onWebResourceError: (WebResourceError error) {},
+        onHttpError: (HttpResponseError error) {
+
+        },
+        onWebResourceError: (WebResourceError error) {
+          // controller.loadHtmlString(embed);
+        },
         onNavigationRequest: (NavigationRequest request) {
           if (!request.url.contains(widget.redirectPrevent)) {
             return NavigationDecision.prevent;
@@ -102,6 +109,7 @@ BannerAd? banner;
   void dispose() {
   // controller.
     banner?.dispose();
+
   super.dispose();
   }
 

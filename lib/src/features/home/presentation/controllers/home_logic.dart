@@ -11,6 +11,7 @@ import 'package:happy_time_module/src/core/utils/logger_utils.dart';
 import 'package:happy_time_module/src/features/home/presentation/pages/family_guy.dart';
 import 'package:happy_time_module/src/features/home/presentation/pages/single_media_page.dart';
 import 'package:happy_time_module/src/features/home/presentation/pages/the_movie_db_page.dart';
+import 'package:happy_time_module/src/features/home/presentation/widgets/sub_pages/TheMovieDBSearch.dart';
 import 'package:happy_time_module/src/shared/datasources/remote_datasource/movies_remote_data_source.dart';
 import 'package:happy_time_module/src/shared/entities/MediaDetailsEntity.dart';
 import 'package:happy_time_module/src/shared/hosts/check.dart';
@@ -131,6 +132,11 @@ class HappyTimeHomeLogic extends BaseController
     try {
       showLoading();
       var response = await moviesRemoteDataSource.fetchHomeContent();
+
+      await  fetchTrendingScroller();
+      await  fetchPopularScroller();
+      await  fetchFreeScroller();
+
       hideLoading();
       response.when(
         success: (HomeContentResponseModel homeContent) {

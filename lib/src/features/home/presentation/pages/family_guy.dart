@@ -2,6 +2,7 @@ import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide WidgetPaddingX;
+import 'package:happy_time_module/src/core/utils/logger_utils.dart';
 import 'package:happy_time_module/src/features/home/presentation/controllers/home_logic.dart';
 import 'package:happy_time_module/src/shared/entities/MediaDetailsEntity.dart';
 import 'package:happy_time_module/webview_widget.dart';
@@ -26,9 +27,9 @@ class FamilyGuyPage extends GetView<HappyTimeHomeLogic> {
                       mainAxisSpacing: 3,
                       crossAxisSpacing: 3,
                       childAspectRatio: 0.5),
-                  itemCount: controller.selectedTheMovieDbSeason.length,
+                  itemCount: (controller.apiTvShowDetails?.seasons??[]).length,
                   itemBuilder: (context, index) {
-                    var season = controller.selectedTheMovieDbSeason[index];
+                    var season = (controller.apiTvShowDetails?.seasons??[])[index];
                     return InkWell(
                       child: FamilyGuyImageBuilder(
                         url: "${season.image}",
@@ -65,7 +66,7 @@ class FamilyGuyPageEpisode extends GetView<HappyTimeHomeLogic> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(controller.theMovieDBEpisodePageTitle),
+          title: Text(controller.selectedTvSeasonsDetails?.name??''),
         ),
         body: controller.obx(
           (state) {
@@ -78,14 +79,15 @@ class FamilyGuyPageEpisode extends GetView<HappyTimeHomeLogic> {
                       crossAxisSpacing: 3,
                       mainAxisSpacing: 3,
                       childAspectRatio: 0.5),
-                  itemCount: controller.selectedTheMovieDbEpisodes.length,
+                  itemCount: (controller.selectedTvSeasonsDetails?.episodes??[]).length,
                   itemBuilder: (context, index) {
-                    var episode = controller.selectedTheMovieDbEpisodes[index];
+                    var episode = (controller.selectedTvSeasonsDetails?.episodes??[])[index];
 
+                    AppLogger.it.logInfo("episode ${episode.toJson()}");
                     return InkWell(
                       onTap: () async {
                         await controller.showInterstitialAd();
-                       controller.playMedia(mediaType: MediaTypeEnum.series, theMovieDBId: controller.theMovieDBId,season: '${episode.season}',episode: '${episode.episode}');
+                       controller.playMedia(mediaType: MediaTypeEnum.series, theMovieDBId: '${episode.showId}',season: '${episode.seasonNumber}',episode: '${episode.episodeNumber}');
 
                       },
                       child: FamilyGuyImageBuilder(

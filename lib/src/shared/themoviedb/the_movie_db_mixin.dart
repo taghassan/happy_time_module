@@ -7,6 +7,9 @@ import 'package:happy_time_module/src/core/utils/logger_utils.dart';
 import 'package:happy_time_module/src/features/home/presentation/controllers/home_logic.dart';
 import 'package:happy_time_module/src/shared/entities/MediaDetailsEntity.dart';
 import 'package:happy_time_module/src/shared/models/responses/NetworkListApiResponseModel.dart';
+import 'package:happy_time_module/src/shared/themoviedb/models/ApiDiscoverTvResponse.dart';
+import 'package:happy_time_module/src/shared/themoviedb/models/ApiTvShowDetailsResponse.dart';
+import 'package:happy_time_module/src/shared/themoviedb/models/TVSeasonsDetailsResponse.dart';
 import 'package:happy_time_module/src/shared/themoviedb/models/TheMovieDBEpisodeResponse.dart';
 import 'package:happy_time_module/src/shared/themoviedb/models/TheMovieDBNetowrkResponse.dart';
 import 'package:happy_time_module/src/shared/themoviedb/models/TheMovieDBSeasonResponse.dart';
@@ -157,12 +160,14 @@ mixin TheMovieDbMixin on GetxController {
   String theMovieDBEpisodePageTitle = '';
   TextEditingController searchTextEditController = TextEditingController();
   List<TheMovieDbSeasonResponse> selectedTheMovieDbSeason = [];
+  ApiTvShowDetailsResponse? apiTvShowDetails;
+  TvSeasonsDetailsResponse? selectedTvSeasonsDetails;
   List<TheMovieDbEpisodeResponse> selectedTheMovieDbEpisodes = [];
 
 
-  List<TheMovieDBShowResponse> trendingScrollerList = [];
-  List<TheMovieDBShowResponse> popularScrollerList = [];
-  List<TheMovieDBShowResponse> freeScrollerList = [];
+  List<TvShowResults> trendingScrollerList = [];
+  List<TvShowResults> popularScrollerList = [];
+  List<TvShowResults> freeScrollerList = [];
 
   // List<TheMovieDBShowResponse> tvShows = [];
   List<TheMovieDbNetWorksResponse> networks = networksData
@@ -173,20 +178,20 @@ mixin TheMovieDbMixin on GetxController {
 
   String? networkId='8';
 
-  List<TheMovieDBShowResponse> searchResults = [];
+  List<TvShowResults> searchResults = [];
 
   String? selectedNetwork;
   List<TheMovieDBShowResponse> networkSearchResults = [];
 
   static const pageSize = 20;
 
-  final PagingController<int, TheMovieDBShowResponse> tvShowsPagingController =
+  final PagingController<int, TvShowResults> tvShowsPagingController =
       PagingController(firstPageKey: 1);
 
-  final PagingController<int, TheMovieDBShowResponse> moviesPagingController =
+  final PagingController<int, TvShowResults> moviesPagingController =
       PagingController(firstPageKey: 1);
 
-  final PagingController<int, TheMovieDBShowResponse> networkPagingController =
+  final PagingController<int, TvShowResults> networkPagingController =
   PagingController(firstPageKey: 1);
 
   initPagingController() {
@@ -214,13 +219,13 @@ mixin TheMovieDbMixin on GetxController {
   }
 
   fetchSeasons({required String tvShowPath}) async {
-    selectedTheMovieDbSeason =
-        await theMovieDBHelper.fetchSeasons(tvShowPath: tvShowPath);
+    // selectedTheMovieDbSeason =
+    apiTvShowDetails=  await theMovieDBHelper.fetchSeasons(tvShowPath: tvShowPath);
     update();
   }
 
   fetchEpisodeList({required String url}) async {
-    selectedTheMovieDbEpisodes =
+    selectedTvSeasonsDetails =
         await theMovieDBHelper.fetchEpisodeList(url: url);
     update();
   }
@@ -230,7 +235,9 @@ mixin TheMovieDbMixin on GetxController {
     // await theMovieDBHelper.fetchMovies(page: page);
     AppLogger.it.logInfo("page $page");
     try {
-      final newItems = await theMovieDBHelper.fetchMovies(page: page);
+      final movieApiResponse = await theMovieDBHelper.fetchMoviesApiItems(page: page.toString());
+      // final newItems = await theMovieDBHelper.fetchMovies(page: page);
+      final newItems= movieApiResponse.results??[];
       final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         moviesPagingController.appendLastPage(newItems);
@@ -247,8 +254,11 @@ mixin TheMovieDbMixin on GetxController {
   fetchTvItems({required int page}) async {
     AppLogger.it.logInfo("page $page");
     try {
-      final newItems =
-          await theMovieDBHelper.fetchTvItems(page: page.toString());
+
+      final apiResponse=await theMovieDBHelper.fetchTvApiItems(page: page.toString());
+     final newItems =apiResponse.results??[];
+      // final newItems =
+      //     await theMovieDBHelper.fetchTvItems(page: page.toString());
       final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         tvShowsPagingController.appendLastPage(newItems);
@@ -264,7 +274,9 @@ mixin TheMovieDbMixin on GetxController {
 
   theMovieDbSearch({String? query}) async {
 
-    searchResults = await theMovieDBHelper.search(query: query);
+   final searchResult = await theMovieDBHelper.searchApi(query: query);
+   searchResults=searchResult.results??[];
+    // searchResults = await theMovieDBHelper.search(query: query);
     update();
   }
 
@@ -275,11 +287,11 @@ mixin TheMovieDbMixin on GetxController {
 
       AppLogger.it.logInfo(" page: $page  \nnetwork: $network ");
 
-      var movies = await theMovieDBHelper.fetchMovies(page: page,watchProviders: network);
-      var tvShow = await theMovieDBHelper.fetchTvItems(page: page.toString(),watchProviders: network);
-      final newItems =[
-        ...movies,
-        ...tvShow
+      var movies = await theMovieDBHelper.fetchMoviesApiItems(page: page.toString(),watchProviders: network);
+      var tvShow = await theMovieDBHelper.fetchTvApiItems(page: page.toString(),watchProviders: network);
+      List<TvShowResults> newItems =[
+        ...movies.results??[],
+        ...tvShow.results??[]
       ];
 
       final isLastPage = newItems.length < pageSize;
@@ -299,8 +311,10 @@ mixin TheMovieDbMixin on GetxController {
   }
 
 
-  Future<List<TheMovieDBShowResponse>> queryPanel({required TheMovieDBPanelEnum panel, required TheMovieDBGroupEnum group})async{
-     return await theMovieDBHelper.queryPanel(group: group.name,panel: panel.name);
+  Future<List<TvShowResults>> queryPanel({required TheMovieDBPanelEnum panel, required TheMovieDBGroupEnum group})async{
+     final panelResult= await theMovieDBHelper.queryPanelApi(group: group.name,panel: panel);
+
+     return panelResult.results??[];
   }
 
  fetchTrendingScroller()async{
@@ -352,48 +366,11 @@ mixin TheMovieDbMixin on GetxController {
 
                 serverBtn(server: 'vidlink.pro', name: 'Server 1'),
                 serverBtn(server: 'vidsrc.cc/v3/embed', name: 'Server 2'),
-                serverBtn(server: 'moviesapi.club', name: 'Server 3'),
-                serverBtn(server: 'flicky.host', name: 'Server 4'),
-                serverBtn(server: 'vidsrc.vip/embed', name: 'Server 5'),
+                // serverBtn(server: 'moviesapi.club', name: 'Server 3'),
+                // serverBtn(server: 'flicky.host', name: 'Server 4'),
+                serverBtn(server: 'vidsrc.vip/embed', name: 'Server 3'),
 
-                // OutlinedButton(
-                //         onPressed: () {
-                //           Get.back(result: 'vidlink.pro');
-                //         },
-                //         child: const Text("Server 1"))
-                //     .size(width: Get.width * 0.8),
-                // OutlinedButton(
-                //         onPressed: () {
-                //           Get.back(result: 'vidsrc.cc/v3/embed');
-                //         },
-                //         child: const Text("Server 2"))
-                //     .size(width: Get.width * 0.8),
-                // OutlinedButton(
-                //         onPressed: () {
-                //           Get.back(result: 'moviesapi.club');
-                //         },
-                //         child: const Text("Server 3"))
-                //     .size(width: Get.width * 0.8),
 
-                // OutlinedButton(
-                //     onPressed: () {
-                //       Get.back(result: 'flicky.host');
-                //     },
-                //     child: const Row(
-                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //       children: [
-                //         Text("Server 4"),
-                //
-                //         Icon(Icons.report_gmailerrorred)
-                //       ],
-                //     ))
-                //     .size(width: Get.width * 0.8),
-                // OutlinedButton(
-                //     onPressed: () {
-                //       Get.back(result: 'vidsrc.vip/embed');
-                //     },
-                //     child: const Text("Server 5"))
-                //     .size(width: Get.width * 0.8),
               ],
             ),
           )),
@@ -412,7 +389,7 @@ mixin TheMovieDbMixin on GetxController {
           children: [
             Text(name),
 
-            const Icon(Icons.report_gmailerrorred)
+            // const Icon(Icons.report_gmailerrorred)
           ],
         ))
         .size(width: Get.width * 0.8);
@@ -424,6 +401,7 @@ mixin TheMovieDbMixin on GetxController {
     String? episode,
   }) async {
     var server = await getServer();
+    if(server==null)return;
     openWebViewPage(
         url: "https://${server ?? 'vidlink.pro'}/movie/$theMovieDBId",
         redirectPrevent: server ?? 'vidlink');
@@ -435,9 +413,14 @@ mixin TheMovieDbMixin on GetxController {
     String? episode,
   }) async {
     var server = await getServer();
+    if(server==null)return;
+    String  sp='/';
+    if(server?.contains('moviesapi.club')==true){
+      sp='-';
+    }
     openWebViewPage(
         url:
-            "https://${server ?? 'vidlink.pro'}/tv/$theMovieDBId/$season/$episode",
+            "https://${server ?? 'vidlink.pro'}/tv/$theMovieDBId$sp$season$sp$episode",
         redirectPrevent: server ?? 'vidlink');
   }
 
@@ -447,6 +430,7 @@ mixin TheMovieDbMixin on GetxController {
     String? episode,
   }) async {
     var server = await getServer();
+    if(server==null)return;
     openWebViewPage(
         url:
             "https://${server ?? 'vidlink.pro'}/tv/$theMovieDBId/$season/$episode",
