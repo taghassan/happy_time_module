@@ -61,7 +61,7 @@ class HappyTimeHomeLogic extends BaseController
   AnimeSeasonApiResponseModel? selectedAnimeSeasonResponse;
   MediaDetailsEntity? selectedMediaDetailsEntity;
   String? selectedType;
-  Featured? selectedFeatured;
+  MediaDetailsEntity? selectedFeatured;
 
   BannerAd? banner;
 

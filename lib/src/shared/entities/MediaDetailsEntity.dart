@@ -6,6 +6,7 @@ import 'package:happy_time_module/src/shared/models/responses/videos_list.dart';
 
 import '../models/responses/networks_list.dart';
 import '../models/responses/seasons_list.dart';
+
 /// id : 5602
 /// tmdb_id : 1399
 /// name : "Game of Thrones"
@@ -43,57 +44,60 @@ import '../models/responses/seasons_list.dart';
 /// genres : [{"id":10333,"serie_id":5602,"genre_id":10765,"created_at":"2023-09-18T05:54:10.000000Z","updated_at":"2023-09-18T05:54:10.000000Z","name":"خيال علمي وفانتازيا"}]
 /// seasons : [{"id":9409,"tmdb_id":1399,"serie_id":5602,"season_number":1,"name":"الموسم 1","overview":null,"poster_path":null,"air_date":"2023-09-18","created_at":"2022-07-22T13:38:24.000000Z","updated_at":"2022-07-22T13:38:24.000000Z","episodes":[{"id":147490,"tmdb_id":1399,"season_id":9409,"episode_number":1,"name":"الحلقة 1","overview":"","still_path":"https://image.tmdb.org/t/p/w500/wrGWeW4WKxnaeA8sxJb2T9O6ryo.jpg","vote_average":0,"vote_count":null,"views":0,"air_date":"","skiprecap_start_in":0,"hasrecap":0,"created_at":"2022-07-22T13:38:24.000000Z","updated_at":"2022-07-22T13:38:24.000000Z","still_path_tv":"","enable_stream":1,"enable_media_download":1,"enable_ads_unlock":0,"videos":[{"id":171613,"episode_id":147490,"server":"VIP Fast","header":null,"useragent":null,"link":"https://www.fasoul.egyfasel/video_player?uid=0$vid=57c52d296ca4e7f4867f8a2a4f79ce22$img=https://img.scdns.io/thumb/57c52d296ca4e7f4867f8a2a4f79ce22/large.jpg","lang":"Arabic","video_name":"","embed":0,"youtubelink":0,"hls":0,"supported_hosts":1,"drm":0,"drmuuid":null,"drmlicenceuri":null,"status":1,"created_at":"2022-07-22T13:38:24.000000Z","updated_at":"2022-07-22T13:38:24.000000Z"}]}]}]
 
-enum MediaTypeEnum {
-  movie,
-  series,
-  anime
-}
+enum MediaTypeEnum { movie, series, anime }
 
-MediaDetailsEntity mediaDetailsEntityFromJson(String str) => MediaDetailsEntity.fromJson(json.decode(str));
-String mediaDetailsEntityToJson(MediaDetailsEntity data) => json.encode(data.toJson());
+MediaDetailsEntity mediaDetailsEntityFromJson(String str) =>
+    MediaDetailsEntity.fromJson(json.decode(str));
+
+String mediaDetailsEntityToJson(MediaDetailsEntity data) =>
+    json.encode(data.toJson());
+
 class MediaDetailsEntity {
   MediaDetailsEntity({
-      num? id, 
-      num? tmdbId, 
-      String? name, 
-      String? originalName, 
-      String? imdbExternalId, 
-      String? subtitle, 
-      String? overview, 
-      String? posterPath, 
-      String? backdropPath, 
-      String? trailerUrl, 
-      String? previewPath, 
-      num? views, 
-      num? voteAverage, 
-      num? voteCount, 
-      num? popularity, 
-      num? featured, 
-      num? pinned, 
-      num? newEpisodes, 
-      num? premuim, 
-      num? active, 
-      String? firstAirDate, 
-      String? createdAt, 
-      String? updatedAt, 
-      String? backdropPathTv, 
-      String? indexCheck, 
-      num? enableAdsUnlock, 
-      num? enableStream, 
-      num? enableMediaDownload, 
-      num? substype, 
-      String? releaseDate, 
-      num? skiprecapStartIn, 
-      List<String>? genreslist, 
-      List<Casterslist>? casterslist, 
-      List<Networkslist>? networkslist, 
-      List<Genres>? genres, 
-      List<Seasons>? seasons,
+    num? id,
+    num? tmdbId,
+    String? name,
+    num? isAnime,
+    String? originalName,
+    String? imdbExternalId,
+    String? subtitle,
+    String? overview,
+    String? posterPath,
+    String? backdropPath,
+    String? trailerUrl,
+    String? previewPath,
+    num? views,
+    num? voteAverage,
+    num? voteCount,
+    num? popularity,
+    num? featured,
+    num? pinned,
+    num? newEpisodes,
+    num? premuim,
+    num? active,
+    String? firstAirDate,
+    String? createdAt,
+    String? updatedAt,
+    String? backdropPathTv,
+    String? indexCheck,
+    num? enableAdsUnlock,
+    num? enableStream,
+    num? enableMediaDownload,
+    num? substype,
+    String? type,
+    String? releaseDate,
+    num? skiprecapStartIn,
+    List<String>? genreslist,
+    List<Casterslist>? casterslist,
+    List<Networkslist>? networkslist,
+    List<Genres>? genres,
+    List<Seasons>? seasons,
     List<Videos>? videos,
-  }){
+  }) {
     _id = id;
     _tmdbId = tmdbId;
     _name = name;
+    _isAnime = isAnime;
     _originalName = originalName;
     _imdbExternalId = imdbExternalId;
     _subtitle = subtitle;
@@ -120,6 +124,7 @@ class MediaDetailsEntity {
     _enableStream = enableStream;
     _enableMediaDownload = enableMediaDownload;
     _substype = substype;
+    _type = type;
     _releaseDate = releaseDate;
     _skiprecapStartIn = skiprecapStartIn;
     _genreslist = genreslist;
@@ -128,12 +133,13 @@ class MediaDetailsEntity {
     _genres = genres;
     _seasons = seasons;
     _videos = videos;
-}
+  }
 
   MediaDetailsEntity.fromJson(dynamic json) {
     _id = json['id'];
     _tmdbId = json['tmdb_id'];
-    _name = json['name'];
+    _isAnime = json['is_anime'];
+    _name = json['name'] ?? json['title'];
     _originalName = json['original_name'];
     _imdbExternalId = json['imdb_external_id'];
     _subtitle = json['subtitle'];
@@ -148,6 +154,7 @@ class MediaDetailsEntity {
     _popularity = json['popularity'];
     _featured = json['featured'];
     _pinned = json['pinned'];
+    _type = json['type'];
     _newEpisodes = json['newEpisodes'];
     _premuim = json['premuim'];
     _active = json['active'];
@@ -161,8 +168,9 @@ class MediaDetailsEntity {
     _enableMediaDownload = json['enable_media_download'];
     _substype = json['substype'];
     _releaseDate = json['release_date'];
-    _skiprecapStartIn = json['skiprecap_start_in'];
-    _genreslist = json['genreslist'] != null ? json['genreslist'].cast<String>() : [];
+    _skiprecapStartIn = json['skiprecap_start_in'] ?? 0;
+    _genreslist =
+        json['genreslist'] != null ? json['genreslist'].cast<String>() : [];
     if (json['casterslist'] != null) {
       _casterslist = [];
       json['casterslist'].forEach((v) {
@@ -194,10 +202,11 @@ class MediaDetailsEntity {
         _videos?.add(Videos.fromJson(v));
       });
     }
-
   }
+
   num? _id;
   num? _tmdbId;
+  num? _isAnime;
   String? _name;
   String? _originalName;
   String? _imdbExternalId;
@@ -208,6 +217,7 @@ class MediaDetailsEntity {
   String? _trailerUrl;
   String? _previewPath;
   num? _views;
+  String? _type;
   num? _voteAverage;
   num? _voteCount;
   num? _popularity;
@@ -236,47 +246,87 @@ class MediaDetailsEntity {
   List<Videos>? _videos;
 
   num? get id => _id;
+
   num? get tmdbId => _tmdbId;
+
   String? get name => _name;
+
   String? get originalName => _originalName;
+
   String? get imdbExternalId => _imdbExternalId;
+
   String? get subtitle => _subtitle;
+
   String? get overview => _overview;
+
   String? get posterPath => _posterPath;
+
   String? get backdropPath => _backdropPath;
+
   String? get trailerUrl => _trailerUrl;
+
   String? get previewPath => _previewPath;
+
   num? get views => _views;
+
+  String? get type => _type ?? 'anime';
+
   num? get voteAverage => _voteAverage;
+
   num? get voteCount => _voteCount;
+
   num? get popularity => _popularity;
+
   num? get featured => _featured;
+
   num? get pinned => _pinned;
+
   num? get newEpisodes => _newEpisodes;
+
   num? get premuim => _premuim;
+
   num? get active => _active;
+
   String? get firstAirDate => _firstAirDate;
+
   String? get createdAt => _createdAt;
+
   String? get updatedAt => _updatedAt;
+
   String? get backdropPathTv => _backdropPathTv;
+
   String? get indexCheck => _indexCheck;
+
   num? get enableAdsUnlock => _enableAdsUnlock;
+
   num? get enableStream => _enableStream;
+
   num? get enableMediaDownload => _enableMediaDownload;
+
   num? get substype => _substype;
-  MediaTypeEnum? get mediaTypeEnum => _mediaTypeEnum; //  MediaTypeEnum? _mediaTypeEnum;
+
+  MediaTypeEnum? get mediaTypeEnum =>
+      _mediaTypeEnum; //  MediaTypeEnum? _mediaTypeEnum;
   String? get releaseDate => _releaseDate;
+
   num? get skiprecapStartIn => _skiprecapStartIn;
+
   List<String>? get genreslist => _genreslist;
+
   List<Casterslist>? get casterslist => _casterslist;
+
   List<Networkslist>? get networkslist => _networkslist;
+
   List<Genres>? get genres => _genres;
+
   List<Seasons>? get seasons => _seasons;
+
   List<Videos>? get videos => _videos;
 
+  num? get isAnime => _isAnime;
 
-  set setSelectedMediaTypeEnum(MediaTypeEnum typeEnum){
-    _mediaTypeEnum=typeEnum;
+  set setSelectedMediaTypeEnum(MediaTypeEnum typeEnum) {
+    _mediaTypeEnum = typeEnum;
   }
 
   Map<String, dynamic> toJson() {
@@ -310,6 +360,7 @@ class MediaDetailsEntity {
     map['enable_stream'] = _enableStream;
     map['enable_media_download'] = _enableMediaDownload;
     map['substype'] = _substype;
+    map['type'] = _type ?? 'anime';
     map['release_date'] = _releaseDate;
     map['skiprecap_start_in'] = _skiprecapStartIn;
     map['genreslist'] = _genreslist;
@@ -327,9 +378,4 @@ class MediaDetailsEntity {
     }
     return map;
   }
-
 }
-
-
-
-

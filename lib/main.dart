@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:happy_time_module/src/shared/datasources/remote_datasource/movies_remote_data_source.dart';
+import 'package:happy_time_module/src/shared/models/requests/PaginationRequestModel.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:toastification/toastification.dart';
 import 'package:happy_time_module/src/core/Translation/translations.dart';
@@ -21,7 +22,11 @@ import 'package:happy_time_module/src/core/utils/logger_utils.dart';
 import 'package:happy_time_module/src/core/widgets/loading_overlay_widget.dart';
 import 'package:happy_time_module/src/routes/appRoutes.dart';
 import 'package:happy_time_module/src/routes/routes.dart';
-
+/*
+       <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-8107574011529731~5982000785"/>
+ */
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
@@ -105,7 +110,7 @@ class MyApp extends StatelessWidget {
               ? Routs.happyTimeOnboardingRoute
               : Routs.happyTimeSplashRoute,
           // home: const ApiFetchDemoPage(),
-          logWriterCallback: AppLogger.write,
+          // logWriterCallback: AppLogger.write,
         ),
       ),
     );
@@ -133,9 +138,31 @@ class _ApiFetchDemoPageState extends State<ApiFetchDemoPage> {
 
             response.when(
               success: (data) {
-                for (var item in data.thisweek ?? []) {
-                  AppLogger.it.logInfo("response ${item?.toJson()}");
+
+                for (var item in data.choosed ?? []) {
+                  AppLogger.it.logInfo("choosed response ${item?.toJson()}");
                 }
+
+                for (var item in data.recents ?? []) {
+                  AppLogger.it.logInfo("recents response ${item?.toJson()}");
+                }
+
+                for (var item in data.top10 ?? []) {
+                  AppLogger.it.logInfo("top10 response ${item?.toJson()}");
+                }
+
+                for (var item in data.trending ?? []) {
+                  AppLogger.it.logInfo("trending response ${item?.toJson()}");
+                }
+
+                for (var item in data.recommended ?? []) {
+                  AppLogger.it.logInfo("recommended response ${item?.toJson()}");
+                }
+
+                for (var item in data.popularCasters ?? []) {
+                  AppLogger.it.logInfo("popularCasters response ${item?.toJson()}");
+                }
+
               },
               failure: (errorResultEntity) {
                 AppLogger.it.logError(errorResultEntity.message.toString());

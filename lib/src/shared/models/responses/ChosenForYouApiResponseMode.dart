@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:happy_time_module/src/shared/entities/MediaDetailsEntity.dart';
 import 'package:happy_time_module/src/shared/models/responses/GenresResponseModel.dart';
 import 'package:happy_time_module/src/shared/models/responses/HomeContentResponseModel.dart';
 
@@ -13,8 +14,8 @@ String chosenForYouApiResponseModeToJson(ChosenForYouApiResponseMode data) =>
 
 class ChosenForYouApiResponseMode {
   ChosenForYouApiResponseMode({
-    List<Choosed>? choosed,
-    List<Choosed>? recommended,
+    List<MediaDetailsEntity>? choosed,
+    List<MediaDetailsEntity>? recommended,
   }) {
     _choosed = choosed;
     _recommended = recommended;
@@ -24,31 +25,31 @@ class ChosenForYouApiResponseMode {
     if (json['choosed'] != null) {
       _choosed = [];
       json['choosed'].forEach((v) {
-        _choosed?.add(Choosed.fromJson(v));
+        _choosed?.add(MediaDetailsEntity.fromJson(v));
       });
     }
 
     if (json['recommended'] != null) {
       _recommended = [];
       json['recommended'].forEach((v) {
-        _recommended?.add(Choosed.fromJson(v));
+        _recommended?.add(MediaDetailsEntity.fromJson(v));
       });
     }
   }
 
-  List<Choosed>? _choosed;
-  List<Choosed>? _recommended;
+  List<MediaDetailsEntity>? _choosed;
+  List<MediaDetailsEntity>? _recommended;
 
   ChosenForYouApiResponseMode copyWith({
-    List<Choosed>? choosed,
+    List<MediaDetailsEntity>? choosed,
   }) =>
       ChosenForYouApiResponseMode(
         choosed: choosed ?? _choosed,
       );
 
-  List<Choosed>? get choosed => _choosed;
+  List<MediaDetailsEntity>? get choosed => _choosed;
 
-  List<Choosed>? get recommended => _recommended;
+  List<MediaDetailsEntity>? get recommended => _recommended;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

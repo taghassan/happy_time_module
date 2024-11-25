@@ -33,7 +33,7 @@ class HappyTimeHomePage extends GetView<HappyTimeHomeLogic> {
                 // Whether the app bar remains visible at the top when collapsed
                 flexibleSpace: FlexibleSpaceBar(
                   title: Text(
-                    controller.selectedFeatured?.title ?? '',
+                    controller.selectedFeatured?.name ?? '',
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                         color: Colors.white, fontWeight: FontWeight.bold),
                     textDirection: TextDirection.ltr,

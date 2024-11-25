@@ -1,11 +1,13 @@
 import 'dart:convert';
+
+import 'package:happy_time_module/src/shared/entities/MediaDetailsEntity.dart';
 /// anime : [{"id":532,"name":"المفقود مدبلج","poster_path":"https://flech.tn/egybestant/public/api/animes/image/p5qKKAYwGw1ZdCmMSzNBFkvQDuTrhEYVPppkG7lL.jpg","vote_average":null,"is_anime":1,"newEpisodes":0,"subtitle":"مدبلج","genreslist":[],"genres":[],"networks":[{"id":1020,"anime_id":532,"network_id":7014,"created_at":"2024-11-11T18:56:27.000000Z","updated_at":"2024-11-11T18:56:27.000000Z","name":"مسلسلات تركية"}]},{"id":531,"name":"الغرفه 309 مدبلج","poster_path":"https://image.tmdb.org/t/p/w500/jYOcAeNQgSj7gff73Lmc2Pdd1QU.jpg","vote_average":6.1,"is_anime":1,"newEpisodes":0,"subtitle":"مدبلج","genreslist":["دراما","كوميديا"],"genres":[{"id":860,"anime_id":531,"genre_id":18,"created_at":"2024-11-10T14:15:52.000000Z","updated_at":"2024-11-10T14:15:52.000000Z","name":"دراما"},{"id":861,"anime_id":531,"genre_id":35,"created_at":"2024-11-10T14:15:52.000000Z","updated_at":"2024-11-10T14:15:52.000000Z","name":"كوميديا"}],"networks":[{"id":1018,"anime_id":531,"network_id":303,"created_at":"2024-11-10T14:15:52.000000Z","updated_at":"2024-11-10T14:15:52.000000Z","name":"FOX"},{"id":1019,"anime_id":531,"network_id":7014,"created_at":"2024-11-10T15:16:17.000000Z","updated_at":"2024-11-10T15:16:17.000000Z","name":"مسلسلات تركية"}]},{"id":530,"name":"العشق عناداً مدبلج","poster_path":"https://image.tmdb.org/t/p/w500/gnsNXjv4GLpuTaWsr0Rpp2xF0VO.jpg","vote_average":7,"is_anime":1,"newEpisodes":0,"subtitle":"مدبلج","genreslist":["كوميديا"],"genres":[{"id":859,"anime_id":530,"genre_id":35,"created_at":"2024-11-07T21:44:21.000000Z","updated_at":"2024-11-07T21:44:21.000000Z","name":"كوميديا"}],"networks":[{"id":1016,"anime_id":530,"network_id":303,"created_at":"2024-11-07T21:44:21.000000Z","updated_at":"2024-11-07T21:44:21.000000Z","name":"FOX"},{"id":1017,"anime_id":530,"network_id":7014,"created_at":"2024-11-07T22:45:12.000000Z","updated_at":"2024-11-07T22:45:12.000000Z","name":"مسلسلات تركية"}]},{"id":529,"name":"ابتسم لقدرك مدبلج","poster_path":"https://image.tmdb.org/t/p/w500/5vUHQH4vxppo4pwC2GrrZujZQe7.jpg","vote_average":8,"is_anime":1,"newEpisodes":0,"subtitle":"مدبلج","genreslist":["عائلي","دراما"],"genres":[{"id":857,"anime_id":529,"genre_id":10751,"created_at":"2024-11-06T17:58:42.000000Z","updated_at":"2024-11-06T17:58:42.000000Z","name":"عائلي"},{"id":858,"anime_id":529,"genre_id":18,"created_at":"2024-11-06T17:58:42.000000Z","updated_at":"2024-11-06T17:58:42.000000Z","name":"دراما"}],"networks":[{"id":1014,"anime_id":529,"network_id":303,"created_at":"2024-11-06T17:58:42.000000Z","updated_at":"2024-11-06T17:58:42.000000Z","name":"FOX"},{"id":1015,"anime_id":529,"network_id":7014,"created_at":"2024-11-06T18:59:04.000000Z","updated_at":"2024-11-06T18:59:04.000000Z","name":"مسلسلات تركية"}]},{"id":528,"name":"الفراشات الزرقاء مدبلج","poster_path":"https://image.tmdb.org/t/p/w500/m5IOx0C8KxgHneCh6uRttzZYLRo.jpg","vote_average":8,"is_anime":1,"newEpisodes":0,"subtitle":"مدبلج","genreslist":["دراما","حرب وسياسة","عائلي"],"genres":[{"id":854,"anime_id":528,"genre_id":18,"created_at":"2024-11-06T09:31:05.000000Z","updated_at":"2024-11-06T09:31:05.000000Z","name":"دراما"},{"id":855,"anime_id":528,"genre_id":10768,"created_at":"2024-11-06T09:31:05.000000Z","updated_at":"2024-11-06T09:31:05.000000Z","name":"حرب وسياسة"},{"id":856,"anime_id":528,"genre_id":10751,"created_at":"2024-11-06T09:31:05.000000Z","updated_at":"2024-11-06T09:31:05.000000Z","name":"عائلي"}],"networks":[{"id":1012,"anime_id":528,"network_id":869,"created_at":"2024-11-06T09:31:05.000000Z","updated_at":"2024-11-06T09:31:05.000000Z","name":"TRT 1"},{"id":1013,"anime_id":528,"network_id":7014,"created_at":"2024-11-06T10:31:19.000000Z","updated_at":"2024-11-06T10:31:19.000000Z","name":"مسلسلات تركية"}]},{"id":527,"name":"حكاية خيالية مدبلج","poster_path":"https://image.tmdb.org/t/p/w500/wpQSzP2BimpwKZAxoQcQ8nkby2J.jpg","vote_average":7.6,"is_anime":1,"newEpisodes":0,"subtitle":"مدبلج","genreslist":["دراما"],"genres":[{"id":853,"anime_id":527,"genre_id":18,"created_at":"2024-11-04T21:13:28.000000Z","updated_at":"2024-11-04T21:13:28.000000Z","name":"دراما"}],"networks":[{"id":1010,"anime_id":527,"network_id":303,"created_at":"2024-11-04T21:13:28.000000Z","updated_at":"2024-11-04T21:13:28.000000Z","name":"FOX"},{"id":1011,"anime_id":527,"network_id":7014,"created_at":"2024-11-04T22:13:41.000000Z","updated_at":"2024-11-04T22:13:41.000000Z","name":"مسلسلات تركية"}]},{"id":526,"name":"المحارب مدبلج","poster_path":"https://image.tmdb.org/t/p/w500/b2IvcQrcq3he4zpGcn3VFipwQDv.jpg","vote_average":9,"is_anime":1,"newEpisodes":0,"subtitle":"مدبلج","genreslist":["حرب وسياسة"],"genres":[{"id":852,"anime_id":526,"genre_id":10768,"created_at":"2024-11-04T16:03:19.000000Z","updated_at":"2024-11-04T16:03:19.000000Z","name":"حرب وسياسة"}],"networks":[{"id":1008,"anime_id":526,"network_id":303,"created_at":"2024-11-04T16:03:19.000000Z","updated_at":"2024-11-04T16:03:19.000000Z","name":"FOX"},{"id":1009,"anime_id":526,"network_id":7014,"created_at":"2024-11-04T17:03:50.000000Z","updated_at":"2024-11-04T17:03:50.000000Z","name":"مسلسلات تركية"}]},{"id":525,"name":"الماضي العزيز مدبلج","poster_path":"https://image.tmdb.org/t/p/w500/Jwnsl1IH0G9D1GF1GK539hOvhn.jpg","vote_average":7.4,"is_anime":1,"newEpisodes":0,"subtitle":"مدبلج","genreslist":["دراما"],"genres":[{"id":851,"anime_id":525,"genre_id":18,"created_at":"2024-10-30T17:13:52.000000Z","updated_at":"2024-10-30T17:13:52.000000Z","name":"دراما"}],"networks":[{"id":1006,"anime_id":525,"network_id":778,"created_at":"2024-10-30T17:13:52.000000Z","updated_at":"2024-10-30T17:13:52.000000Z","name":"Star TV"},{"id":1007,"anime_id":525,"network_id":7014,"created_at":"2024-10-30T18:14:08.000000Z","updated_at":"2024-10-30T18:14:08.000000Z","name":"مسلسلات تركية"}]},{"id":524,"name":"اثير الحب مدبلج","poster_path":"https://image.tmdb.org/t/p/w500/4UgrTvOg4boz4UxyWYWXSVkqtHf.jpg","vote_average":6,"is_anime":1,"newEpisodes":0,"subtitle":"مدبلج","genreslist":["دراما","أوبرا صابونية"],"genres":[{"id":849,"anime_id":524,"genre_id":18,"created_at":"2024-10-30T17:07:39.000000Z","updated_at":"2024-10-30T17:07:39.000000Z","name":"دراما"},{"id":850,"anime_id":524,"genre_id":10766,"created_at":"2024-10-30T17:07:39.000000Z","updated_at":"2024-10-30T17:07:39.000000Z","name":"أوبرا صابونية"}],"networks":[{"id":1004,"anime_id":524,"network_id":303,"created_at":"2024-10-30T17:07:39.000000Z","updated_at":"2024-10-30T17:07:39.000000Z","name":"FOX"},{"id":1005,"anime_id":524,"network_id":7014,"created_at":"2024-10-30T18:08:01.000000Z","updated_at":"2024-10-30T18:08:01.000000Z","name":"مسلسلات تركية"}]},{"id":521,"name":"القسمة مدبلج","poster_path":"https://image.tmdb.org/t/p/w500/v5m3PpCzIwD4gYRInzHBSej3xxc.jpg","vote_average":6,"is_anime":1,"newEpisodes":0,"subtitle":"مدبلج","genreslist":["كوميديا","دراما"],"genres":[{"id":843,"anime_id":521,"genre_id":35,"created_at":"2024-10-28T02:09:34.000000Z","updated_at":"2024-10-28T02:09:34.000000Z","name":"كوميديا"},{"id":844,"anime_id":521,"genre_id":18,"created_at":"2024-10-28T02:09:34.000000Z","updated_at":"2024-10-28T02:09:34.000000Z","name":"دراما"}],"networks":[{"id":998,"anime_id":521,"network_id":303,"created_at":"2024-10-28T02:09:34.000000Z","updated_at":"2024-10-28T02:09:34.000000Z","name":"FOX"},{"id":999,"anime_id":521,"network_id":7014,"created_at":"2024-10-28T02:10:38.000000Z","updated_at":"2024-10-28T02:10:38.000000Z","name":"مسلسلات تركية"},{"id":1000,"anime_id":521,"network_id":6928,"created_at":"2024-10-28T02:10:38.000000Z","updated_at":"2024-10-28T02:10:38.000000Z","name":"تركيا"}]}]
 
 AnimesRecentsApiResponseModel animesRecentsApiResponseModelFromJson(String str) => AnimesRecentsApiResponseModel.fromJson(json.decode(str));
 String animesRecentsApiResponseModelToJson(AnimesRecentsApiResponseModel data) => json.encode(data.toJson());
 class AnimesRecentsApiResponseModel {
   AnimesRecentsApiResponseModel({
-      List<Anime>? anime,}){
+      List<MediaDetailsEntity>? anime,}){
     _anime = anime;
 }
 
@@ -13,15 +15,15 @@ class AnimesRecentsApiResponseModel {
     if (json['anime'] != null) {
       _anime = [];
       json['anime'].forEach((v) {
-        _anime?.add(Anime.fromJson(v));
+        _anime?.add(MediaDetailsEntity.fromJson(v));
       });
     }
   }
-  List<Anime>? _anime;
-AnimesRecentsApiResponseModel copyWith({  List<Anime>? anime,
+  List<MediaDetailsEntity>? _anime;
+AnimesRecentsApiResponseModel copyWith({  List<MediaDetailsEntity>? anime,
 }) => AnimesRecentsApiResponseModel(  anime: anime ?? _anime,
 );
-  List<Anime>? get anime => _anime;
+  List<MediaDetailsEntity>? get anime => _anime;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -33,134 +35,6 @@ AnimesRecentsApiResponseModel copyWith({  List<Anime>? anime,
 
 }
 
-/// id : 532
-/// name : "المفقود مدبلج"
-/// poster_path : "https://flech.tn/egybestant/public/api/animes/image/p5qKKAYwGw1ZdCmMSzNBFkvQDuTrhEYVPppkG7lL.jpg"
-/// vote_average : null
-/// is_anime : 1
-/// newEpisodes : 0
-/// subtitle : "مدبلج"
-/// genreslist : []
-/// genres : []
-/// networks : [{"id":1020,"anime_id":532,"network_id":7014,"created_at":"2024-11-11T18:56:27.000000Z","updated_at":"2024-11-11T18:56:27.000000Z","name":"مسلسلات تركية"}]
-
-Anime animeFromJson(String str) => Anime.fromJson(json.decode(str));
-String animeToJson(Anime data) => json.encode(data.toJson());
-class Anime {
-  Anime({
-      num? id, 
-      String? name, 
-      String? posterPath, 
-      dynamic voteAverage, 
-      num? isAnime, 
-      num? newEpisodes, 
-      String? subtitle, 
-      List<dynamic>? genreslist, 
-      List<dynamic>? genres, 
-      List<Networks>? networks,}){
-    _id = id;
-    _name = name;
-    _posterPath = posterPath;
-    _voteAverage = voteAverage;
-    _isAnime = isAnime;
-    _newEpisodes = newEpisodes;
-    _subtitle = subtitle;
-    _genreslist = genreslist;
-    _genres = genres;
-    _networks = networks;
-}
-
-  Anime.fromJson(dynamic json) {
-    _id = json['id'];
-    _name = json['name'];
-    _posterPath = json['poster_path'];
-    _voteAverage = json['vote_average'];
-    _isAnime = json['is_anime'];
-    _newEpisodes = json['newEpisodes'];
-    _subtitle = json['subtitle'];
-    if (json['genreslist'] != null) {
-      _genreslist = [];
-      json['genreslist'].forEach((v) {
-        _genreslist?.add(v);
-      });
-    }
-    if (json['genres'] != null) {
-      _genres = [];
-      json['genres'].forEach((v) {
-        _genres?.add(v);
-      });
-    }
-    if (json['networks'] != null) {
-      _networks = [];
-      json['networks'].forEach((v) {
-        _networks?.add(Networks.fromJson(v));
-      });
-    }
-  }
-  num? _id;
-  String? _name;
-  String? _posterPath;
-  dynamic _voteAverage;
-  num? _isAnime;
-  num? _newEpisodes;
-  String? _subtitle;
-  List<dynamic>? _genreslist;
-  List<dynamic>? _genres;
-  List<Networks>? _networks;
-Anime copyWith({  num? id,
-  String? name,
-  String? posterPath,
-  dynamic voteAverage,
-  num? isAnime,
-  num? newEpisodes,
-  String? subtitle,
-  List<dynamic>? genreslist,
-  List<dynamic>? genres,
-  List<Networks>? networks,
-}) => Anime(  id: id ?? _id,
-  name: name ?? _name,
-  posterPath: posterPath ?? _posterPath,
-  voteAverage: voteAverage ?? _voteAverage,
-  isAnime: isAnime ?? _isAnime,
-  newEpisodes: newEpisodes ?? _newEpisodes,
-  subtitle: subtitle ?? _subtitle,
-  genreslist: genreslist ?? _genreslist,
-  genres: genres ?? _genres,
-  networks: networks ?? _networks,
-);
-  num? get id => _id;
-  String? get name => _name;
-  String? get posterPath => _posterPath;
-  dynamic get voteAverage => _voteAverage;
-  num? get isAnime => _isAnime;
-  num? get newEpisodes => _newEpisodes;
-  String? get subtitle => _subtitle;
-  List<dynamic>? get genreslist => _genreslist;
-  List<dynamic>? get genres => _genres;
-  List<Networks>? get networks => _networks;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['id'] = _id;
-    map['name'] = _name;
-    map['poster_path'] = _posterPath;
-    map['vote_average'] = _voteAverage;
-    map['is_anime'] = _isAnime;
-    map['newEpisodes'] = _newEpisodes;
-    map['subtitle'] = _subtitle;
-    if (_genreslist != null) {
-      map['genreslist'] = _genreslist?.map((v) => v.toJson()).toList();
-    }
-    if (_genres != null) {
-      map['genres'] = _genres?.map((v) => v.toJson()).toList();
-    }
-    if (_networks != null) {
-      map['networks'] = _networks?.map((v) => v.toJson()).toList();
-    }
-    return map;
-  }
-
-}
 
 /// id : 1020
 /// anime_id : 532
