@@ -369,6 +369,11 @@ mixin TheMovieDbMixin on GetxController {
                 // serverBtn(server: 'moviesapi.club', name: 'Server 3'),
                 // serverBtn(server: 'flicky.host', name: 'Server 4'),
                 serverBtn(server: 'vidsrc.vip/embed', name: 'Server 3'),
+                //
+                serverBtn(server: 'vidsrc.net/embed', name: 'Server 4'),
+                serverBtn(server: 'vidsrc.xyz/embed', name: 'Server 5'),
+                serverBtn(server: 'vidsrc.pm/embed', name: 'Server 6'),
+                serverBtn(server: 'vidsrc.in/embed', name: 'Server 7'),
 
 
               ],
@@ -402,9 +407,16 @@ mixin TheMovieDbMixin on GetxController {
   }) async {
     var server = await getServer();
     if(server==null)return;
+
+    String path='/$theMovieDBId';
+
+    if(isVidSrcServer(server)){
+      path='?tmdb=$theMovieDBId';
+    }
+
     openWebViewPage(
-        url: "https://${server ?? 'vidlink.pro'}/movie/$theMovieDBId",
-        redirectPrevent: server ?? 'vidlink');
+        url: "https://$server/movie$path",
+        redirectPrevent: server);
   }
 
   playSeriesMedia({
@@ -415,13 +427,28 @@ mixin TheMovieDbMixin on GetxController {
     var server = await getServer();
     if(server==null)return;
     String  sp='/';
-    if(server?.contains('moviesapi.club')==true){
+
+    if(server.contains('moviesapi.club')==true){
       sp='-';
     }
+
+    String path='/$theMovieDBId$sp$season$sp$episode';
+
+    if(isVidSrcServer(server)){
+      path='?tmdb=$theMovieDBId&season=$season&episode=$episode';
+    }
+
     openWebViewPage(
         url:
-            "https://${server ?? 'vidlink.pro'}/tv/$theMovieDBId$sp$season$sp$episode",
-        redirectPrevent: server ?? 'vidlink');
+            "https://$server/tv$path",
+        redirectPrevent: server );
+  }
+
+ bool isVidSrcServer(String server){
+    return server.contains('vidsrc.net/embed')==true ||
+        server.contains('vidsrc.xyz/embed')==true ||
+        server.contains('vidsrc.pm/embed')==true ||
+        server.contains('vidsrc.in/embed')==true ;
   }
 
   playAnimeMedia({
@@ -433,8 +460,8 @@ mixin TheMovieDbMixin on GetxController {
     if(server==null)return;
     openWebViewPage(
         url:
-            "https://${server ?? 'vidlink.pro'}/tv/$theMovieDBId/$season/$episode",
-        redirectPrevent: server ?? 'vidlink');
+            "https://$server/tv/$theMovieDBId/$season/$episode",
+        redirectPrevent: server );
   }
 
   openWebViewPage({String? url, String? redirectPrevent}) {
