@@ -55,6 +55,7 @@ abstract class MoviesRemoteDataSource {
 
   Future<ApiResultModel<MoviesLatestAddedResponseModel>> fetchSeriesAll({
     PaginationRequestModel? pagination,
+    String? path
   });
 
   Future<ApiResultModel<AnimeApiResponseModel>> fetchAnimeAll({

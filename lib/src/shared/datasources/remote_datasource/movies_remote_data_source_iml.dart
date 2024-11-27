@@ -148,10 +148,10 @@ class MoviesRemoteDataSourceIml implements MoviesRemoteDataSource {
 
   @override
   Future<ApiResultModel<MoviesLatestAddedResponseModel>> fetchSeriesAll(
-      {PaginationRequestModel? pagination}) async {
+      {PaginationRequestModel? pagination,String? path}) async {
     try {
       var response = await _client.get(
-        ApiConstants.seriesAllContentApi,
+        path??ApiConstants.seriesAllContentApi,
         queryParameters: {"page":pagination!=null? pagination.page.toString():1},
       );
 

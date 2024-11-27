@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:happy_time_module/src/shared/entities/MediaDetailsEntity.dart';
 import 'package:happy_time_module/src/shared/models/responses/GenresResponseModel.dart';
 
 import 'networks_list.dart';
@@ -22,7 +23,7 @@ String moviesLatestAddedResponseModelToJson(MoviesLatestAddedResponseModel data)
 class MoviesLatestAddedResponseModel {
   MoviesLatestAddedResponseModel({
       num? currentPage, 
-      List<Data>? data, 
+      List<MediaDetailsEntity>? data, 
       String? firstPageUrl, 
       num? from, 
       num? lastPage, 
@@ -51,10 +52,25 @@ class MoviesLatestAddedResponseModel {
 
   MoviesLatestAddedResponseModel.fromJson(dynamic json) {
     _currentPage = json['current_page'];
+
     if (json['data'] != null) {
       _data = [];
       json['data'].forEach((v) {
-        _data?.add(Data.fromJson(v));
+        _data?.add(MediaDetailsEntity.fromJson(v));
+      });
+    }
+
+    if (json['suggested'] != null) {
+      _data = [];
+      json['suggested'].forEach((v) {
+        _data?.add(MediaDetailsEntity.fromJson(v));
+      });
+    }
+
+    if (json['trending'] != null) {
+      _data = [];
+      json['trending'].forEach((v) {
+        _data?.add(MediaDetailsEntity.fromJson(v));
       });
     }
     _firstPageUrl = json['first_page_url'];
@@ -75,7 +91,7 @@ class MoviesLatestAddedResponseModel {
     _total = json['total'];
   }
   num? _currentPage;
-  List<Data>? _data;
+  List<MediaDetailsEntity>? _data;
   String? _firstPageUrl;
   num? _from;
   num? _lastPage;
@@ -88,7 +104,7 @@ class MoviesLatestAddedResponseModel {
   num? _to;
   num? _total;
 MoviesLatestAddedResponseModel copyWith({  num? currentPage,
-  List<Data>? data,
+  List<MediaDetailsEntity>? data,
   String? firstPageUrl,
   num? from,
   num? lastPage,
@@ -115,7 +131,7 @@ MoviesLatestAddedResponseModel copyWith({  num? currentPage,
   total: total ?? _total,
 );
   num? get currentPage => _currentPage;
-  List<Data>? get data => _data;
+  List<MediaDetailsEntity>? get data => _data;
   String? get firstPageUrl => _firstPageUrl;
   num? get from => _from;
   num? get lastPage => _lastPage;
@@ -196,223 +212,4 @@ Links copyWith({  dynamic url,
   }
 
 }
-
-/// title : "Jurnal Risa by Risa Saraswati"
-/// id : 27144
-/// poster_path : "https://image.tmdb.org/t/p/w500/2F1TPaYdPW1hzJCXfOBOH7xK6Pd.jpg"
-/// vote_average : 4.8
-/// subtitle : null
-/// type : "movie"
-/// substype : 0
-/// networkslist : [{"id":7095,"name":"افلام اسيوي","logo_path":null,"origin_country":null,"created_at":"2023-10-02T17:42:25.000000Z","updated_at":"2024-10-19T14:04:15.000000Z"}]
-/// genres : [{"id":55699,"movie_id":27144,"genre_id":99,"created_at":"2024-11-10T08:38:16.000000Z","updated_at":"2024-11-10T08:38:16.000000Z","name":"وثائقي"},{"id":55700,"movie_id":27144,"genre_id":27,"created_at":"2024-11-10T08:38:16.000000Z","updated_at":"2024-11-10T08:38:16.000000Z","name":"رعب"},{"id":55701,"movie_id":27144,"genre_id":53,"created_at":"2024-11-10T08:38:16.000000Z","updated_at":"2024-11-10T08:38:16.000000Z","name":"إثارة"}]
-/// downloads : []
-/// networks : [{"id":22786,"movie_id":27144,"network_id":7095,"created_at":"2024-11-10T03:30:30.000000Z","updated_at":"2024-11-10T03:30:30.000000Z","name":"افلام اسيوي"}]
-
-Data dataFromJson(String str) => Data.fromJson(json.decode(str));
-String dataToJson(Data data) => json.encode(data.toJson());
-class Data {
-  Data({
-      String? title, 
-      num? id, 
-      String? posterPath, 
-      num? voteAverage, 
-      dynamic subtitle, 
-      String? type, 
-      num? substype, 
-      List<Networkslist>? networkslist, 
-      List<Genres>? genres, 
-      List<dynamic>? downloads, 
-      List<Networks>? networks,}){
-    _title = title;
-    _id = id;
-    _posterPath = posterPath;
-    _voteAverage = voteAverage;
-    _subtitle = subtitle;
-    _type = type;
-    _substype = substype;
-    _networkslist = networkslist;
-    _genres = genres;
-    _downloads = downloads;
-    _networks = networks;
-}
-
-  Data.fromJson(dynamic json) {
-    _title = json['title'];
-    _id = json['id'];
-    _posterPath = json['poster_path'];
-    _voteAverage = json['vote_average'];
-    _subtitle = json['subtitle'];
-    _type = json['type'];
-    _substype = json['substype'];
-    if (json['networkslist'] != null) {
-      _networkslist = [];
-      json['networkslist'].forEach((v) {
-        _networkslist?.add(Networkslist.fromJson(v));
-      });
-    }
-    if (json['genres'] != null) {
-      _genres = [];
-      json['genres'].forEach((v) {
-        _genres?.add(Genres.fromJson(v));
-      });
-    }
-    if (json['downloads'] != null) {
-      _downloads = [];
-      json['downloads'].forEach((v) {
-        _downloads?.add(v);
-        // _downloads?.add(v);
-      });
-    }
-    if (json['networks'] != null) {
-      _networks = [];
-      json['networks'].forEach((v) {
-        _networks?.add(Networks.fromJson(v));
-      });
-    }
-  }
-  String? _title;
-  num? _id;
-  String? _posterPath;
-  num? _voteAverage;
-  dynamic _subtitle;
-  String? _type;
-  num? _substype;
-  List<Networkslist>? _networkslist;
-  List<Genres>? _genres;
-  List<dynamic>? _downloads;
-  List<Networks>? _networks;
-Data copyWith({  String? title,
-  num? id,
-  String? posterPath,
-  num? voteAverage,
-  dynamic subtitle,
-  String? type,
-  num? substype,
-  List<Networkslist>? networkslist,
-  List<Genres>? genres,
-  List<dynamic>? downloads,
-  List<Networks>? networks,
-}) => Data(  title: title ?? _title,
-  id: id ?? _id,
-  posterPath: posterPath ?? _posterPath,
-  voteAverage: voteAverage ?? _voteAverage,
-  subtitle: subtitle ?? _subtitle,
-  type: type ?? _type,
-  substype: substype ?? _substype,
-  networkslist: networkslist ?? _networkslist,
-  genres: genres ?? _genres,
-  downloads: downloads ?? _downloads,
-  networks: networks ?? _networks,
-);
-  String? get title => _title;
-  num? get id => _id;
-  String? get posterPath => _posterPath;
-  num? get voteAverage => _voteAverage;
-  dynamic get subtitle => _subtitle;
-  String? get type => _type;
-  num? get substype => _substype;
-  List<Networkslist>? get networkslist => _networkslist;
-  List<Genres>? get genres => _genres;
-  List<dynamic>? get downloads => _downloads;
-  List<Networks>? get networks => _networks;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['title'] = _title;
-    map['id'] = _id;
-    map['poster_path'] = _posterPath;
-    map['vote_average'] = _voteAverage;
-    map['subtitle'] = _subtitle;
-    map['type'] = _type;
-    map['substype'] = _substype;
-    if (_networkslist != null) {
-      map['networkslist'] = _networkslist?.map((v) => v.toJson()).toList();
-    }
-    if (_genres != null) {
-      map['genres'] = _genres?.map((v) => v.toJson()).toList();
-    }
-    if (_downloads != null) {
-      map['downloads'] = _downloads?.map((v) => v.toJson()).toList();
-    }
-    if (_networks != null) {
-      map['networks'] = _networks?.map((v) => v.toJson()).toList();
-    }
-    return map;
-  }
-
-}
-
-/// id : 22786
-/// movie_id : 27144
-/// network_id : 7095
-/// created_at : "2024-11-10T03:30:30.000000Z"
-/// updated_at : "2024-11-10T03:30:30.000000Z"
-/// name : "افلام اسيوي"
-
-Networks networksFromJson(String str) => Networks.fromJson(json.decode(str));
-String networksToJson(Networks data) => json.encode(data.toJson());
-class Networks {
-  Networks({
-      num? id, 
-      num? movieId, 
-      num? networkId, 
-      String? createdAt, 
-      String? updatedAt, 
-      String? name,}){
-    _id = id;
-    _movieId = movieId;
-    _networkId = networkId;
-    _createdAt = createdAt;
-    _updatedAt = updatedAt;
-    _name = name;
-}
-
-  Networks.fromJson(dynamic json) {
-    _id = json['id'];
-    _movieId = json['movie_id'];
-    _networkId = json['network_id'];
-    _createdAt = json['created_at'];
-    _updatedAt = json['updated_at'];
-    _name = json['name'];
-  }
-  num? _id;
-  num? _movieId;
-  num? _networkId;
-  String? _createdAt;
-  String? _updatedAt;
-  String? _name;
-Networks copyWith({  num? id,
-  num? movieId,
-  num? networkId,
-  String? createdAt,
-  String? updatedAt,
-  String? name,
-}) => Networks(  id: id ?? _id,
-  movieId: movieId ?? _movieId,
-  networkId: networkId ?? _networkId,
-  createdAt: createdAt ?? _createdAt,
-  updatedAt: updatedAt ?? _updatedAt,
-  name: name ?? _name,
-);
-  num? get id => _id;
-  num? get movieId => _movieId;
-  num? get networkId => _networkId;
-  String? get createdAt => _createdAt;
-  String? get updatedAt => _updatedAt;
-  String? get name => _name;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['id'] = _id;
-    map['movie_id'] = _movieId;
-    map['network_id'] = _networkId;
-    map['created_at'] = _createdAt;
-    map['updated_at'] = _updatedAt;
-    map['name'] = _name;
-    return map;
-  }
-
-}
-
 

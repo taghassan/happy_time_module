@@ -61,7 +61,11 @@ class BigCardList extends GetView<HappyTimeHomeLogic> {
                 homeSectionEnum.name.tr,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
-              const Icon(Icons.open_in_new)
+             IconButton(onPressed: () {
+
+               controller.openHomeSection(homeSection:homeSectionEnum,page: 1);
+
+             }, icon:  const Icon(Icons.open_in_new))
             ],
           ),
           context.sizedBoxHeightMicro,
@@ -143,6 +147,73 @@ class BigCardList extends GetView<HappyTimeHomeLogic> {
     );
   }
 }
+
+class EgyItemCard extends GetView<HappyTimeHomeLogic> {
+  final item;
+  const EgyItemCard({super.key,required this.item});
+
+  @override
+  Widget build(BuildContext context) {
+    return CachedNetworkImage(
+      imageUrl: item.posterPath ??
+          "http://via.placeholder.com/200x150",
+      imageBuilder: (context, imageProvider) => InkWell(
+        onTap: () => controller.fetchDetails(item: item),
+        child: Stack(
+          children: [
+            Container(
+              margin: const EdgeInsets.all(3),
+              width: Get.width * 0.4,
+              height: Get.height * 0.3,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.cover,
+                ),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(10),
+                ),
+              ),
+            ),
+            Positioned(
+              top: 10,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.all(4),
+                decoration: const BoxDecoration(
+                    color: Colors.black87,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        bottomLeft: Radius.circular(10))),
+                child: Text(
+                  item.subtitle ?? '',
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelSmall
+                      ?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w300),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      placeholder: (context, url) => Container(
+        width: Get.width * 0.4,
+        height: Get.height * 0.3,
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
+          ),
+        ),
+      ).applyShimmer(),
+      errorWidget: (context, url, error) =>
+      const Icon(Icons.error),
+    );
+  }
+}
+
 
 class SmallCardList extends GetView<HappyTimeHomeLogic>  {
   final ScrollController scrollController;

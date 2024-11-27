@@ -23,41 +23,30 @@ class TheMovieDbPage extends GetView<HappyTimeHomeLogic> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          InkWell(
-            onTap: () => Get.to(() => const TheMovieDBSearch()),
-            child: const Icon(Icons.search).paddingAll(10),
-          )
-        ],
+    return DefaultTabController(
+      length: 3,
+      child: SafeArea(
+        child: Scaffold(
+          bottomNavigationBar: TabBar(tabs: [
+            Tab(
+              child: Text("home".tr),
+            ),
+            Tab(
+              child: Text("tv shows".tr),
+            ),
+            Tab(
+              child: Text("movies".tr),
+            )
+          ]),
+          body: const Expanded(
+            child: TabBarView(children: [
+              TheMovieDBHome(),
+              TvShowsListPage(),
+              MoviesListPage(),
+            ]),
+          ),
+        ),
       ),
-
-      body: DefaultTabController(
-          length: 3,
-          child: Column(
-            children: [
-              TabBar(tabs: [
-                Tab(
-                  child: Text("home".tr),
-                ),
-                Tab(
-                  child: Text("tv shows".tr),
-                ),
-                Tab(
-                  child: Text("movies".tr),
-                )
-              ]),
-
-              // controller.nativeAdWidget(15),
-              const Expanded(
-                  child: TabBarView(children: [
-                TheMovieDBHome(),
-                TvShowsListPage(),
-                MoviesListPage(),
-              ])),
-            ],
-          )),
     );
   }
 }

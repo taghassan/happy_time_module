@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:happy_time_module/admob_manager_plus.dart';
+import 'package:happy_time_module/src/core/commundomain/entitties/based_api_result/api_result_model.dart';
+import 'package:happy_time_module/src/core/constants/app_urls.dart';
 import 'package:happy_time_module/src/core/controller/base_controller.dart';
 import 'package:happy_time_module/src/core/injectable/injection.dart';
 import 'package:happy_time_module/src/core/utils/extensions.dart';
 import 'package:happy_time_module/src/core/utils/loading.dart';
 import 'package:happy_time_module/src/core/utils/logger_utils.dart';
 import 'package:happy_time_module/src/features/home/presentation/pages/family_guy.dart';
+import 'package:happy_time_module/src/features/home/presentation/pages/home_section_page.dart';
 import 'package:happy_time_module/src/features/home/presentation/pages/single_media_page.dart';
 import 'package:happy_time_module/src/features/home/presentation/pages/the_movie_db_page.dart';
 import 'package:happy_time_module/src/features/home/presentation/widgets/sub_pages/TheMovieDBSearch.dart';
@@ -22,11 +25,13 @@ import 'package:happy_time_module/src/shared/models/responses/AnimeShowApiRespon
 import 'package:happy_time_module/src/shared/models/responses/AnimesSeasonsApiResponseModel.dart';
 import 'package:happy_time_module/src/shared/models/responses/HomeContentResponseModel.dart';
 import 'package:happy_time_module/src/shared/models/responses/MediaDetailApiResponseModel.dart';
+import 'package:happy_time_module/src/shared/models/responses/MoviesLatestAddedResponseModel.dart';
 import 'package:happy_time_module/src/shared/models/responses/SeriesShowApiResponseModel.dart';
 import 'package:happy_time_module/src/shared/models/responses/videos_list.dart';
 import 'package:happy_time_module/src/shared/themoviedb/the_movie_db_mixin.dart';
 import 'package:happy_time_module/src/shared/themoviedb/themoviedb.dart';
 import 'package:happy_time_module/webview_widget.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:logger/web.dart';
 
 import 'home_state.dart';
@@ -68,6 +73,11 @@ class HappyTimeHomeLogic extends BaseController
   BannerAd? banner;
 
 
+  final PagingController<int, MediaDetailsEntity> homeSectionPagingController =
+  PagingController(firstPageKey: 1);
+
+  HomeSectionEnum? selectedHomeSection;
+
   @override
   void onInit() async {
     banner=await  createAndLoadBanner(adUnitId: 'ca-app-pub-8107574011529731/2912692739');
@@ -98,6 +108,11 @@ class HappyTimeHomeLogic extends BaseController
     ).toList();
 
     await fetchHomeContent();
+
+    homeSectionPagingController.addPageRequestListener((pageKey) {
+      AppLogger.it.logInfo("homeSectionPagingController  $pageKey");
+      fetchHomeSectionData(page: pageKey);
+    });
 
     addControllerListener();
     addControllerAutoScroll();
@@ -480,5 +495,169 @@ class HappyTimeHomeLogic extends BaseController
       },);
 
     }
+  }
+
+  fetchHomeSectionData({required int page})async{
+    const pageSize = 10;
+    try {
+
+      AppLogger.it.logInfo(" selectedHomeSection $selectedHomeSection");
+
+
+      showLoading();
+      var response;
+     switch(selectedHomeSection){
+
+          case null:
+            // TODO: Handle this case.
+            response= await moviesRemoteDataSource.fetchSeriesAll(
+                pagination: PaginationRequestModel(
+                    page: page
+                )
+            );
+          case HomeSectionEnum.latest:
+            // TODO: Handle this case.
+            response= await moviesRemoteDataSource.fetchSeriesAll(
+                pagination: PaginationRequestModel(
+                    page: page
+                ),
+                path: ApiConstants.seriesLatestAddedContentApi
+            );
+          case HomeSectionEnum.choosed:
+            // TODO: Handle this case.
+            response= await moviesRemoteDataSource.fetchSeriesAll(
+                pagination: PaginationRequestModel(
+                    page: page
+                ),
+              path: ApiConstants.choosed
+            );
+          case HomeSectionEnum.recommended:
+            // TODO: Handle this case.
+            response= await moviesRemoteDataSource.fetchSeriesAll(
+                pagination: PaginationRequestModel(
+                    page: page
+                ),
+                path: ApiConstants.mediaRecommendedContentApi
+            );
+          case HomeSectionEnum.thisweek:
+            // TODO: Handle this case.
+            response= await moviesRemoteDataSource.fetchSeriesAll(
+                pagination: PaginationRequestModel(
+                    page: page
+                ),
+                path: ApiConstants.moviesLatestAddedContentApi
+            );
+          case HomeSectionEnum.trending:
+            // TODO: Handle this case.
+            response= await moviesRemoteDataSource.fetchSeriesAll(
+                pagination: PaginationRequestModel(
+                    page: page
+                ),
+                path: ApiConstants.mediaFeaturedContentApi
+            );
+          case HomeSectionEnum.pinned:
+            // TODO: Handle this case.
+            response= await moviesRemoteDataSource.fetchSeriesAll(
+                pagination: PaginationRequestModel(
+                    page: page
+                )
+            );
+          case HomeSectionEnum.top10:
+            // TODO: Handle this case.
+            response= await moviesRemoteDataSource.fetchSeriesAll(
+                pagination: PaginationRequestModel(
+                    page: page
+                ),
+                path: ApiConstants.topteen
+            );
+          case HomeSectionEnum.popular:
+            // TODO: Handle this case.
+            response= await moviesRemoteDataSource.fetchSeriesAll(
+                pagination: PaginationRequestModel(
+                    page: page
+                ),
+                path: ApiConstants.popularseries
+            );
+          case HomeSectionEnum.recents:
+            // TODO: Handle this case.
+            response= await moviesRemoteDataSource.fetchSeriesAll(
+                pagination: PaginationRequestModel(
+                    page: page
+                )
+            );
+          case HomeSectionEnum.popularCasters:
+            // TODO: Handle this case.
+            response= await moviesRemoteDataSource.fetchSeriesAll(
+                pagination: PaginationRequestModel(
+                    page: page
+                )
+            );
+          case HomeSectionEnum.featured:
+            // TODO: Handle this case.
+            response= await moviesRemoteDataSource.fetchSeriesAll(
+                pagination: PaginationRequestModel(
+                    page: page
+                )
+            );
+          case HomeSectionEnum.anime:
+            // TODO: Handle this case.
+            response= await moviesRemoteDataSource.fetchSeriesAll(
+                pagination: PaginationRequestModel(
+                    page: page
+                ),
+                path: ApiConstants.animeAllContentApi
+            );
+          case HomeSectionEnum.popularSeries:
+            // TODO: Handle this case.
+            response= await moviesRemoteDataSource.fetchSeriesAll(
+                pagination: PaginationRequestModel(
+                    page: page
+                ),
+                path: ApiConstants.mediaSuggestedContentApi
+            );
+          case HomeSectionEnum.livetv:
+            // TODO: Handle this case.
+            response= await moviesRemoteDataSource.fetchSeriesAll(
+                pagination: PaginationRequestModel(
+                    page: page
+                ),
+                path: ApiConstants.mediaSuggestedContentApi
+            );
+        }
+        
+      hideLoading();
+
+      response.when(success: (MoviesLatestAddedResponseModel moviesLatestAddedResponse) {
+
+        final newItems= moviesLatestAddedResponse.data??[];
+        final isLastPage = newItems.length < pageSize;
+        if (isLastPage) {
+          homeSectionPagingController.appendLastPage(newItems);
+        } else {
+          final nextPageKey = page + 1;
+          AppLogger.it.logInfo("nextPageKey $nextPageKey");
+          homeSectionPagingController.appendPage(newItems, nextPageKey);
+        }
+
+      }, failure: (errorResultEntity) {
+        //
+        AppLogger.it.logError(errorResultEntity.message.toString());
+      },);
+
+
+    } catch (e) {
+      //
+      hideLoading();
+    }
+  }
+
+
+
+  void openHomeSection({required HomeSectionEnum homeSection, required int page})async {
+    homeSectionPagingController.itemList=[];
+    homeSectionPagingController.refresh();
+    selectedHomeSection=homeSection;
+    update();
+    Get.to(()=>const HomeSectionPage());
   }
 }

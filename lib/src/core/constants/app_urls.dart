@@ -11,6 +11,10 @@ class ApiConstants {
   static const String mediaTrendingContentApi="/media/trendingcontent/$code";
   static const String mediaFeaturedContentApi="/media/featuredcontent/$code";
   static const String animeAllContentApi="/genres/animes/all/$code";//page=1
+  static const String topteen="/genres/topteen/all/$code";//page=1
+  static const String popularseries="/genres/popularseries/all/$code";//page=1
+  static const String choosed="/genres/choosed/all/$code";//page=1
+  static const String newAll="/genres/new/all/$code";//page=1
   static const String seriesAllContentApi="/genres/series/all/$code";//page=1
   static const String moviesAllContentApi="/genres/movies/all/$code";//page=1
   static const String mediaSuggestedContentApi="/media/suggestedcontent/$code";//page=1

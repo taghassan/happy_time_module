@@ -2,10 +2,11 @@ import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide WidgetPaddingX;
 import 'package:happy_time_module/src/features/home/presentation/controllers/home_logic.dart';
 import 'package:happy_time_module/src/features/home/presentation/widgets/sub_pages/BigCardList.dart';
 import 'package:happy_time_module/src/features/home/presentation/widgets/sub_pages/TheMovieDBBigCardList.dart';
+import 'package:happy_time_module/src/features/home/presentation/widgets/sub_pages/TheMovieDBSearch.dart';
 
 class TheMovieDBHome extends GetView<HappyTimeHomeLogic> {
   const TheMovieDBHome({super.key});
@@ -114,6 +115,12 @@ class TheMovieDBHome extends GetView<HappyTimeHomeLogic> {
                     );
                   }),
             ),
+            actions: [
+              InkWell(
+                onTap: () => Get.to(() => const TheMovieDBSearch()),
+                child: const Icon(Icons.search).paddingAll(10),
+              )
+            ],
           ),
           SliverList(
             delegate: SliverChildListDelegate([
