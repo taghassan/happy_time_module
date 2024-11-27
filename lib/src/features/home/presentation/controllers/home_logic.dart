@@ -469,7 +469,7 @@ class HappyTimeHomeLogic extends BaseController
     {
 
       showRewardedAd(onUserEarnedReward: (p0, p1) async{
-       
+
         loadAdRewarded(
             logger: Logger(),
             forceUseId: 'ca-app-pub-8107574011529731/1208395686');
