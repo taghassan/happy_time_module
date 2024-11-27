@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:isolate';
 
 import 'package:flutter/material.dart';
@@ -298,3 +299,69 @@ mixin HasNativeAdsMixin on GetxController {
   }
 }
 
+mixin HasRewardedAdsMixin {
+
+  RewardedAd? rewardedAd;
+  var loadTry = 0;
+  final rewardedAdUnitId = Platform.isAndroid
+      ? 'ca-app-pub-8107574011529731/9783786052'
+      : 'ca-app-pub-8107574011529731/9783786052';
+
+  /// Loads a rewarded ad.
+  void loadAdRewarded({Logger? logger,String? forceUseId}) {
+
+    RewardedAd.load(
+        adUnitId:forceUseId?? rewardedAdUnitId,
+        request: const AdRequest(),
+
+        rewardedAdLoadCallback: RewardedAdLoadCallback(
+          // Called when an ad is successfully received.
+          onAdLoaded: (ad) {
+            ad.fullScreenContentCallback = FullScreenContentCallback(
+              // Called when the ad showed the full screen content.
+                onAdShowedFullScreenContent: (ad) {},
+                // Called when an impression occurs on the ad.
+                onAdImpression: (ad) {},
+                // Called when the ad failed to show full screen content.
+                onAdFailedToShowFullScreenContent: (ad, err) {
+                  // Dispose the ad here to free resources.
+                  ad.dispose();
+                },
+                // Called when the ad dismissed full screen content.
+                onAdDismissedFullScreenContent: (ad) {
+                  // Dispose the ad here to free resources.
+                  ad.dispose();
+                },
+                // Called when a click is recorded for an ad.
+                onAdClicked: (ad) {});
+
+            logger?.i('$ad loaded.');
+            // Keep a reference to the ad so you can show it later.
+            rewardedAd = ad;
+          },
+          // Called when an ad request failed.
+          onAdFailedToLoad: (LoadAdError error) {
+            logger?.e('RewardedAd failed to load: $error');
+
+            loadTry = loadTry + 1;
+
+            if (loadTry <= 5) {
+              loadAdRewarded();
+            } else {
+
+              loadTry = 0;
+
+            }
+          },
+        ));
+  }
+
+
+  showRewardedAd({required void Function(AdWithoutView, RewardItem) onUserEarnedReward})async{
+    await rewardedAd?.show(onUserEarnedReward: onUserEarnedReward);
+  }
+
+  disposeRewordAds(){
+    rewardedAd?.dispose();
+  }
+}

@@ -83,7 +83,7 @@ class FamilyGuyPageEpisode extends GetView<HappyTimeHomeLogic> {
                   itemBuilder: (context, index) {
                     var episode = (controller.selectedTvSeasonsDetails?.episodes??[])[index];
 
-                    AppLogger.it.logInfo("episode ${episode.toJson()}");
+                    // AppLogger.it.logInfo("episode ${episode.toJson()}");
                     return InkWell(
                       onTap: () async {
                         await controller.showInterstitialAd();

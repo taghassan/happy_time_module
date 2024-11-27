@@ -27,6 +27,7 @@ import 'package:happy_time_module/src/shared/models/responses/videos_list.dart';
 import 'package:happy_time_module/src/shared/themoviedb/the_movie_db_mixin.dart';
 import 'package:happy_time_module/src/shared/themoviedb/themoviedb.dart';
 import 'package:happy_time_module/webview_widget.dart';
+import 'package:logger/web.dart';
 
 import 'home_state.dart';
 
@@ -48,7 +49,7 @@ enum HomeSectionEnum {
 }
 
 class HappyTimeHomeLogic extends BaseController
-    with StateMixin<HomeState>, LoaderOverlayMixin, TheMovieDbMixin,AdmobManagerPlus ,HasNativeAdsMixin {
+    with StateMixin<HomeState>, LoaderOverlayMixin, TheMovieDbMixin,AdmobManagerPlus ,HasNativeAdsMixin,HasRewardedAdsMixin {
   List<ScrollController> scrollController = [];
   int tempItemCount = 10;
 
@@ -83,6 +84,10 @@ class HappyTimeHomeLogic extends BaseController
       ]);
 
       await loadInterstitialAd();
+      loadAdRewarded(
+          logger: Logger(),
+          forceUseId: 'ca-app-pub-8107574011529731/1208395686');
+
     },);
 
     initPagingController();
@@ -107,12 +112,14 @@ class HappyTimeHomeLogic extends BaseController
     }
 
     disposePagingController();
+    disposeRewordAds();
     super.onClose();
   }
 
 
   Future<bool> askUserForAd() async {
     bool userAction = await Get.defaultDialog(
+      barrierDismissible: false,
         title: '',
         content: const Text("هل تريد مشاهدة إعلان\n هذا سيساعدنا علي الاسمرار"),
         actions: [
@@ -460,8 +467,18 @@ class HappyTimeHomeLogic extends BaseController
   showInterstitialAd()async{
     if(await askUserForAd())
     {
-      await interstitialAd?.show();
-      loadInterstitialAd();
+
+      showRewardedAd(onUserEarnedReward: (p0, p1) async{
+       
+        loadAdRewarded(
+            logger: Logger(),
+            forceUseId: 'ca-app-pub-8107574011529731/1208395686');
+        Future.delayed(const Duration(seconds: 1),() async{
+          await interstitialAd?.show();
+          loadInterstitialAd();
+        },);
+      },);
+
     }
   }
 }
