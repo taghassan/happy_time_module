@@ -6,8 +6,59 @@ import 'package:happy_time_module/src/core/utils/extensions.dart';
 import 'package:happy_time_module/src/core/widgets/components/plus_search_bar.dart';
 import 'package:happy_time_module/src/features/home/presentation/controllers/home_logic.dart';
 import 'package:happy_time_module/src/features/home/presentation/pages/the_movie_db_page.dart';
+import 'package:happy_time_module/src/features/home/presentation/widgets/sub_pages/BigCardList.dart';
+import 'package:happy_time_module/src/shared/entities/MediaDetailsEntity.dart';
 import 'package:happy_time_module/src/shared/themoviedb/models/ApiDiscoverTvResponse.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+
+class EgySearchPage extends GetView<HappyTimeHomeLogic> {
+  const EgySearchPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: PlusSearchInput(
+          searchController: controller.searchTextEditController,
+          hintText: 'search',
+          onSubmitted: (p0) {
+            controller.egySearchPagingController.itemList=[];
+            controller.egySearchPagingController.refresh();
+          },
+          onChanged: (p0) {
+            controller.delayExecution(callBack: (){
+              controller.egySearchPagingController.itemList=[];
+              controller.egySearchPagingController.refresh();
+            });
+          },
+        ),
+        // leading: TextButton(
+        //   onPressed: controller.doSearch,
+        //   child: const Icon(Icons.search),
+        // ),
+      ),
+      body: PagedGridView<int, MediaDetailsEntity>(
+        // physics: const NeverScrollableScrollPhysics(),
+        // shrinkWrap: true,
+        gridDelegate:
+        const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          mainAxisSpacing: 3,
+          crossAxisSpacing: 3,
+          childAspectRatio: 0.5,
+        ),
+        pagingController: controller.egySearchPagingController,
+        builderDelegate:
+        PagedChildBuilderDelegate<MediaDetailsEntity>(
+          itemBuilder: (context, item, index) => EgyItemCard(
+            item: item,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 
 class TheMovieDBSearch extends GetView<HappyTimeHomeLogic> {
   const TheMovieDBSearch({super.key});

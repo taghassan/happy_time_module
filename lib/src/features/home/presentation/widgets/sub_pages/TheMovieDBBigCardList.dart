@@ -5,6 +5,7 @@ import 'package:get/get.dart' hide WidgetPaddingX;
 import 'package:happy_time_module/src/core/utils/extensions.dart';
 import 'package:happy_time_module/src/core/utils/logger_utils.dart';
 import 'package:happy_time_module/src/features/home/presentation/controllers/home_logic.dart';
+import 'package:happy_time_module/src/features/home/presentation/pages/the_movie_db_page.dart';
 import 'package:happy_time_module/src/shared/entities/MediaDetailsEntity.dart';
 import 'package:happy_time_module/src/shared/themoviedb/models/ApiDiscoverTvResponse.dart';
 
@@ -37,7 +38,9 @@ class TheMovieDBBigCardList extends GetView<HappyTimeHomeLogic> {
                 homeSectionEnum.name.tr,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
-              const Icon(Icons.open_in_new)
+            IconButton(onPressed: () {
+              
+            }, icon:   const Icon(Icons.open_in_new))
             ],
           ),
           context.sizedBoxHeightMicro,

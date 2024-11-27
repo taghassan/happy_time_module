@@ -7,6 +7,7 @@ import 'package:happy_time_module/src/core/commundomain/entitties/based_api_resu
 import 'package:happy_time_module/src/core/constants/app_urls.dart';
 import 'package:happy_time_module/src/core/controller/base_controller.dart';
 import 'package:happy_time_module/src/core/injectable/injection.dart';
+import 'package:happy_time_module/src/core/utils/delay_execution_mixin.dart';
 import 'package:happy_time_module/src/core/utils/extensions.dart';
 import 'package:happy_time_module/src/core/utils/loading.dart';
 import 'package:happy_time_module/src/core/utils/logger_utils.dart';
@@ -54,7 +55,7 @@ enum HomeSectionEnum {
 }
 
 class HappyTimeHomeLogic extends BaseController
-    with StateMixin<HomeState>, LoaderOverlayMixin, TheMovieDbMixin,AdmobManagerPlus ,HasNativeAdsMixin,HasRewardedAdsMixin {
+    with StateMixin<HomeState>, LoaderOverlayMixin, TheMovieDbMixin,AdmobManagerPlus ,HasNativeAdsMixin,HasRewardedAdsMixin,DelayExecutionMixin {
   List<ScrollController> scrollController = [];
   int tempItemCount = 10;
 
@@ -74,6 +75,10 @@ class HappyTimeHomeLogic extends BaseController
 
 
   final PagingController<int, MediaDetailsEntity> homeSectionPagingController =
+  PagingController(firstPageKey: 1);
+
+
+  final PagingController<int, MediaDetailsEntity> egySearchPagingController =
   PagingController(firstPageKey: 1);
 
   HomeSectionEnum? selectedHomeSection;
@@ -112,6 +117,11 @@ class HappyTimeHomeLogic extends BaseController
     homeSectionPagingController.addPageRequestListener((pageKey) {
       AppLogger.it.logInfo("homeSectionPagingController  $pageKey");
       fetchHomeSectionData(page: pageKey);
+    });
+
+    egySearchPagingController.addPageRequestListener((pageKey) {
+      AppLogger.it.logInfo("egySearchPagingController  $pageKey");
+      fetchHomeEgySearchData(page: pageKey);
     });
 
     addControllerListener();
@@ -497,6 +507,41 @@ class HappyTimeHomeLogic extends BaseController
     }
   }
 
+  fetchHomeEgySearchData({required int page})async{
+    const pageSize = 10;
+    try {
+      showLoading();
+     var response= await moviesRemoteDataSource.fetchSeriesAll(
+          pagination: PaginationRequestModel(
+              page: page
+          ),
+          path:'/search/${(searchTextEditController.text.isNotEmpty?searchTextEditController.text:'family+guy').replaceAll(" ", "+")}/${ApiConstants.code}' //ApiConstants.seriesLatestAddedContentApi
+      );
+
+      hideLoading();
+      response.when(success: (MoviesLatestAddedResponseModel moviesLatestAddedResponse) {
+
+        final newItems= moviesLatestAddedResponse.data??[];
+        final isLastPage = newItems.length < pageSize;
+        if (isLastPage) {
+          egySearchPagingController.appendLastPage(newItems);
+        } else {
+          final nextPageKey = page + 1;
+          AppLogger.it.logInfo("nextPageKey $nextPageKey");
+          egySearchPagingController.appendPage(newItems, nextPageKey);
+        }
+
+      }, failure: (errorResultEntity) {
+        //
+        AppLogger.it.logError(errorResultEntity.message.toString());
+      },);
+
+    }catch(e){
+
+      hideLoading();
+    }
+  }
+
   fetchHomeSectionData({required int page})async{
     const pageSize = 10;
     try {
@@ -624,7 +669,7 @@ class HappyTimeHomeLogic extends BaseController
                 path: ApiConstants.mediaSuggestedContentApi
             );
         }
-        
+
       hideLoading();
 
       response.when(success: (MoviesLatestAddedResponseModel moviesLatestAddedResponse) {
@@ -653,11 +698,21 @@ class HappyTimeHomeLogic extends BaseController
 
 
 
-  void openHomeSection({required HomeSectionEnum homeSection, required int page})async {
-    homeSectionPagingController.itemList=[];
-    homeSectionPagingController.refresh();
-    selectedHomeSection=homeSection;
+  void openHomeSection({bool? isSearch,required HomeSectionEnum homeSection, required int page})async {
+
     update();
-    Get.to(()=>const HomeSectionPage());
+    if(isSearch==true){
+
+      egySearchPagingController.itemList=[];
+      egySearchPagingController.refresh();
+
+      Get.to(()=>const EgySearchPage());
+    }else{
+      homeSectionPagingController.itemList=[];
+      homeSectionPagingController.refresh();
+      selectedHomeSection=homeSection;
+      Get.to(()=>const HomeSectionPage());
+    }
+
   }
 }

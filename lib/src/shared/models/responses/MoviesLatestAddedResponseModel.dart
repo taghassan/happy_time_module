@@ -53,26 +53,18 @@ class MoviesLatestAddedResponseModel {
   MoviesLatestAddedResponseModel.fromJson(dynamic json) {
     _currentPage = json['current_page'];
 
-    if (json['data'] != null) {
-      _data = [];
-      json['data'].forEach((v) {
-        _data?.add(MediaDetailsEntity.fromJson(v));
-      });
+
+    for(String itemKey in ['data','search','featured','recommended','trending','suggested'])
+    {
+
+      if (json[itemKey] != null) {
+        _data = [];
+        json[itemKey].forEach((v) {
+          _data?.add(MediaDetailsEntity.fromJson(v));
+        });
+      }
     }
 
-    if (json['suggested'] != null) {
-      _data = [];
-      json['suggested'].forEach((v) {
-        _data?.add(MediaDetailsEntity.fromJson(v));
-      });
-    }
-
-    if (json['trending'] != null) {
-      _data = [];
-      json['trending'].forEach((v) {
-        _data?.add(MediaDetailsEntity.fromJson(v));
-      });
-    }
     _firstPageUrl = json['first_page_url'];
     _from = json['from'];
     _lastPage = json['last_page'];

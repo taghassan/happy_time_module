@@ -210,7 +210,8 @@ class ApiTvShowDetailsResponse {
   num? _voteCount;
 
   bool? get adult => _adult;
-  String? get backdropPath => _backdropPath;
+  // String? get backdropPath => _backdropPath;
+  String? get backdropPath => "https://image.tmdb.org/t/p/w780$_backdropPath";
   List<CreatedBy>? get createdBy => _createdBy;
   List<dynamic>? get episodeRunTime => _episodeRunTime;
   String? get firstAirDate => _firstAirDate;
@@ -231,7 +232,8 @@ class ApiTvShowDetailsResponse {
   String? get originalName => _originalName;
   String? get overview => _overview;
   num? get popularity => _popularity;
-  String? get posterPath => _posterPath;
+  // String? get posterPath => _posterPath;
+  String? get posterPath => "https://image.tmdb.org/t/p/w500$_posterPath";
   List<ProductionCompanies>? get productionCompanies => _productionCompanies;
   List<ProductionCountries>? get productionCountries => _productionCountries;
   List<Seasons>? get seasons => _seasons;

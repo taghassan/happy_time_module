@@ -19,6 +19,15 @@ class MoviesListPage extends GetView<HappyTimeHomeLogic> {
       },
       child: Column(
         children: [
+          InkWell(
+          onTap: () => controller.openHomeSection(page: 1,isSearch: true,homeSection: HomeSectionEnum.popular),
+            child: Row(
+              children: [
+                IconButton(onPressed: () => controller.openHomeSection(page: 1,isSearch: true,homeSection: HomeSectionEnum.popular), icon:const Icon(Icons.search)),
+                Text("search".tr)
+              ],
+            ),
+          ),
           controller.nativeAdWidget(15),
           Expanded(child:  PagedGridView<int, TvShowResults>(
             // physics: const NeverScrollableScrollPhysics(),
