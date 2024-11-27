@@ -118,7 +118,7 @@ class TheMovieDBHome extends GetView<HappyTimeHomeLogic> {
             actions: [
               InkWell(
                 onTap: () => Get.to(() => const TheMovieDBSearch()),
-                child: const Icon(Icons.search).paddingAll(10),
+                child: const Icon(Icons.search,color: Colors.white,).paddingAll(10),
               )
             ],
           ),

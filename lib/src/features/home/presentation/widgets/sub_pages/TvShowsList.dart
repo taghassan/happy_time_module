@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:happy_time_module/src/features/home/presentation/controllers/home_logic.dart';
 import 'package:happy_time_module/src/features/home/presentation/pages/the_movie_db_page.dart';
-import 'package:happy_time_module/src/features/home/presentation/widgets/sub_pages/TheMovieDBSearch.dart';
 import 'package:happy_time_module/src/shared/themoviedb/models/ApiDiscoverTvResponse.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 

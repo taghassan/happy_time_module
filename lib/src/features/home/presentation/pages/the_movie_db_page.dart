@@ -1,22 +1,14 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide WidgetPaddingX;
-import 'package:happy_time_module/src/core/utils/extensions.dart';
 import 'package:happy_time_module/src/core/utils/logger_utils.dart';
-import 'package:happy_time_module/src/core/widgets/components/plus_search_bar.dart';
 import 'package:happy_time_module/src/features/home/presentation/controllers/home_logic.dart';
-import 'package:happy_time_module/src/features/home/presentation/pages/home_view.dart';
 import 'package:happy_time_module/src/features/home/presentation/widgets/sub_pages/MoviesList.dart';
 import 'package:happy_time_module/src/features/home/presentation/widgets/sub_pages/TheMovieDBHome.dart';
-import 'package:happy_time_module/src/features/home/presentation/widgets/sub_pages/TheMovieDBSearch.dart';
 import 'package:happy_time_module/src/features/home/presentation/widgets/sub_pages/TvShowsList.dart';
 import 'package:happy_time_module/src/shared/entities/MediaDetailsEntity.dart';
 import 'package:happy_time_module/src/shared/themoviedb/models/ApiDiscoverTvResponse.dart';
-import 'package:happy_time_module/src/shared/themoviedb/models/TheMovieDBShowResponse.dart';
-import 'package:happy_time_module/webview_widget.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class TheMovieDbPage extends GetView<HappyTimeHomeLogic> {
   const TheMovieDbPage({super.key});
@@ -25,9 +17,11 @@ class TheMovieDbPage extends GetView<HappyTimeHomeLogic> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
-      child: SafeArea(
-        child: Scaffold(
-          bottomNavigationBar: TabBar(tabs: [
+      child: Scaffold(
+        
+        appBar:AppBar(
+      title: const Text("هابي تايم"),
+          bottom: TabBar(tabs: [
             Tab(
               child: Text("home".tr),
             ),
@@ -38,13 +32,13 @@ class TheMovieDbPage extends GetView<HappyTimeHomeLogic> {
               child: Text("movies".tr),
             )
           ]),
-          body: const Expanded(
-            child: TabBarView(children: [
-              TheMovieDBHome(),
-              TvShowsListPage(),
-              MoviesListPage(),
-            ]),
-          ),
+        ) ,
+        body: const Expanded(
+          child: TabBarView(children: [
+            TheMovieDBHome(),
+            TvShowsListPage(),
+            MoviesListPage(),
+          ]),
         ),
       ),
     );

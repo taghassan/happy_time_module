@@ -5,7 +5,6 @@ import 'package:get/get.dart' hide WidgetPaddingX;
 import 'package:happy_time_module/src/core/utils/extensions.dart';
 import 'package:happy_time_module/src/core/utils/logger_utils.dart';
 import 'package:happy_time_module/src/features/home/presentation/controllers/home_logic.dart';
-import 'package:happy_time_module/src/features/home/presentation/pages/the_movie_db_page.dart';
 import 'package:happy_time_module/src/shared/entities/MediaDetailsEntity.dart';
 import 'package:happy_time_module/src/shared/themoviedb/models/ApiDiscoverTvResponse.dart';
 

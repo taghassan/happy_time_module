@@ -1,18 +1,12 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
-import 'package:happy_time_module/dio_logger.dart';
 import 'package:happy_time_module/src/core/utils/logger_utils.dart';
 import 'package:happy_time_module/src/shared/themoviedb/models/ApiDiscoverTvResponse.dart';
 import 'package:happy_time_module/src/shared/themoviedb/models/ApiTvShowDetailsResponse.dart';
 import 'package:happy_time_module/src/shared/themoviedb/models/SerssionApiResponse.dart';
 import 'package:happy_time_module/src/shared/themoviedb/models/TVSeasonsDetailsResponse.dart';
-import 'package:happy_time_module/src/shared/themoviedb/models/TheMovieDBEpisodeResponse.dart';
-import 'package:happy_time_module/src/shared/themoviedb/models/TheMovieDBSeasonResponse.dart';
 import 'package:happy_time_module/src/shared/themoviedb/models/TheMovieDBShowResponse.dart';
 import 'package:happy_time_module/src/shared/themoviedb/the_movie_db_mixin.dart';
-import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class TheMovieDBHelper {
 

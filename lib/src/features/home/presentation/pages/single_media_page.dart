@@ -5,12 +5,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
-import 'package:happy_time_module/src/core/constants/app_constants.dart';
 import 'package:happy_time_module/src/core/utils/extensions.dart';
-import 'package:happy_time_module/src/core/utils/logger_utils.dart';
 import 'package:happy_time_module/src/features/home/presentation/controllers/home_logic.dart';
 import 'package:happy_time_module/src/shared/entities/MediaDetailsEntity.dart';
-import 'package:happy_time_module/webview_widget.dart';
 
 class SingleMediaPage extends GetView<HappyTimeHomeLogic> {
   const SingleMediaPage({super.key});

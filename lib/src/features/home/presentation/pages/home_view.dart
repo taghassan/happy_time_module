@@ -1,12 +1,6 @@
-import 'package:awesome_extensions/awesome_extensions.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide WidgetPaddingX;
 import 'package:happy_time_module/src/features/home/presentation/pages/the_movie_db_page.dart';
-import 'package:happy_time_module/src/features/home/presentation/widgets/caster_item_card_for_list.dart';
-import 'package:skeletonizer/skeletonizer.dart';
-import 'package:happy_time_module/src/core/utils/extensions.dart';
 
 import '../controllers/home_logic.dart';
 
