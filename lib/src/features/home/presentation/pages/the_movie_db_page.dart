@@ -33,13 +33,11 @@ class TheMovieDbPage extends GetView<HappyTimeHomeLogic> {
             )
           ]),
         ) ,
-        body: const Expanded(
-          child: TabBarView(children: [
-            TheMovieDBHome(),
-            TvShowsListPage(),
-            MoviesListPage(),
-          ]),
-        ),
+        body:const TabBarView(children: [
+          TheMovieDBHome(),
+          TvShowsListPage(),
+          MoviesListPage(),
+        ]),
       ),
     );
   }
