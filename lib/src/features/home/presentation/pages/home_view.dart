@@ -10,7 +10,7 @@ class HappyTimeHomePage extends GetView<HappyTimeHomeLogic> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     bottomNavigationBar: controller.obx((state) => controller.loadBannerWidget(bannerAd: controller.banner)??const SizedBox.shrink(),),
+     // bottomNavigationBar: controller.obx((state) => controller.loadBannerWidget(bannerAd: controller.banner)??const SizedBox.shrink(),),
 
       body: controller.obx(
         (state) {

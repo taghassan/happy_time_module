@@ -126,6 +126,7 @@ class TheMovieDBHome extends GetView<HappyTimeHomeLogic> {
             delegate: SliverChildListDelegate([
               TheMovieDBBigCardList(scrollController: ScrollController(), homeSectionEnum: HomeSectionEnum.choosed, itemsList: controller.trendingScrollerList),
               TheMovieDBBigCardList(scrollController: ScrollController(), homeSectionEnum: HomeSectionEnum.featured, itemsList: controller.freeScrollerList),
+              controller.nativeAdWidget(15),
               TheMovieDBBigCardList(scrollController: ScrollController(), homeSectionEnum: HomeSectionEnum.trending, itemsList: controller.popularScrollerList),
 
 
@@ -139,6 +140,7 @@ class TheMovieDBHome extends GetView<HappyTimeHomeLogic> {
                 scrollController: ScrollController(),
                 homeSectionEnum: HomeSectionEnum.recommended,
               ),
+              controller.nativeAdWidget(6),
               BigCardList(
                 scrollController: ScrollController(),
                 homeSectionEnum: HomeSectionEnum.trending,

@@ -21,7 +21,7 @@ class TvShowsListPage extends GetView<HappyTimeHomeLogic> {
             ],
           ),
         ),
-        controller.nativeAdWidget(6),
+
         Expanded(child:  PagedGridView<int, TvShowResults>(
           // physics: const NeverScrollableScrollPhysics(),
           // shrinkWrap: true,
