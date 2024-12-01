@@ -455,6 +455,7 @@ class HappyTimeHomeLogic extends BaseController
 
       theMovieDBId = theId;
       theMovieDBTitle=title??'';
+      selectedTvSeasonsDetails=null;
       // await fetchMovies(page:1);
       await fetchSeasons(tvShowPath: tvShowPath);
       hideLoading();
