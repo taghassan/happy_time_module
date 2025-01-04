@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -131,7 +133,7 @@ BannerAd? banner;
   Widget build(BuildContext context) {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
-  return RotatedBox(quarterTurns: 1,child:Stack(
+  return RotatedBox(quarterTurns: Platform.isMacOS?0:1 ,child:Stack(
     children: [
 
       WebViewWidget(
