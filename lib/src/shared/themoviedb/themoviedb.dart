@@ -21,7 +21,8 @@ class TheMovieDBHelper {
     'User-Agent':
         'Mozilla/5.0 (Linux; Android 10; Pixel 4 XL Build/QP1A.191005.007) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Mobile Safari/537.36',
   }));
-  String apiKey = "2f3cb5763db1117fcba3948632f8aad9";
+  String apiKey = "2f3cb5763db1117fcba3948632f8aad9";//
+  //backup key = "478ba82cea8c6c64d1e999b0f2bea90e" oops! Invalid API key: You must be granted a valid key.
   var headers = {
     'accept': 'text/html, */*; q=0.01',
     'accept-language':
